@@ -6,7 +6,7 @@ Both people exploring AI without prior knowledge but tasting the AI/LLM/Agents l
 
 ## Features:
 1. **Cross-Platform Compatibility:** Respects Cursor, CLINE, RooCode Rule guidelines and mechanisms natively. Like For CLINE rules use use **PLAN Mode** as in their system prompts, whereas for RooCode we use **Architect Mode**. Similarly **Act Mode** for CLINE and **Code Mode** for RooCode. **Debug Mode** for RooCode has been used additionally. 
-2. **Latest Compatibility:** Designed to be compatible with the latest versions of Cursor and CLINE, RooCode. We have used `.cursor/rules/` directory for Cursor and ditched the deprecated `.cursorrules` file.For RooCode, we have used `.clinerules-{mode}` files and not the `.clinerules` file. With CLINE we have used the **deprecated** `.clinerules` file, **not** the `.clinerules` directory. This is to make it compatible with RooCode. 
+2. **Latest Compatibility:** Designed to be compatible with the latest versions of Cursor, CLINE, and RooCode. We use the `.cursor/rules/` directory for Cursor. For RooCode, we use the `.clinerules` file and the mode-specific `.clinerules-{mode}` files (e.g., `.clinerules-architect`). For CLINE, while the `.clinerules` file might be read, the detailed mode-specific rules require manual copying into the settings (see Quickstart).
 3. **Minimal Token Usage:** We have organized the rule files to be only added when demanded (on-demand-loading). For Cursor we have seperated the rules into seperate `.mdc` files in `.cursor/rules/` directory, and configured the files so as to be added only when required. For RooCode, we have seperated the ruls into the mode specific rule files `.clinerules-{mode}` and not everything in `.clinerules` file. This, will only load the required rules for corresponding modes. For CLINE, this is not yet natively supported, so we did a workaround!
 4. **Common Memory Bank:** We have a common memory bank for all the AI assistants. This maintains same context across all the AI assistants.
 5. **Fundamental Software Engineering Principles:** This is to ensure that the AI is following the best practices in software development.
@@ -18,24 +18,18 @@ This template provides a starting point for AI pair-coding projects. To get star
 
 1.  **Cursor:** put the `.cursor/rules` directory in your project root.
 2.  **CLINE or RooCode:** put the `.clinerules` file in your project root.
-3.  **RooCode:** put the `.clinerules-{mode}` files in your project root. i.e. `.clinerules-plan`, `.clinerules-act`, `.clinerules-debug`.
+3.  **RooCode:** put the `.clinerules-{mode}` files in your project root. i.e. `.clinerules-architect`, `.clinerules-code`, `.clinerules-debug`.
 
-*Note: All these can be stacked on top of each other, simultaneously.*
+*Note: All these rule files/directories can be used simultaneously depending on the AI assistant.*
 
-4.  **For CLINE** we will copy Mode specific rules to settings:
-```python
-1. go to 'Settings' at top right corner.
-2. select the mode: 'Plan Mode' tab
-   a. go to the section: 'Custom Instructions'
-   b. copy the contents of file `clinerules/plan` to the text area.
-3. select the mode: 'Act Mode' tab
-   a. go to the section: 'Custom Instructions'
-   b. copy the contents of file `clinerules/implement` to the text area.
-   c. copy the contents of file `clinerules/debug` to the text area.
-```
-> Reason1: CLINE does not provide a way to append rules to its predefined rules. So we have to copy the rules to the settings.
-
-> Reason2: note that **BOTH** CLINE and RooCode can read `.clinerules` if kept at root.
+4.  **For CLINE:** The primary method to load detailed mode-specific rules is by copying content into the Cline extension settings:
+    *   Go to 'Settings' -> 'Plan Mode' tab -> 'Custom Instructions'.
+    *   Copy the contents of the `clinerules/plan` file into the text area.
+    *   Go to 'Settings' -> 'Act Mode' tab -> 'Custom Instructions'.
+    *   Copy the contents of the `clinerules/implement` file into the text area.
+    *   Copy the contents of the `clinerules/debug` file into the text area.
+    *   **Reason:** This manual copy is necessary as Cline currently lacks native support for loading mode-specific rule files directly.
+    *   **Note:** While Cline might read the `.clinerules` file at the root (as RooCode does), the detailed instructions for Plan/Act/Debug modes come from the manual copy-paste described above.
 
 **DONE**
 
@@ -44,6 +38,10 @@ This template provides a starting point for AI pair-coding projects. To get star
 **Note: If using Windsurf and including `.windsurfrules` at root, that will be automatically supported by RooCode too.**
 
 > Reason: For compatibility across editors, RooCode automatically supports `.windsurfrules` and `.cursorrules/` (the older format). So currently RooCode is not able to read `.cursor/rules` but will read `.windsurfrules`.
+
+**Windsurf Support: Under Development**
+
+Instructions for setting up Windsurf are still under development. Please check back later for more information.
 
 Then, create these directories in your project root:
 
@@ -78,6 +76,15 @@ Now just start coding using Cursor/Windsorf/CLINE/RooCode.
 > Follow Custom Prompt to initialize and document the project in Memory Files following the structure and instructions for documenting in Memory Files. Write everything about the project in Memory Files, build a good context for the project. 
 
 (Copy above prompt as first prompt!)
+
+## Rule Loading Summary
+
+| AI Assistant | Rule File(s) Location & Name(s)                                  | Loading Mechanism                                                                                                | Notes                                                                                                |
+| :----------- | :--------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------- |
+| **Cursor**   | `.cursor/rules/` directory (contains `.mdc` files)               | Automatic loading based on file `globs` and `description`.                                                       | Uses the modern `.mdc` format.                                                                       |
+| **CLINE**    | `.clinerules` (root), `@clinerules/` directory (contains `@clinerules/plan`, `@clinerules/implement`, `@clinerules/debug`) | `.clinerules` might be read for base context. Detailed mode rules require manual copy-paste into settings (unreliable due to UI bug). | Manual copy needed due to lack of native mode-specific file loading. UI bug impacts reliability.     |
+| **RooCode**  | `.clinerules` (root), `@.clinerules-architect`, `@.clinerules-code`, `@.clinerules-debug` (root) | Automatic loading of `.clinerules` and the relevant `@.clinerules-{mode}` file based on active mode. | Also supports `.windsurfrules` and older `.cursorrules/` format, but *not* current `.cursor/rules`. |
+| **Windsurf** | `.windsurfrules` (root)                                          | Assumed automatic loading (needs verification - Task 5).                                                         | RooCode automatically supports this file if present.                                                 |
 
 # Tips in General Using Cursor, CLINE, RooCode, Windsurf:
 ## CLINE/RooCode:
