@@ -140,3 +140,47 @@
         -- Context: The current `.clinerules` file lacks specific instructions on when and how to update the `tasks/tasks_plan.md` file after completing a task, leading to inconsistencies in task tracking.
         -- Importance: Medium
         -- Dependencies: None
+
+### 10. Establish Source of Truth for Rule Setup (Critical Priority):
+    - [x] 10.1: Research and collect official/authoritative documentation for **Cursor** custom rule setup.
+        -- Context: Need verified information to ensure accuracy.
+        -- Importance: Critical
+        -- Dependencies: None
+    - [x] 10.2: Research and collect official/authoritative documentation for **CLINE** custom rule setup.
+        -- Context: Need verified information to ensure accuracy.
+        -- Importance: Critical
+        -- Dependencies: None
+    - [x] 10.3: Research and collect official/authoritative documentation for **RooCode** custom rule setup.
+        -- Context: Need verified information to ensure accuracy.
+        -- Importance: Critical
+        -- Dependencies: None
+    - [x] 10.4: Research and collect official/authoritative documentation for **Windsurf** custom rule setup.
+        -- Context: Need verified information to ensure accuracy.
+        -- Importance: Critical
+        -- Dependencies: None
+    - [x] 10.5: Document summaries and references/links to these sources in new files within `docs/literature/`.
+        -- Context: Centralize verified information.
+        -- Importance: Critical
+        -- Dependencies: 10.1, 10.2, 10.3, 10.4
+
+### 11. Revise Repository Based on Source of Truth (Critical Priority):
+    - [ ] 11.1: Compare findings from Task 10 with current repo content (`README.md`, `docs/technical.md`, `.clinerules`, etc.).
+        -- Context: Identify discrepancies between verified info and repo content.
+        -- Importance: Critical
+        -- Dependencies: Task 10
+    - [ ] 11.2: Update `README.md` with verified rule setup mechanisms.
+        -- Context: Ensure README reflects accurate setup procedures. Supersedes Task 2.
+        -- Importance: Critical
+        -- Dependencies: 11.1
+    - [ ] 11.3: Update `docs/technical.md` to be accurate and reference the new literature files.
+        -- Context: Ensure technical docs are correct.
+        -- Importance: Critical
+        -- Dependencies: 11.1, 10.5
+    - [ ] 11.4: Update `.clinerules` if needed based on verified info.
+        -- Context: Ensure main rules file is accurate.
+        -- Importance: Medium
+        -- Dependencies: 11.1
+    - [ ] 11.5: Update/correct platform-specific rule files (`.clinerules-*`, `clinerules/`) if they contain inaccuracies.
+        -- Context: Ensure platform-specific rules are accurate.
+        -- Importance: Medium
+        -- Dependencies: 11.1
