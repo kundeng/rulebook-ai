@@ -1,0 +1,16 @@
+# Error Documentation Template
+
+## \[Error Name]
+*   **Description:** \[Describe the error]
+*   **Context:** \[Describe the context in which the error occurs]
+*   **Solution:** \[Describe the solution to the error]
+*   **Example:** \[Provide an example of the error and its solution]
+
+---
+
+**Example Prompts for Filling Out This Template:**
+
+*   "What is the error that you encountered? Describe the error message and the steps to reproduce it."
+*   "What is the context in which the error occurs? What are the relevant code files and variables?"
+*   "What is the solution to the error? How did you fix it?"
+*   "Can you provide an example of the error and its solution? What code changes were required?"

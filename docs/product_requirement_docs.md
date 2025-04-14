@@ -6,6 +6,12 @@ To have a comprehensive and optimal Custom User Prompt (Rules) for AI coding. Th
 ## Target Audience:
 Both people exploring AI without prior knowledge but tasting the AI/LLM/Agents landscape. And experienced folks adapting to and integrating AI in their workflow. As better prompts may lead to better outputs.
 
+## Goals:
+*   [TODO] What are the goals of this project?
+
+## Success Metrics:
+*   [TODO] How will the success of this project be measured?
+
 ## Core Features:
 1. **Cross-Platform Compatibility:** Respects Cursor, CLINE, RooCode Rule guidelines and mechanisms natively.
 2. **Latest Compatibility:** Designed to be compatible with the latest versions of Cursor and CLINE, RooCode.

@@ -130,6 +130,7 @@ flowchart TD
 
 While the core workflows are defined above, more detailed instructions are intended for specific modes.
 
+-   **RooCode:** Automatically loads the relevant @.clinerules-{mode} file (e.g., @.clinerules-architect) based on the active mode.
 -   **CLINE:** Ideally, should use the rules defined in the @clinerules/ directory (@clinerules/plan, @clinerules/implement , @clinerules/debug ). However, due to current limitations in Cline's native rule loading, these are typically loaded manually via copy-paste into settings (see README Quickstart).
     -   **PLAN MODE:** Intended rules are in @clinerules/plan . Focus: requirements gathering, solution formulation, validation.
     -   **ACT MODE:** Intended rules are in @clinerules/implement and @clinerules/debug . Focus: systematic coding, testing, debugging, programming principles.

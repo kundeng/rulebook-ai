@@ -25,8 +25,7 @@ This template provides a starting point for AI pair-coding projects. To get star
 3.  **RooCode:**
     *   Place workspace-wide rules (like this template's `memory` and `directory-structure` rules) inside a `.roo/rules/` directory. (Alternatively, use a single `.roorules` file).
     *   Place mode-specific rules (like this template's `plan`, `implement`, `debug` rules) inside corresponding `.roo/rules-{modeSlug}/` directories (e.g., `.roo/rules-architect/`, `.roo/rules-code/`, `.roo/rules-debug/`). (Alternatively, use single `.roorules-{modeSlug}` files).
-    *   *Note:* This template currently provides RooCode rules using the `.clinerules` and `.clinerules-{mode}` naming convention, which RooCode does *not* officially support. You will need to rename/move these files to the correct `.roo/` structure for RooCode to load them (See To-Do #1).
-4.  **Windsurf:** Place workspace-specific rules in a `.windsurfrules` file in the root. (This template does not yet provide an example `.windsurfrules` file - See Task 5.2). Global rules are set via Windsurf settings.
+4.  **Windsurf:** Place workspace-specific rules in a `.windsurfrules` file in the root. For now, copy the contents of `.clinerules` into `.windsurfrules`. Global rules are set via Windsurf settings.
 
 **DONE**
 
