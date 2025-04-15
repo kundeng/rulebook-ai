@@ -1,16 +1,39 @@
-# Motive:
-To have a comprehensive and optimal Custom User Prompt (Rules) for AI coding. These kind of rules are very much required as the **Quality** of Outputs is a function $[response \, Quality = f(prompt, LLM \, model)]$. Thus, for best performance we need very detailed instructions while also giving the LLM the freedom to explore and learn. I came up with this after first reading many many existing rules, experimenting with mine and finalized these as tested against real use-cases. 
-**Applications:** Tested for building Agentic products, plus writing research papers in AI.
-## Target Audience:
-Both people exploring AI without prior knowledge but tasting the AI/LLM/Agents landscape. And experieced folks adapting to and integrating AI in their workflow. As better prompts may lead to better outputs. 
+<!-- Add Badges Here (e.g., License) -->
 
-## Features:
-1. **Cross-Platform Compatibility:** Respects Cursor, CLINE, RooCode Rule guidelines and mechanisms natively. Like For CLINE rules use use **PLAN Mode** as in their system prompts, whereas for RooCode we use **Architect Mode**. Similarly **Act Mode** for CLINE and **Code Mode** for RooCode. **Debug Mode** for RooCode has been used additionally. 
-2. **Latest Compatibility:** Designed to be compatible with the latest versions of Cursor, CLINE, RooCode, and Windsurf. See the "Rule Loading Summary" for details on how each platform loads rules and how this template utilizes them.
-3. **Minimal Token Usage:** Rule files are organized to facilitate on-demand loading where supported. Cursor loads `.mdc` files from `.cursor/rules/` based on globs. RooCode loads files alphabetically from `.roo/rules/` and `.roo/rules-{modeSlug}/`. CLINE loads general rules from `.clinerules` or `.clinerules/` but uses a workaround for mode-specific rules (see Quickstart & `.clinerules` file). Windsurf uses specific files.
-4. **Common Memory Bank:** We have a common memory bank for all the AI assistants. This maintains same context across all the AI assistants.
-5. **Fundamental Software Engineering Principles:** This is to ensure that the AI is following the best practices in software development.
-Enough talking, let's get started.
+# Universal Rules Template for AI Coding Assistants
+
+## Supercharge Your AI Coding Workflow Across Cursor, CLINE, RooCode, and Windsurf
+
+Tired of inconsistent AI behavior across different coding assistants? Struggling to maintain context and enforce best practices on complex projects? This template provides a robust, cross-platform framework designed to elevate your AI pair-programming experience.
+
+Leveraging established software engineering principles and a structured documentation system, this template ensures your AI assistants (like Cursor, CLINE, RooCode, and Windsurf) operate consistently, understand your project deeply, and follow optimal workflows. Move beyond simple prototypes and build sophisticated applications with AI partners that truly understand your project's architecture, requirements, and history.
+
+## Why Use This Template?
+
+*   **Consistent AI Behavior:** Define clear workflows (Plan, Implement, Debug) and principles for your AI, ensuring predictable and high-quality output regardless of the platform used.
+*   **Persistent Project Memory:** Implement a structured documentation system (`docs/`, `tasks/`) that acts as a shared "memory bank," providing deep context to the AI about requirements, architecture, technical decisions, and progress.
+*   **Cross-Platform Compatibility:** Designed from the ground up to work seamlessly with Cursor, CLINE, RooCode, and Windsurf, respecting their specific rule-loading mechanisms.
+*   **Enforce Best Practices:** Integrate fundamental software engineering principles directly into the AI's instructions, promoting code quality, maintainability, and structured development.
+*   **Reduced Setup Time:** Get started quickly with a pre-configured structure and ruleset, adaptable to your specific project needs.
+*   **Optimized for Complex Projects:** The structured memory and workflow approach provides the necessary context and guidance for AI assistants working on more than just simple scripts or prototypes.
+
+## Who Is This For?
+
+This template is particularly beneficial for:
+
+*   **Developers working on complex projects:** Requiring deep context and structured AI assistance beyond basic code generation.
+*   **Teams using multiple AI coding assistants:** Ensuring consistency in workflow and AI behavior across different tools.
+*   **Individuals seeking a more structured AI workflow:** Implementing proven software engineering practices for AI collaboration.
+*   **Researchers needing reproducible AI interactions:** Providing a stable framework for experiments.
+*   **Anyone looking to improve the quality and reliability of AI-generated code and documentation.**
+
+## Key Features (Benefits-Focused)
+
+1.  **Work Seamlessly Across Platforms:** Native support and configuration guidance for Cursor, CLINE, RooCode, and Windsurf ensures your rules work consistently wherever you code.
+2.  **Maintain Consistent AI Context:** The structured "Memory Bank" (core documentation files) provides deep, persistent context, reducing repetitive explanations and improving AI understanding.
+3.  **Enforce Software Engineering Best Practices:** Guide your AI to follow established principles for planning, implementation, debugging, modularity, and testing.
+4.  **Optimize Token Usage:** Rules are organized to leverage platform-specific loading mechanisms (where available) to minimize unnecessary token consumption.
+5.  **Latest Compatibility:** Designed and tested with recent versions of the supported AI assistants.
 
 ## Quickstart: Using this Template for AI Coding
 

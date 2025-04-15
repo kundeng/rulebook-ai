@@ -184,3 +184,9 @@
         -- Context: Ensure platform-specific rules are accurate.
         -- Importance: Medium
         -- Dependencies: 11.1
+
+### 12. Improve README and PRD based on promotional goals:
+    - [x] 12.1: Update `README.md` and `docs/product_requirement_docs.md` to better align with the README's promotional focus.
+        -- Context: Enhance the PRD's messaging and appeal to potential users.
+        -- Importance: Low
+        -- Dependencies: None
