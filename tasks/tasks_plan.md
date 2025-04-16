@@ -190,3 +190,29 @@
         -- Context: Enhance the PRD's messaging and appeal to potential users.
         -- Importance: Low
         -- Dependencies: None
+
+### 13. Reorganize Cline Rule Structure (Priority: Medium):
+    *   **Goal:** Align the Cline rule file structure with the `.cursor/rules/` pattern for better consistency.
+    *   **Sub-tasks:**
+        *   [ ] `13.1`: Analyze current `clinerules/` and target `.cursor/rules/` structures.
+        *   [ ] `13.2`: Define the new target structure (e.g., `.clinerules/plan.md`, `.clinerules/implement.md`, etc.).
+        *   [ ] `13.3`: Move/Rename existing Cline rule files to the new structure.
+        *   [ ] `13.4`: Update the main `.clinerules` file to reference or incorporate the new structure/files (pending investigation of Cline's capabilities).
+        *   [ ] `13.5`: Update `README.md` and `docs/technical.md` to reflect the new structure.
+
+### 14. Add Tool Use Documentation to Rules (Priority: High):
+    *   **Goal:** Provide clear guidance within the rules on when and why to use available tools.
+    *   **Sub-tasks:**
+        *   [ ] `14.1`: Identify primary rule files for this documentation (e.g., `.clinerules`, `.cursor/rules/rules.mdc`).
+        *   [ ] `14.2`: Draft general principles and specific examples for using tools like `read_file`, `write_to_file`, `replace_in_file`, `execute_command`, `search_files`, `list_files`, MCP tools, etc.
+        *   [ ] `14.3`: Integrate this documentation clearly into the selected rule files.
+        *   [ ] `14.4`: Review existing rules for consistency with the new tool guidance.
+
+### 15. Create Repository Initialization Scripts (Priority: Medium):
+    *   **Goal:** Provide scripts to help users quickly set up the standard memory file structure and templates.
+    *   **Sub-tasks:**
+        *   [ ] `15.1`: Define the exact initial file/folder structure based on templates and core requirements.
+        *   [ ] `15.2`: Choose a scripting method (e.g., Shell script for simplicity, considering cross-platform needs).
+        *   [ ] `15.3`: Write script(s) to create directories and copy template files to their active counterparts (e.g., `docs/*_template.md` to `docs/*.md`).
+        *   [ ] `15.4`: Test the script(s) thoroughly.
+        *   [ ] `15.5`: Add clear instructions to `README.md` on how to run the script(s).
