@@ -129,7 +129,7 @@ flowchart TD
 ## ACT or Code MODE
 ```mermaid
 flowchart TD
-    Start[Start] --> Context[Check Memory Files \(Core Files always, rest based on context\) ]
+    Start[Start] --> Context["Check Memory Files (Core Files always, rest based on context)" ]
     Context --> Update[Update Documentation]
     Update --> Rules[Update lessons-learned.md, error-documentation.md if needed]
     Rules --> Execute[Execute Task]
@@ -174,11 +174,11 @@ flowchart TD
     subgraph Learn [Learning Process]
         D1[Identify Pattern]
         D2[Validate with User]
-        D3[Document in [lessons-learned.md](mdc:/rules_template/01-rules/lessons-learned.md) ]
+        D3[Document in lessons-learned.md ]
     end
     
     subgraph Apply [Usage]
-        A1[Read [lessons-learned.md](mdc:/rules_template/01-rules/lessons-learned.md) ]
+        A1[Read lessons-learned.md ]
         A2[Apply Learned Patterns]
         A3[Improve Future Work]
     end

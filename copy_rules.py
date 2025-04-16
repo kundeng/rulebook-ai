@@ -7,27 +7,44 @@ import re
 
 # Source and destination directories
 TEMPLATE_DIR = "rules_template"
-ROOT_DIR = "/Users/wangbo-ting/git/rules_template"  # Project root directory
+# IMPORTANT: Adjust this path to your actual project root if necessary
+ROOT_DIR = os.path.dirname(os.path.abspath(__file__)) # More robust way to find project root
+# Or keep your original path if preferred:
+# ROOT_DIR = "/Users/wangbo-ting/git/rules_template"
 
 def copy_file(source, destination):
     """Copies a file from source to destination."""
+    # Ensure the destination directory exists before printing the copy message
+    os.makedirs(os.path.dirname(destination), exist_ok=True)
     print(f"Copying {source} to {destination}")
-    os.makedirs(os.path.dirname(destination), exist_ok=True)  # Ensure destination directory exists
-    shutil.copy2(source, destination)  # copy2 preserves metadata
+    try:
+        shutil.copy2(source, destination) # copy2 preserves metadata
+    except Exception as e:
+        print(f"Error copying {source} to {destination}: {e}")
 
-def copy_and_number_files(source_dir, dest_dir, add_extension=False):
+# Updated function signature and logic for extension handling
+def copy_and_number_files(source_dir, dest_dir, extension_mode='keep'):
     """
     Copies files from source_dir to dest_dir, flattening the structure,
-    respecting the numbered order of source directories/files, and adding
-    sequential numbers to the destination files.
+    respecting the numbered order of source directories/files, adding
+    sequential numbers, and handling file extensions based on extension_mode.
+
+    Args:
+        source_dir (str): Path to the source directory.
+        dest_dir (str): Path to the destination directory.
+        extension_mode (str): Controls extension handling:
+            'keep': Keep original extension (default).
+            'remove': Remove any existing extension.
+            'add_mdc': Ensure the file ends with '.mdc'.
     """
     if not os.path.exists(dest_dir):
         print(f"Creating destination directory: {dest_dir}")
         os.makedirs(dest_dir)
     else:
         print(f"Destination directory exists: {dest_dir}")
+        # Optional: Clear destination directory
+        # ... (clearing logic as before) ...
 
-    # --- Step 1: Collect all file paths ---
     all_source_files = []
     print(f"Scanning source directory: {source_dir}")
     if not os.path.isdir(source_dir):
@@ -35,50 +52,48 @@ def copy_and_number_files(source_dir, dest_dir, add_extension=False):
         return
 
     for root, dirs, files in os.walk(source_dir, topdown=True):
-        # Sort directories and files numerically/alphabetically *within* os.walk
-        # This ensures consistent ordering for files within the same directory
-        # and helps guide os.walk's traversal order (though global sort later is key)
         dirs.sort()
         files.sort()
-        # print(f"Walking root: {root}")
-        # print(f"  Sorted dirs: {dirs}")
-        # print(f"  Sorted files: {files}")
         for filename in files:
-            # Ignore hidden files like .DS_Store
-            if filename.startswith('.'):
+            if filename.startswith('.'): # Ignore hidden files
                 continue
             source_path = os.path.join(root, filename)
-            if os.path.isfile(source_path): # Ensure it's actually a file
+            if os.path.isfile(source_path):
                  all_source_files.append(source_path)
 
-    # --- Step 2: Sort the collected paths globally ---
-    # Sorting the full paths alphabetically should respect the 01-, 02- prefixes
     all_source_files.sort()
-    print(f"\nFound {len(all_source_files)} files to copy. Sorted order:")
-    # for fpath in all_source_files: # Optional: print sorted list for debugging
-    #     print(f"  - {fpath}")
+    print(f"\nFound {len(all_source_files)} files to copy (flattened). Sorted order:")
+    # for fpath in all_source_files: print(f"  - {fpath}") # Debug print
 
-    # --- Step 3: Iterate through sorted list, copy, and number ---
-    # Determine starting number based on existing files in dest_dir
-    # Note: This only works well if dest_dir is initially empty or contains
-    # files already following the ##- pattern. If mixing file types,
-    # this numbering might be unpredictable. Consider clearing dest_dir first if needed.
-    existing_files = [f for f in os.listdir(dest_dir) if os.path.isfile(os.path.join(dest_dir, f))]
-    next_num = len(existing_files) + 1
-    print(f"\nStarting numbering at: {next_num:02d}")
+    existing_files_count = 0
+    if os.path.exists(dest_dir):
+        for f in os.listdir(dest_dir):
+            if os.path.isfile(os.path.join(dest_dir, f)) and re.match(r"^\d+-", f):
+                 existing_files_count += 1
+    next_num = existing_files_count + 1
+
+    print(f"\nStarting numbering at: {next_num:02d} for flattened files.")
+    print(f"Extension mode: '{extension_mode}'")
 
     for source_path in all_source_files:
         base_filename = os.path.basename(source_path)
-
-        # Remove existing leading number (e.g., "01-") from the base filename if present
+        # Remove existing leading number (e.g., "01-") from the base filename
         filename_no_prefix = re.sub(r"^\d+-", "", base_filename)
 
+        # Separate filename stem and original extension
+        filename_stem, _ = os.path.splitext(filename_no_prefix)
+
+        # Apply extension logic
+        if extension_mode == 'remove':
+            processed_filename = filename_stem
+        elif extension_mode == 'add_mdc':
+            processed_filename = filename_stem + ".mdc"
+        else: # 'keep' or default
+             # Reconstruct with original extension if needed (though filename_no_prefix has it)
+             processed_filename = filename_no_prefix # Keep as is after prefix removal
+
         # Create the new numbered filename
-        new_filename = "{:02d}-{}".format(next_num, filename_no_prefix)
-        if add_extension:
-            # Ensure we don't add .mdc if it already ends with it (just in case)
-            if not new_filename.endswith(".mdc"):
-                 new_filename = new_filename + ".mdc"
+        new_filename = "{:02d}-{}".format(next_num, processed_filename)
 
         dest_path = os.path.join(dest_dir, new_filename)
         copy_file(source_path, dest_path)
@@ -87,76 +102,104 @@ def copy_and_number_files(source_dir, dest_dir, add_extension=False):
 def copy_and_restructure_roocode(source_dir, dest_dir):
     """
     Copies the source directory tree to the destination, preserving structure,
-    but removes leading 'NN-' prefixes from directory names in the destination.
-    File names (including prefixes) are preserved.
+    removes leading 'NN-' prefixes from directory names, and removes extensions
+    from all files in the destination.
     """
     print(f"Copying tree structure from {source_dir} to {dest_dir}")
 
-    # Ensure the parent directory of the destination exists
     os.makedirs(os.path.dirname(dest_dir), exist_ok=True)
-
-    # Clean destination directory first for a fresh copy
     if os.path.exists(dest_dir):
         print(f"Removing existing destination directory: {dest_dir}")
         shutil.rmtree(dest_dir)
 
     try:
-        # Copy the entire tree initially
         shutil.copytree(source_dir, dest_dir)
         print("Initial tree copy complete.")
     except Exception as e:
         print(f"Error during initial copytree for RooCode: {e}")
-        return # Stop if copy fails
+        return
 
     # --- Rename directories in the destination ---
     print("Renaming numbered directories in destination...")
     dirs_to_rename = []
-    # Walk the destination directory to find all subdirectories
-    for root, dirs, files in os.walk(dest_dir, topdown=False): # topdown=False is crucial for renaming
+    for root, dirs, _ in os.walk(dest_dir, topdown=False): # bottom-up
          for dir_name in dirs:
              if re.match(r"^\d+-", dir_name):
                  dirs_to_rename.append(os.path.join(root, dir_name))
 
-    # Sort directories by path depth (longest first) to rename children before parents
-    dirs_to_rename.sort(key=len, reverse=True)
+    dirs_to_rename.sort(key=len, reverse=True) # Deepest first
 
-    renamed_count = 0
+    renamed_dir_count = 0
     for old_dir_path in dirs_to_rename:
-        if not os.path.isdir(old_dir_path): # Check if it still exists (might have been renamed as part of parent)
-            continue
+        if not os.path.isdir(old_dir_path): continue
         dir_name = os.path.basename(old_dir_path)
         parent_dir = os.path.dirname(old_dir_path)
         new_dir_name = re.sub(r"^\d+-", "", dir_name)
         new_dir_path = os.path.join(parent_dir, new_dir_name)
-
-        # Avoid collision if a directory with the target name already exists (shouldn't happen with clean copy)
         if os.path.exists(new_dir_path):
              print(f"Warning: Target directory '{new_dir_path}' already exists. Skipping rename for '{old_dir_path}'.")
              continue
-
         try:
-            print(f"Renaming: {old_dir_path} -> {new_dir_path}")
+            print(f"Renaming Dir: {old_dir_path} -> {new_dir_path}")
             os.rename(old_dir_path, new_dir_path)
-            renamed_count += 1
+            renamed_dir_count += 1
         except OSError as e:
             print(f"Error renaming directory {old_dir_path} to {new_dir_path}: {e}")
+    print(f"Directory renaming complete. Renamed {renamed_dir_count} directories.")
 
-    print(f"Directory renaming complete. Renamed {renamed_count} directories.")
+    # --- Remove extensions from files in the destination ---
+    print("Removing extensions from files in destination...")
+    renamed_file_count = 0
+    # Walk again, now that directories have correct names
+    for root, _, files in os.walk(dest_dir):
+        for filename in files:
+            if filename.startswith('.'): # Ignore hidden files
+                continue
+            base_name, ext = os.path.splitext(filename)
+            if ext: # Only rename if there is an extension
+                old_file_path = os.path.join(root, filename)
+                new_file_path = os.path.join(root, base_name)
 
-# Cursor
-print("Copying Cursor rules...")
+                if os.path.exists(new_file_path):
+                    print(f"Warning: Target file '{new_file_path}' already exists. Skipping rename for '{old_file_path}'.")
+                    continue
+                try:
+                    print(f"Renaming File: {old_file_path} -> {new_file_path}")
+                    os.rename(old_file_path, new_file_path)
+                    renamed_file_count += 1
+                except OSError as e:
+                     print(f"Error renaming file {old_file_path} to {new_file_path}: {e}")
+
+    print(f"File extension removal complete. Renamed {renamed_file_count} files.")
+
+
+# --- Main Execution Logic ---
+
+print(f"Using TEMPLATE_DIR: {os.path.join(ROOT_DIR, TEMPLATE_DIR)}")
+print(f"Using ROOT_DIR: {ROOT_DIR}\n")
+
+template_path = os.path.join(ROOT_DIR, TEMPLATE_DIR)
+
+# Cursor: Flatten, Number, Add .mdc extension
+print("--- Processing Cursor rules ---")
 cursor_dir = os.path.join(ROOT_DIR, ".cursor", "rules")
-copy_and_number_files(TEMPLATE_DIR, cursor_dir, add_extension=True)
-
-# CLINE
-print("Copying CLINE rules...")
-cline_dir = os.path.join(ROOT_DIR, ".clinerules")
-copy_and_number_files(TEMPLATE_DIR, cline_dir)
-
-# RooCode
-print("--- Processing RooCode rules (Preserve Structure, Rename Dirs) ---")
-roo_rules_dir = os.path.join(ROOT_DIR, ".roo", "rules")
-copy_and_restructure_roocode(TEMPLATE_DIR, roo_rules_dir)
+# Use extension_mode='add_mdc'
+copy_and_number_files(template_path, cursor_dir, extension_mode='add_mdc')
 print("-" * 30)
 
-print("Rule files copied successfully!")
+
+# CLINE: Flatten, Number, Remove extensions
+print("--- Processing CLINE rules ---")
+cline_dir = os.path.join(ROOT_DIR, ".clinerules")
+# Use extension_mode='remove'
+copy_and_number_files(template_path, cline_dir, extension_mode='remove')
+print("-" * 30)
+
+# RooCode: Preserve Structure, Rename Dirs, Remove extensions from files
+print("--- Processing RooCode rules ---")
+roo_rules_dir = os.path.join(ROOT_DIR, ".roo", "rules")
+copy_and_restructure_roocode(template_path, roo_rules_dir)
+print("-" * 30)
+
+
+print("Rule files processing complete!")
