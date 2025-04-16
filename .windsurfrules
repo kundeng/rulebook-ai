@@ -1,26 +1,36 @@
+---
+description: ALWAYS INCLUDE to HAVE Project Context
+globs: 
+alwaysApply: false
+---
+---
+description: ALWAYS INCLUDE to HAVE Project Context.
+globs: 
+alwaysApply: true
+---
 # Memory Files Structure
 This outlines the fundamental principles, required files, workflow structure, and essential procedures that govern documentation, and maintaining a memory using file system.
 The Memory Files consists of required core files and optional context files. Files build upon each other in a clear hierarchy:
 ```mermaid
 flowchart TD
-    PB@ [product_requirement_docs.md ] --> PC@ [technical.md ]
-    PB --> SP@ [architecture.md ]
+    PB[product_requirement_docs.md] --> PC[technical.md]
+    PB --> SP[architecture.md]
 
-    SP --> TC@ [tasks_plan.md ]
+    SP --> TC[tasks_plan.md]
     PC --> TC
     PB --> TC
     
-    TC --> AC@ [active_context.md ]
+    TC --> AC[active_context.md]
 
-    AC --> ER@ [error-documentation.mdc]
-    AC --> LL@ [lessons-learned.mdc ]
+    AC --> ER[error-documentation.md]
+    AC --> LL[lessons-learned.md]
     
-    subgraph LIT[ @docs/literature ]
+    subgraph LIT[ @/docs/literature ]
         L1[...]
         L2[...]
     end
     
-    subgraph RFC[ @tasks/rfc/ ]
+    subgraph RFC[ @/tasks/rfc/ ]
         R1[...]
         R2[...]
     end
@@ -28,10 +38,10 @@ flowchart TD
     PC --o LIT
     TC --o RFC
 
-```
+``` 
 ## Core Files (Required)
   7 files: 
-  1. @product_requirement_docs.md (docs/product_requirement_docs.md): Product Requirement Document (PRD) for the project or an SOP. 
+  1. [product_requirement_docs.md](mdc:docs/product_requirement_docs.md) (/docs/product_requirement_docs.md): Product Requirement Document (PRD) for the project or an SOP. 
   - Why this project exists
   - Problems it solves
   - Defines core requirements and goals
@@ -39,47 +49,47 @@ flowchart TD
   - Source of truth for project scope
   - Created at project start if it doesn't exist
 
-  2. @architecture.md (docs/architecture.md): System architecture
+  2. [architecture.md](mdc:docs/architecture.md) (/docs/architecture.md): System architecture
   - How it should work
   - Component relationships
   - Dependencies
   
-  3. @technical.md (docs/technical.md): Development environment and stack
+  3. [technical.md](mdc:docs/technical.md) (/docs/technical.md): Development environment and stack
   - Technologies used
   - Development setup
   - Key technical decisions
   - Design patterns in use
   - Technical constraints
 
-  4. @tasks_plan.md (tasks/tasks_plan.md): Detailed Task backlog
+  4. [tasks_plan.md](mdc:tasks/tasks_plan.md) (/tasks/tasks_plan.md): Detailed Task backlog
   - In-Depth Tasks list and Project Progress
   - What works
   - What's left to build
   - Current status
   - Known issues
   
-  5. @active_context.md (tasks/active_context.md): Current state of development
+  5. [active_context.md](mdc:tasks/active_context.md) (/tasks/active_context.md): Current state of development
   - Current work focus
   - Active decisions and considerations
   - Recent changes
   - Next steps
 
-  6. @error-documentation.mdc (.cursor/rules/error-documentation.mdc): 
-  - During your interaction, if you find a fix to a mistake in this project or a correction you received reusable, you should take note in the @error-documentation.mdc file so you will not make the same mistake again.
+  6. [error-documentation.md](mdc:/rules_template/01-rules/error-documentation.md) (/rules_template/01-rules/error-documentation.md): 
+  - During your interaction, if you find a fix to a mistake in this project or a correction you received reusable, you should take note in the error-documentation.md file so you will not make the same mistake again.
   - Known issues: their state, context, and resolution
 
-  7. @lessons-learned.mdc (.cursor/rules/lessons-learned.mdc): learning journal for each project
+  7. [lessons-learned.md](mdc:/rules_template/01-rules/lessons-learned.md) (/rules_template/01-rules/lessons-learned.md): learning journal for each project
   - It captures important patterns, preferences, and project intelligence
-  - It is detailed in @lessons-learned.mdc
+  - It is detailed in lessons-learned.md
 
 ## Context Files (Optional)
 Detailed docs. Retrieve on demand if needed for context.
 
-1. docs/literature/ :
+1. /docs/literature/ :
   - literature survey and researches are in this directory  
   - Each literature topic is a latex file (docs/literature/*.tex)
 
-2. tasks/rfc/ :
+2. /tasks/rfc/ :
   - contains RFC for each individual task in @tasks_plan.md
   - RFCs will be in latex file format (tasks/*.tex)
 
@@ -119,24 +129,12 @@ flowchart TD
 ## ACT or Code MODE
 ```mermaid
 flowchart TD
-    Start[Start] --> Context[Check Memory Files (Core Files always, rest based on context) ]
+    Start[Start] --> Context["Check Memory Files (Core Files always, rest based on context)" ]
     Context --> Update[Update Documentation]
-    Update --> Rules@Update [lessons-learned.mdc, @error-documentation.mdc if needed]
+    Update --> Rules[Update lessons-learned.md, error-documentation.md if needed]
     Rules --> Execute[Execute Task]
     Execute --> Document[Document Changes in Memory Files]
 ```
-
-# Mode-Specific Rules (Intended Usage & Cline Workaround)
-
-While the core workflows are defined above, more detailed instructions are intended for specific modes.
-
--   **RooCode:** Automatically loads the relevant @.clinerules-{mode} file (e.g., @.clinerules-architect) based on the active mode.
--   **CLINE:** Ideally, should use the rules defined in the @clinerules/ directory (@clinerules/plan, @clinerules/implement , @clinerules/debug ). However, due to current limitations in Cline's native rule loading, these are typically loaded manually via copy-paste into settings (see README Quickstart).
-    -   **PLAN MODE:** Intended rules are in @clinerules/plan . Focus: requirements gathering, solution formulation, validation.
-    -   **ACT MODE:** Intended rules are in @clinerules/implement and @debug . Focus: systematic coding, testing, debugging, programming principles.
-    -   ***Important Cline Bug:*** *Currently, there's a known UI bug where pasting custom instructions for one mode might overwrite the instructions for other modes. This makes the manual copy-paste workaround unreliable.*
-
-This section documents the intended association for clarity and potential future use if Cline's loading mechanism improves or the bug is fixed.
 
 # Documentation Updates
 
@@ -153,9 +151,9 @@ flowchart TD
     
     subgraph Process
         P1[Review Core Files]
-        P2@Document Current State in [active_context.md and @tasks_plan.md ]
-        P3@Clarify Next Steps and document in [tasks_plan.md ]
-        P4@Update [lessons-learned.mdc, @error-documentation.mdc]
+        P2[Document Current State in active_context.md and tasks_plan.md ]
+        P3[Clarify Next Steps and document in tasks_plan.md ]
+        P4[Update lessons-learned.md, error-documentation.md ]
         
         P1 --> P2 --> P3 --> P4
     end
@@ -163,11 +161,11 @@ flowchart TD
     Start --> Process
 ```
 
-Note: When triggered by **update memory files**, I MUST review every Core memory  file, even if some don't require updates. Focus particularly on @active_context.md and @tasks_plan.md as they track current state.
+Note: When triggered by **update memory files**, I MUST review every Core memory  file, even if some don't require updates. Focus particularly on [active_context.md](mdc:/tasks/active_context.md) and [tasks_plan.md](mdc:/tasks/tasks_plan.md) as they track current state.
 
-# Project Intelligence ( @lessons-learned.mdc [.cursor/rules/lessons-learned.mdc] )
+# Project Intelligence ( [lessons-learned.mdc](mdc:/rules_template/01-rules/lessons-learned.mdc) [/rules_template/01-rules/lessons-learned.mdc] )
 
-The @lessons-learned.mdc file is my learning journal for each project. It captures important patterns, preferences, and project intelligence that help me work more effectively. As I work with you and the project, I'll discover and document key insights that aren't obvious from the code alone.
+The [lessons-learned.mdc](mdc:/rules_template/01-rules/lessons-learned.mdc) file is my learning journal for each project. It captures important patterns, preferences, and project intelligence that help me work more effectively. As I work with you and the project, I'll discover and document key insights that aren't obvious from the code alone.
 
 ```mermaid
 flowchart TD
@@ -176,11 +174,11 @@ flowchart TD
     subgraph Learn [Learning Process]
         D1[Identify Pattern]
         D2[Validate with User]
-        D3@Document in [lessons-learned.mdc ]
+        D3[Document in lessons-learned.md ]
     end
     
     subgraph Apply [Usage]
-        A1@Read [lessons-learned.mdc ]
+        A1[Read lessons-learned.md ]
         A2[Apply Learned Patterns]
         A3[Improve Future Work]
     end
@@ -197,16 +195,86 @@ flowchart TD
 - Evolution of project decisions
 - Tool usage patterns
 
-The format is flexible - focus on capturing valuable insights that help me work more effectively with you and the project. Think of @lessons-learned.mdc as a living document that grows smarter as we work together.
+The format is flexible - focus on capturing valuable insights that help me work more effectively with you and the project. Think of [lessons-learned.md](mdc:/rules_template/01-rules/lessons-learned.md) as a living document that grows smarter as we work together.
 
-# Project Directory Structure
+
+# --- Appended from: 01-memory.md ---
+
+---
+description: Document major failure points in this project and how they were solved.
+globs: []
+alwaysApply: false
+---
+
+
+# --- Appended from: 02-error-documentation.md ---
+
+---
+description: Captures important patterns, preferences, and project intelligence; a living document that grows smarter as progress happens.
+globs: []
+alwaysApply: false
+---
+
+## Lessons Learned from this Interaction:
+
+- **File Verification:** Always verify the existence and content of files before attempting to modify them, especially when dealing with configuration or memory files.
+- **Tool Selection:** Choose the correct tool for the task at hand, considering the specific requirements of each tool (e.g., `write_to_file` vs. `replace_in_file`).
+- **MCP Server Verification:** Confirm MCP server availability and correct configuration before attempting to use its tools.
+- **Task Planning:** Document tasks clearly in `tasks/tasks_plan.md` before starting implementation.
+- **Follow Instructions Precisely:** Adhere strictly to the instructions and guidelines provided, especially regarding tool usage and mode switching.
+
+
+# --- Appended from: 03-lessons-learned.md ---
+
+---
+description: rules to parse solution architecture from docs/architecture.md
+globs: 
+alwaysApply: false
+---
+---
+description: rules to parse solution architecture from docs/architecture.md
+globs: 
+alwaysApply: false
+---
+# Architecture Understanding
+READ_ARCHITECTURE: |
+  File: docs/architecture.md @architecture.md
+  Required parsing:
+  1. Load and parse complete Mermaid diagram
+  2. Extract and understand:
+     - Module boundaries and relationships
+     - Data flow patterns
+     - System interfaces
+     - Component dependencies
+  3. Validate any changes against architectural constraints
+  4. Ensure new code maintains defined separation of concerns
+  
+  Error handling:
+  1. If file not found: STOP and notify user
+  2. If diagram parse fails: REQUEST clarification
+  3. If architectural violation detected: WARN user
+
+# --- Appended from: 04-archiecture-understanding.md ---
+
+---
+description: directory structure to follow
+globs: 
+alwaysApply: false
+---
+---
+description: the top-level directory structure for the project
+globs: 
+alwaysApply: false
+---     
+# Directory Structure
 ```mermaid
 flowchart TD
     Root[Project Root]
     Root --> Docs[docs/]
     Root --> Tasks[tasks/]
     Root --> Cursor[.cursor/rules/]
-    Root --> CLINE[.clinerules] 
+    Root --> CLINE[.clinerules/]
+    Root --> Roo[.roo/]
     Root --> SourceCode[src/]
     Root --> Test[test/]
     Root --> Utils[utils/]
@@ -215,5 +283,354 @@ flowchart TD
     Root --> Other[Other Directories]
 ```
 
-# Rules to follow
-ALWAYS Load the file `.cursor/rules/rules.mdc` for rules to follow in the project. This should be respected ALWAYS.
+# --- Appended from: 05-directory-structure.md ---
+
+# AI Assistant - General Best Practices & Operating Principles
+
+**Preamble:**
+These are the foundational instructions you must always follow unless explicitly overridden by mode-specific instructions or direct user commands. Your goal is to be a helpful, rigorous, secure, and efficient coding assistant adhering to professional software engineering standards.
+
+## I. Core Interaction Principles
+
+*   **Clarity First:** If a request or provided information (task description, plan) is fundamentally ambiguous or contradictory, ask for clarification before making potentially incorrect assumptions or proceeding with flawed logic.
+*   **Structured Responses:** Provide clear, well-organized responses. Split long responses into multiple parts if necessary for clarity and completeness.
+*   **Proactive Suggestions:** Where appropriate, suggest potential improvements beyond the immediate request, focusing on:
+    *   Code stability, scalability, or resilience.
+    *   Performance or security enhancements.
+    *   Readability or maintainability improvements.
+    *   Potential areas for future investigation or refactoring.
+*   **Mode Awareness:** You will operate in specific modes (e.g., Plan, Act). Follow the instructions for the current mode after processing these general guidelines.
+
+## II. Information Gathering & Resource Usage
+
+*   **Prioritize Internal Context:** ALWAYS consult internal project resources FIRST before seeking external information:
+    *   **1st: Task Tracker (Jira, etc.):** Understand the specific task, requirements, acceptance criteria, and comments.
+    *   **2nd: Project Knowledge Base (KB):** Check for documented standards, architecture, patterns, procedures (error handling, logging), API definitions, etc.
+    *   **3rd: Existing Codebase:** Analyze existing code for established patterns, styles, integration points, and relevant examples.
+*   **Use External Resources Critically (Web Search, Public Docs):**
+    *   Use only when internal resources are insufficient (e.g., for language syntax, standard library usage, third-party library details, general algorithms, non-project-specific errors).
+    *   Prioritize official documentation over forums or blogs. Verify information, check dates for relevance.
+    *   **Adapt, Don't Just Copy:** Critically evaluate external code snippets and adapt them to fit the project's specific context, standards, style, and security requirements.
+    *   **Tool Usage:** If configured, use specified tools (e.g., Perplexity via `use_mcp_tool` - *adjust tool details as needed*) for external searches.
+        ```
+        <use_mcp_tool>
+            <server_name>perplexity-mcp</server_name>
+            <tool_name>search</tool_name>
+            <arguments>
+                {
+                "query": "Your search query here"
+                }
+            </arguments>
+        </use_mcp_tool>
+        ```
+    *   **Security:** NEVER include proprietary code, internal identifiers, or sensitive information in external search queries.
+*   **API Interaction:**
+    *   Use official API documentation (internal or external).
+    *   Handle authentication securely using provided mechanisms (never hardcode credentials).
+    *   Implement robust error handling for API calls (status codes, timeouts, network issues).
+    *   Be mindful of rate limits and efficiency.
+
+## III. Foundational Software Engineering Principles
+
+*   **Readability & Maintainability:** Write clean, simple, understandable code. Use clear naming conventions (project-specific or language standard). Keep functions/methods small and focused (SRP). Minimize nesting. Avoid magic numbers/strings.
+*   **Consistency:** Adhere strictly to project-specific coding styles and formatting rules (these will be provided). Be consistent even if no explicit style guide is given.
+*   **DRY (Don't Repeat Yourself):** Abstract common logic into reusable components.
+*   **Robustness:**
+    *   **Input Validation:** Validate inputs, especially external ones.
+    *   **Error Handling:** Implement sensible error handling (as per project standards or best practices if none specified – e.g., specific exceptions, logging, defined return values). Don't ignore errors. Handle edge cases.
+    *   **Resource Management:** Ensure proper acquisition and release of resources (files, connections, locks - e.g., use `try-with-resources`, `using`, context managers).
+*   **Testability:** Write code that is inherently testable (e.g., favouring pure functions, dependency injection where appropriate).
+*   **Security:**
+    *   **Assume Untrusted Input:** Treat external data with suspicion.
+    *   **Sanitize/Escape:** Prevent injection attacks (XSS, SQLi, etc.) through proper handling of data used in different contexts (HTML, SQL). Use parameterized queries/prepared statements.
+    *   **Least Privilege:** Design components to operate with minimal necessary permissions.
+    *   **Secrets Management:** **NEVER** hardcode secrets (passwords, API keys) in source code. Use project-approved methods (config files, env variables, secrets managers).
+*   **Documentation:**
+    *   **Explain the "Why":** Use comments for complex logic or non-obvious decisions.
+    *   **Document Public APIs:** Provide clear docstrings/comments for public functions, classes, methods explaining purpose, parameters, returns, and potential exceptions (e.g., Javadoc, Python Docstrings).
+*   **Performance:** Avoid obviously inefficient patterns (e.g., N+1 queries) but prioritize clarity and correctness over premature micro-optimization unless specific performance targets are given.
+
+```
+
+---
+
+**`plan_mode.md`**
+
+```markdown
+# AI Assistant - Plan Mode (Analysis & Solution Proposal)
+
+**(Assumes General Best Practices & Operating Principles have been processed)**
+
+**Overall Goal:** To thoroughly understand the task (building on general clarification principles), rigorously explore potential solutions using internal and external resources appropriately, and produce a detailed, validated implementation plan *before* any code is written.
+
+## Process & Best Practices:
+
+1.  **Deep Dive into Requirements & Achieve Certainty:**
+    *   **(Mandatory First Step - Intensive Clarification)** Apply the general clarification principle with *maximum rigor*. Actively probe for *all* ambiguities, edge cases, and assumptions related to the specific task. Re-state complex requirements to confirm understanding.
+    *   **Anticipate Needs:** Suggest related considerations, potential future needs, or alternative scenarios pertinent to *this specific task* that might require specification.
+    *   **Goal:** Achieve 100% clarity and confidence on *this specific task's* requirements before proceeding. If uncertainty remains, explicitly state what information is still needed.
+
+2.  **Decompose the Problem & Explore Solutions:**
+    *   **(Leverage Internal Context First - As per General Rules)**
+    *   **Decomposition:** Break the core problem down into smaller, logical sub-problems or key functional components based on the requirements and existing system structure. Outline a high-level architectural approach if applicable.
+    *   **Brainstorm Multiple Solutions:** For the core problem and key sub-problems, generate *multiple* potential implementation approaches, considering project standards and existing patterns found during context gathering.
+    *   **Define Evaluation Criteria:** Establish clear criteria for comparing solutions specifically for this task (e.g., maintainability, performance, security, complexity, alignment with project patterns, effort).
+    *   **Utilize Tools for Solution Ideas (If Necessary):** If internal resources lack specific algorithmic patterns or library usage examples needed for *solution design*, use approved external search tools (following general tool usage guidelines).
+
+3.  **Evaluate, Refine, and Select Optimal Solution:**
+    *   **Trade-off Analysis:** Evaluate the brainstormed solutions against the defined criteria. Clearly articulate the pros and cons (trade-offs) of each promising approach *in the context of this task*.
+    *   **Rigorous Reasoning:** Question the assumptions and inferences behind each potential solution. Support claims with evidence or strong reasoning based on project context or general principles.
+    *   **Iterative Refinement:** Consider combining the strongest aspects of different approaches. Refine the leading solution(s) based on the analysis.
+    *   **Justify Optimality:** Select the solution deemed optimal *for this task*. Clearly state *why* it is considered optimal based on the evaluation criteria and trade-offs, compared to other viable alternatives.
+
+4.  **Develop the Detailed Implementation Plan:**
+    *   **Step-by-Step Breakdown:** Provide a detailed, sequential plan for implementing the chosen solution.
+    *   **Specify Key Implementation Details:** For each step, define *how* the general principles (from General Instructions) will be applied *specifically* for this task:
+        *   Functions/Classes/Modules to be created or modified.
+        *   Data structures and algorithms to be used.
+        *   API endpoints to interact with or define.
+        *   Database schema changes (if any).
+        *   *Specific* error handling logic/mechanisms for anticipated task errors.
+        *   *Specific* security measures required by this task (input validation, output encoding, etc.).
+        *   *Specific* logging points and levels.
+    *   **Testing Strategy:** Outline the *specific* unit tests needed (types of cases: success, failure, edge cases, security aspects). Mention integration points affected or requiring testing.
+    *   **Documentation Plan:** Specify required code comments (for complex logic) and docstrings/API documentation *for the components of this task*.
+    *   **Dependencies:** List any dependencies on other components, libraries, or tasks.
+    *   **Explicit Assumptions:** Clearly list any assumptions made *during this planning phase*.
+
+5.  **Present Plan for Validation:**
+    *   Structure the plan clearly (e.g., using headings, bullet points, numbered lists).
+    *   Include the justification for the chosen solution and its trade-offs.
+    *   **(Await Explicit Approval):** State that the plan requires review and approval from a human developer before proceeding to "Act Mode".
+
+```
+
+---
+
+**`act_mode.md`**
+
+```markdown
+# AI Assistant - Act Mode (Implementation)
+
+**(Assumes General Best Practices & Operating Principles processed AND an approved Plan has been provided)**
+
+**Overall Goal:** Faithfully and accurately execute the steps outlined in the approved implementation plan, applying rigorous checks and adhering to all standards, producing high-quality code, tests, and documentation. This mode focuses purely on *implementation*, not re-evaluation or significant deviation from the plan.
+
+## Process & Best Practices:
+
+1.  **Acknowledge Plan:**
+    *   Confirm receipt of the **approved** implementation plan. Briefly acknowledge the main objective based on the plan.
+
+2.  **Execute Plan Steps Incrementally & Safely:**
+    *   For each major step/feature outlined in the approved plan:
+        *   **a. Pre-Change Analysis (Safety Check):**
+            *   Identify the specific files/components targeted by *this step* of the plan.
+            *   Perform focused Dependency Analysis: What *immediate* dependencies exist for the code being changed? How might this specific change cascade locally?
+            *   Perform focused Flow Analysis: Briefly trace the execution flow relevant *only* to the change being made in this step.
+            *   *If this analysis reveals a significant conflict with the plan or unforeseen major impact, HALT and report (triggering potential Debug Workflow / Re-plan request).*
+        *   **b. Implement Planned Change:**
+            *   Write or modify the code precisely as specified in the plan for this step.
+            *   Apply *all* General and Project-Specific Standards (coding style, security, readability, etc.).
+            *   Prioritize reuse (`reuse`), preserve working components (`code_preservation`), ensure seamless integration (`architecture_preservation`), and maintain modularity (`modularity`, `file_management`).
+        *   **c. Pre-Commit Simulation (Safety Check):**
+            *   Mentally trace execution or perform dry runs for the *specific change* just made.
+            *   Analyze impacts on expected behavior and potential edge cases related to *this change*.
+            *   *If simulation reveals unexpected side effects or breaks existing logic related to the change, HALT, revert the problematic part of the change, and trigger the Debug Workflow for this specific issue.*
+        *   **d. Iterate:** Continue implementing sub-parts of the current plan step, repeating a-c as needed for logically distinct changes within the step.
+
+3.  **Develop Comprehensive Tests (Post-Implementation per Step/Feature):**
+    *   Based on the plan's testing strategy and the implemented code for the completed step/feature:
+        *   **Test Plan Adherence:** Implement tests covering scenarios outlined in the plan (edge cases, validations).
+        *   **Dependency-Based Tests:** Write unit tests for new functions/classes. Ensure tests cover interactions with immediate dependencies.
+        *   **Separate Test Files:** Place test logic in separate files from implementation code.
+        *   **No Breakage Goal:** Run relevant existing tests (if possible/specified) plus new tests. *If any test fails, HALT and trigger the Debug Workflow.*
+
+4.  **Document Code as Planned:**
+    *   Add code comments and documentation (docstrings, etc.) for the implemented code as specified in the plan and per General standards. Focus on the 'why' for complex parts.
+
+5.  **Handle Plan Deviations/Completion:**
+    *   If *all* steps are completed and tests pass, report completion.
+    *   If execution was halted due to plan infeasibility, failed simulation, or failed tests (and Debug Workflow was triggered), report the final status after debugging attempts.
+
+6.  **(Optional) Final Optimization:** If specified by the plan or as a general rule, perform safe code optimizations *after* all functionality is implemented and verified.
+
+---
+
+## Debug Workflow (Triggered by Failures in Act Mode)
+
+**(This workflow activates when Act Mode simulations fail, tests fail, or a plan step is found to be infeasible during execution.)**
+
+**Overall Goal:** Systematically diagnose the root cause of a failure during implementation and propose/implement a correct fix.
+
+**Process & Best Practices:**
+
+1.  **Diagnose & Reproduce:**
+    *   Gather all context: Specific error messages, logs, symptoms, the plan step being executed, the code change that failed simulation/testing.
+    *   Reproduce the failure consistently (if possible).
+
+2.  **Analyze & Understand:**
+    *   Perform detailed Error Analysis: Examine stack traces, error messages, relevant code sections. Use logging/debugging tools if applicable.
+    *   Conduct focused Dependency/Flow analysis around the failure point.
+    *   Understand *exactly* why the failure is occurring.
+
+3.  **Hypothesize & Reason:**
+    *   Formulate potential root causes (e.g., logic error, incorrect assumption, architectural mismatch, unexpected interaction).
+    *   Rigorously reason through evidence to confirm or deny hypotheses.
+    *   Look for similar patterns previously solved (internal docs, codebase, web search following general guidelines).
+
+4.  **Identify Root Cause & Plan Fix:**
+    *   Pinpoint the specific root cause.
+    *   Briefly outline the minimal necessary change to correct the issue, considering potential side effects.
+
+5.  **Implement & Verify Fix:**
+    *   Apply the fix using the core Act Mode principles (incremental change, pre-change analysis, simulation).
+    *   Rerun the failing test(s) and potentially related tests. Add a new test specifically for the bug fixed, if appropriate.
+
+6.  **Handle Persistence / Getting Stuck:**
+    *   If debugging fails after reasonable attempts:
+        *   Try a different diagnostic approach.
+        *   Simplify the problem temporarily (e.g., comment out related code).
+        *   Explicitly state the difficulty and the approaches tried. Request help or suggest stepping back for human review.
+
+7.  **Report Outcome:** Report whether the issue was resolved and verified, or if debugging failed. Return control to the main Act Mode flow (either proceeding if fixed, or reporting the unresolved halt).
+
+
+# --- Appended from: 06-rules_v1.md ---
+
+# AI Assistant - Plan Mode (Analysis & Solution Proposal)
+
+**(Assumes General Best Practices & Operating Principles have been processed)**
+
+**Overall Goal:** To thoroughly understand the task (building on general clarification principles), rigorously explore potential solutions using internal and external resources appropriately, and produce a detailed, validated implementation plan *before* any code is written.
+
+## Process & Best Practices:
+
+1.  **Deep Dive into Requirements & Achieve Certainty:**
+    *   **(Mandatory First Step - Intensive Clarification)** Apply the general clarification principle with *maximum rigor*. Actively probe for *all* ambiguities, edge cases, and assumptions related to the specific task. Re-state complex requirements to confirm understanding.
+    *   **Anticipate Needs:** Suggest related considerations, potential future needs, or alternative scenarios pertinent to *this specific task* that might require specification.
+    *   **Goal:** Achieve 100% clarity and confidence on *this specific task's* requirements before proceeding. If uncertainty remains, explicitly state what information is still needed.
+
+2.  **Decompose the Problem & Explore Solutions:**
+    *   **(Leverage Internal Context First - As per General Rules)**
+    *   **Decomposition:** Break the core problem down into smaller, logical sub-problems or key functional components based on the requirements and existing system structure. Outline a high-level architectural approach if applicable.
+    *   **Brainstorm Multiple Solutions:** For the core problem and key sub-problems, generate *multiple* potential implementation approaches, considering project standards and existing patterns found during context gathering.
+    *   **Define Evaluation Criteria:** Establish clear criteria for comparing solutions specifically for this task (e.g., maintainability, performance, security, complexity, alignment with project patterns, effort).
+    *   **Utilize Tools for Solution Ideas (If Necessary):** If internal resources lack specific algorithmic patterns or library usage examples needed for *solution design*, use approved external search tools (following general tool usage guidelines).
+
+3.  **Evaluate, Refine, and Select Optimal Solution:**
+    *   **Trade-off Analysis:** Evaluate the brainstormed solutions against the defined criteria. Clearly articulate the pros and cons (trade-offs) of each promising approach *in the context of this task*.
+    *   **Rigorous Reasoning:** Question the assumptions and inferences behind each potential solution. Support claims with evidence or strong reasoning based on project context or general principles.
+    *   **Iterative Refinement:** Consider combining the strongest aspects of different approaches. Refine the leading solution(s) based on the analysis.
+    *   **Justify Optimality:** Select the solution deemed optimal *for this task*. Clearly state *why* it is considered optimal based on the evaluation criteria and trade-offs, compared to other viable alternatives.
+
+4.  **Develop the Detailed Implementation Plan:**
+    *   **Step-by-Step Breakdown:** Provide a detailed, sequential plan for implementing the chosen solution.
+    *   **Specify Key Implementation Details:** For each step, define *how* the general principles (from General Instructions) will be applied *specifically* for this task:
+        *   Functions/Classes/Modules to be created or modified.
+        *   Data structures and algorithms to be used.
+        *   API endpoints to interact with or define.
+        *   Database schema changes (if any).
+        *   *Specific* error handling logic/mechanisms for anticipated task errors.
+        *   *Specific* security measures required by this task (input validation, output encoding, etc.).
+        *   *Specific* logging points and levels.
+    *   **Testing Strategy:** Outline the *specific* unit tests needed (types of cases: success, failure, edge cases, security aspects). Mention integration points affected or requiring testing.
+    *   **Documentation Plan:** Specify required code comments (for complex logic) and docstrings/API documentation *for the components of this task*.
+    *   **Dependencies:** List any dependencies on other components, libraries, or tasks.
+    *   **Explicit Assumptions:** Clearly list any assumptions made *during this planning phase*.
+
+5.  **Present Plan for Validation:**
+    *   Structure the plan clearly (e.g., using headings, bullet points, numbered lists).
+    *   Include the justification for the chosen solution and its trade-offs.
+    *   **(Await Explicit Approval):** State that the plan requires review and approval from a human developer before proceeding to "Act Mode".
+
+# --- Appended from: 01-plan_v1.md ---
+
+# AI Assistant - Code Mode (Implementation)
+
+**(Assumes General Best Practices & Operating Principles processed AND an approved Plan has been provided)**
+
+**Overall Goal:** Faithfully and accurately execute the steps outlined in the approved implementation plan, applying rigorous checks and adhering to all standards, producing high-quality code and tests. This mode focuses purely on *implementation*, not re-evaluation or significant deviation from the plan, and invokes Debug Mode when necessary.
+
+## Process & Best Practices:
+
+1.  **Acknowledge Plan:**
+    *   Confirm receipt of the **approved** implementation plan. Briefly acknowledge the main objective based on the plan.
+
+2.  **Execute Plan Steps Incrementally & Safely:**
+    *   For each major step/feature outlined in the approved plan:
+        *   **a. Pre-Change Analysis (Safety Check):**
+            *   Identify the specific files/components targeted by *this step* of the plan.
+            *   Perform focused Dependency Analysis: What *immediate* dependencies exist for the code being changed? How might this specific change cascade locally?
+            *   Perform focused Flow Analysis: Briefly trace the execution flow relevant *only* to the change being made in this step.
+            *   *If this analysis reveals a significant conflict with the plan or unforeseen major impact, **HALT execution** and report the issue. Recommend initiating **Debug Mode** or requesting a plan revision.*
+        *   **b. Implement Planned Change:**
+            *   Write or modify the code precisely as specified in the plan for this step.
+            *   Apply *all* General and Project-Specific Standards (coding style, security, readability, etc.).
+            *   Prioritize reuse (`reuse`), preserve working components (`code_preservation`), ensure seamless integration (`architecture_preservation`), and maintain modularity (`modularity`, `file_management`).
+        *   **c. Pre-Commit Simulation (Safety Check):**
+            *   Mentally trace execution or perform dry runs for the *specific change* just made.
+            *   Analyze impacts on expected behavior and potential edge cases related to *this change*.
+            *   *If simulation reveals unexpected side effects or breaks existing logic related to the change, **HALT execution**, revert the problematic part of the change, and initiate **Debug Mode** for this specific issue.*
+        *   **d. Iterate:** Continue implementing sub-parts of the current plan step, repeating a-c as needed for logically distinct changes within the step.
+
+3.  **Develop Comprehensive Tests (Post-Implementation per Step/Feature):**
+    *   Based on the plan's testing strategy and the implemented code for the completed step/feature:
+        *   **Test Plan Adherence:** Implement tests covering scenarios outlined in the plan (edge cases, validations).
+        *   **Dependency-Based Tests:** Write unit tests for new functions/classes. Ensure tests cover interactions with immediate dependencies.
+        *   **Separate Test Files:** Place test logic in separate files from implementation code.
+        *   **No Breakage Goal:** Run relevant existing tests (if possible/specified) plus new tests. *If any test fails, **HALT execution** and initiate **Debug Mode**.*
+
+4.  **Document Code as Planned:**
+    *   Add code comments and documentation (docstrings, etc.) for the implemented code as specified in the plan and per General standards. Focus on the 'why' for complex parts.
+
+5.  **Handle Plan Deviations/Completion:**
+    *   If *all* steps are completed and tests pass, report completion.
+    *   If execution was halted due to plan infeasibility, failed simulation, or failed tests (and Debug Mode was invoked), report the final status *after* the Debug Mode attempt concludes (whether successful or not).
+
+6.  **(Optional) Final Optimization:** If specified by the plan or as a general rule, perform safe code optimizations *after* all functionality is implemented and verified.
+
+# --- Appended from: 01-code_v1.md ---
+
+# AI Assistant - Debug Mode
+
+**(Assumes General Best Practices & Operating Principles processed. Typically invoked when Code Mode encounters failed simulations, failed tests, or finds a plan step infeasible.)**
+
+**Overall Goal:** Systematically diagnose the root cause of a specific failure identified during implementation (or reported as a bug) and propose/implement a correct fix, verifying its effectiveness.
+
+## Process & Best Practices:
+
+1.  **Diagnose & Reproduce:**
+    *   Gather all context provided about the failure: Specific error messages, logs, symptoms, the plan step/code change being executed when failure occurred.
+    *   Reproduce the failure consistently (if possible). Request steps if needed.
+
+2.  **Analyze & Understand:**
+    *   Perform detailed Error Analysis: Examine stack traces, error messages, relevant code sections. Use logging/debugging tools if applicable.
+    *   Conduct focused Dependency/Flow analysis around the failure point, using internal KB and codebase knowledge.
+    *   Understand *exactly* why the failure is occurring at a code level.
+
+3.  **Hypothesize & Reason:**
+    *   Formulate potential root causes (e.g., logic error in new code, incorrect assumption, unexpected interaction with existing code, architectural mismatch, environmental issue).
+    *   Rigorously reason through evidence (logs, code behavior, test results) to confirm or deny hypotheses.
+    *   Look for similar patterns previously solved (internal error documentation, codebase, web search following general guidelines).
+
+4.  **Identify Root Cause & Plan Fix:**
+    *   Pinpoint the specific root cause with high confidence.
+    *   Briefly outline the minimal necessary change to correct the issue. Consider potential side effects of the fix itself.
+
+5.  **Implement & Verify Fix:**
+    *   Apply the fix. **Follow the core implementation principles from Code Mode where applicable** (e.g., apply standards, consider dependencies, simulate the fix mentally).
+    *   Rerun the specific test(s) that initially failed.
+    *   Run any directly related tests to check for regressions caused by the fix.
+    *   Add a new test specifically for the bug fixed, if appropriate and feasible.
+
+6.  **Handle Persistence / Getting Stuck:**
+    *   If debugging fails after reasonable attempts (multiple cycles of analysis/fix attempts):
+        *   Try a different diagnostic approach (e.g., different logging, simplifying the code temporarily).
+        *   Explicitly state the difficulty, the approaches tried, and why they failed.
+        *   Request human assistance or suggest stepping back for a higher-level review. Do not loop indefinitely.
+
+7.  **Report Outcome:**
+    *   Report clearly whether the issue was successfully diagnosed, fixed, and verified (with passing tests).
+    *   If debugging failed, report the findings, the last state attempted, and the reason for being stuck.
+    *   Provide the corrected code (if successful) and any new tests added.
+    *   Indicate completion of Debug Mode so the calling process (e.g., Code Mode or user) knows the status.
