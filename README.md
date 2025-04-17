@@ -39,62 +39,18 @@ This template is particularly beneficial for:
 
 This template provides a starting point for AI pair-coding projects. To get started quickly:
 
-1.  **Cursor:** Place the `.cursor/rules/` directory (containing `.mdc` files) in your project root.
-2.  **CLINE:**
-    *   Place the `.clinerules` file (for general project rules & AI guidance) in your project root. CLINE can load this file *or* recursively load files from a `.clinerules/` directory if present.
-    *   Place the `clinerules/` directory (containing this template's `plan`, `implement`, `debug` files) in your project root.
-    *   **(Optional but Unreliable) Manual Copy:** You *can* manually copy the content from `clinerules/plan`, `clinerules/implement`, and `clinerules/debug` into the corresponding 'Custom Instructions' sections in the CLINE extension settings (Plan Mode, Act Mode tabs). **However, due to a known UI bug in CLINE, this method is currently unreliable as settings may overwrite each other.**
-    *   **Effective Workaround:** This template primarily achieves mode-specific behavior in CLINE by including instructions *within the `.clinerules` file itself* that guide the AI (like me) to use the correct rules from the `clinerules/` directory based on the current mode (PLAN/ACT). See the section `# Mode-Specific Rules (Intended Usage & Cline Workaround)` in the `.clinerules` file for details.
-3.  **RooCode:**
-    *   Place workspace-wide rules (like this template's `memory` and `directory-structure` rules) inside a `.roo/rules/` directory. (Alternatively, use a single `.roorules` file).
-    *   Place mode-specific rules (like this template's `plan`, `implement`, `debug` rules) inside corresponding `.roo/rules-{modeSlug}/` directories (e.g., `.roo/rules-architect/`, `.roo/rules-code/`, `.roo/rules-debug/`). (Alternatively, use single `.roorules-{modeSlug}` files).
-4.  **Windsurf:** Place workspace-specific rules in a `.windsurfrules` file in the root. For now, copy the contents of `.clinerules` into `.windsurfrules`. Global rules are set via Windsurf settings.
+1. **Generate Rule Files Using Scripts:**
+   - Run the following command from the project root directory to copy template rule files to the correct locations for all supported platforms:
+     ```bash
+     python src/copy_rules.py
+     ```
+   - **What it does:** Copies rule files from `rules_template/` to `.cursor/rules/`, `.clinerules`, `.roo/`, and `.windsurfrules`, formatting them for each platform.
+   - **To undo:** Run `python src/clean_rules.py` to remove generated files.
 
-**DONE**
-
----
-
-**Note on RooCode Compatibility Claims:** The previous version of this README mentioned RooCode supporting `.windsurfrules` / `.cursorrules/` and not supporting `.cursor/rules`. These claims are **not substantiated** by the official RooCode documentation and have been removed. Task 6 remains to investigate any actual compatibility issues if encountered.
-
----
-
-Then, create these directories in your project root if they don't exist:
-
-1. **`docs/`**
-
-    ├── **`literature/`** (Contains source-of-truth docs provided by user)
-
-Then, create these directories in your project root:
-
-1. **`docs/`**
-
-    ├── **`literature/`**
-
-    ├── **`architecture.md`**
-
-    ├── **`technical.md`**
-
-    └── **`product_requirement_docs.md`**
-
-2. **`tasks/`**
-
-    ├── **`rfc/`**
-
-    ├── **`active_context.md`**
-
-    ├── **`tasks_plan.md`**
-3. **`src/`**
-4. **`test/`**
-5. **`utils/`**
-6. **`config/`**
-7. **`data/`**
-
-
-Now just start coding using Cursor/Windsorf/CLINE/RooCode.
-
-**Note: For existing projects, follow above steps, additionally give the prompt to AI:**
-
-> Follow Custom Prompt to initialize and document the project in Memory Files following the structure and instructions for documenting in Memory Files. Write everything about the project in Memory Files, build a good context for the project. 
+2. **Start Coding:**
+   - Begin using Cursor, CLINE, RooCode, or Windsurf with the pre-configured rules.
+   - **Initial Prompt (for existing projects):**
+     > Follow Custom Prompt to initialize and document the project in Memory Files following the structure and instructions for documenting in Memory Files. Write everything about the project in Memory Files, build a good context for the project. 
 
 (Copy above prompt as first prompt!)
 
@@ -375,17 +331,17 @@ This structure ensures that different aspects of the project, such as code, test
 By adhering to the principles and structure outlined in this Rules Template, development teams can leverage AI coding assistants more effectively, ensuring consistency, quality, and maintainability across their projects.
 
 ## To-Do:
-- [ ] 1: **Adapt template files for RooCode's official format.** Rename/move `.clinerules` content (memory, dir-structure) and `.clinerules-{mode}` files (plan, implement, debug) into the correct `.roo/rules/` and `.roo/rules-{modeSlug}/` structure.
-- [ ] 2: Add example content to each file (Task 3 in tasks_plan.md)
+- [x] 1: **Adapt template files for RooCode's official format.** Rename/move `.clinerules` content (memory, dir-structure) and `.clinerules-{mode}` files (plan, implement, debug) into the correct `.roo/rules/` and `.roo/rules-{modeSlug}/` structure.
+- [x] 2: Add example content to each file (Task 3 in tasks_plan.md)
 - [ ] 3: Add FAQs (Task 4 in tasks_plan.md)
-- [ ] 4: Investigate RooCode incompatibility claim (Task 6 in tasks_plan.md - *Note: This claim in the old README seems unfounded based on official docs*).
-- [ ] 5: Explore native CLINE loading alternatives (Task 7 in tasks_plan.md)
-- [ ] 6: Improve `.clinerules` guidance (Task 9 in tasks_plan.md)
-- [ ] 7: Create example `.windsurfrules` file (Task 5.2 in tasks_plan.md)
+- [x] 4: Investigate RooCode incompatibility claim (Task 6 in tasks_plan.md - *Note: This claim in the old README seems unfounded based on official docs*).
+- [x] 5: Explore native CLINE loading alternatives (Task 7 in tasks_plan.md)
+- [x] 6: Improve `.clinerules` guidance (Task 9 in tasks_plan.md)
+- [x] 7: Create example `.windsurfrules` file (Task 5.2 in tasks_plan.md)
 
 ## Additional Notes:
 
 1. **Product Requirements Documents (PRDs):** PRDs serve multiple purposes: defining product scope and goals, aligning stakeholders across teams, and mitigating risks early in development. They offer significant utility by providing clarity on product vision, prioritizing features, ensuring quality, and enabling traceability throughout the development lifecycle . While traditionally detailed in Waterfall, PRDs are adapted for Agile methodologies as leaner, iterative documents. Related documents include Market Requirements Documents (MRDs) and Functional Requirements Documents (FRDs).
 2. **Architecture Documentation:** It serves to preserve design rationale, support scalability, and facilitate decision-making. Key benefits include improved knowledge sharing, risk mitigation, and stakeholder communication. Types of architecture documentation vary, including decision-centric ADRs, structural C4 model diagrams, and behavioral sequence diagrams. Frameworks like arc42 provide structured templates for comprehensive architecture documentation.
-3. **Technical Specifications:** Technical Specifications Documents (TSDs) serve as blueprints translating business needs into technical guidelines. They clarify project vision, bridge stakeholder communication, and mitigate risks. TSDs are highly useful for engineers as step-by-step guides, for teams as alignment tools, and for projects in ensuring accountability. Technical documentation broadly includes process documentation like TSDs and SRS, product documentation (user manuals, API docs), and specialized specs for IT or Agile projects. A robust TSD enhances project clarity and reduces failure risks associated with unclear requirements.
+3. **Technical Specifications:** Technical Specifications Documents (TSDs) serve as blueprints translating business needs into technical guidelines. They clarify project vision, bridge stakeholder communication, and mitigate risks. TSDs are highly useful for engineers as step-by-step guides, for teams as alignment tools, and for projects in ensuring accountability. Technical documentation broadly includes process documentation (user manuals, API docs), and specialized specs for IT or Agile projects. A robust TSD enhances project clarity and reduces failure risks associated with unclear requirements.
 4. **RFCs (Request for Comments):** Request for Comments (RFCs) are structured proposals for technical decision-making and standardization. They document technical specifications, solicit feedback, and preserve institutional knowledge. RFCs enhance utility by reducing silos, mitigating risks, and ensuring decision traceability. Types range from standards-track protocol specifications to organizational RFCs for team-specific designs. Modern RFCs often include problem statements, proposed solutions, alternatives, rollout plans, and security impact assessments. While RFCs improve decision quality, they also pose challenges like time overhead and consensus bottlenecks.

@@ -4,7 +4,7 @@ import os
 import shutil
 
 # Project root directory
-ROOT_DIR = "/Users/wangbo-ting/git/rules_template"
+ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 def remove_directory(directory):
     """Removes a directory and its contents."""
@@ -20,5 +20,7 @@ print("Removing rule directories...")
 remove_directory(".cursor")
 remove_directory(".clinerules")
 remove_directory(".roo")
+os.remove(os.path.join(ROOT_DIR, ".windsurfrules"))
+
 
 print("Rule directories removed successfully!")

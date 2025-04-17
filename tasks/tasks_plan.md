@@ -194,11 +194,11 @@
 ### 13. Reorganize Cline Rule Structure (Priority: Medium):
     *   **Goal:** Align the Cline rule file structure with the `.cursor/rules/` pattern for better consistency.
     *   **Sub-tasks:**
-        *   [ ] `13.1`: Analyze current `clinerules/` and target `.cursor/rules/` structures.
-        *   [ ] `13.2`: Define the new target structure (e.g., `.clinerules/plan.md`, `.clinerules/implement.md`, etc.).
-        *   [ ] `13.3`: Move/Rename existing Cline rule files to the new structure.
-        *   [ ] `13.4`: Update the main `.clinerules` file to reference or incorporate the new structure/files (pending investigation of Cline's capabilities).
-        *   [ ] `13.5`: Update `README.md` and `docs/technical.md` to reflect the new structure.
+        *   [x] `13.1`: Analyze current `clinerules/` and target `.cursor/rules/` structures.
+        *   [x] `13.2`: Define the new target structure (e.g., `.clinerules/plan.md`, `.clinerules/implement.md`, etc.).
+        *   [x] `13.3`: Move/Rename existing Cline rule files to the new structure.
+        *   [x] `13.4`: Update the main `.clinerules` file to reference or incorporate the new structure/files (pending investigation of Cline's capabilities).
+        *   [x] `13.5`: Update `README.md` and `docs/technical.md` to reflect the new structure.
 
 ### 14. Add Tool Use Documentation to Rules (Priority: High):
     *   **Goal:** Provide clear guidance within the rules on when and why to use available tools.
@@ -209,10 +209,10 @@
         *   [ ] `14.4`: Review existing rules for consistency with the new tool guidance.
 
 ### 15. Create Repository Initialization Scripts (Priority: Medium):
-    *   **Goal:** Provide scripts to help users quickly set up the standard memory file structure and templates.
+    *   **Goal:** Provide scripts to help users quickly set up the standard **memory file structure and rule files** based on the `rules_template` directory.
     *   **Sub-tasks:**
-        *   [ ] `15.1`: Define the exact initial file/folder structure based on templates and core requirements.
-        *   [ ] `15.2`: Choose a scripting method (e.g., Shell script for simplicity, considering cross-platform needs).
-        *   [ ] `15.3`: Write script(s) to create directories and copy template files to their active counterparts (e.g., `docs/*_template.md` to `docs/*.md`).
-        *   [ ] `15.4`: Test the script(s) thoroughly.
-        *   [ ] `15.5`: Add clear instructions to `README.md` on how to run the script(s).
+        *   [x] `15.1`: Define the exact initial file/folder structure based on templates and core requirements.
+        *   [x] `15.2`: Choose a scripting method (e.g., Shell script for simplicity, considering cross-platform needs).
+        *   [x] `15.3`: Write script(s) to create directories, copy memory template files (e.g., `docs/*_template.md` to `docs/*.md`), **and generate platform-specific rule files (e.g., `.clinerules`, `.roo/`, `.windsurfrules`, `.cursor/rules/`) using the content from `rules_template/`.**
+        *   [x] `15.4`: Test the script(s) thoroughly.
+        *   [ ] `15.5`: Add clear instructions to `README.md` on how to run the **`python src/copy_rules.py` and `python src/clean_rules.py`** scripts.

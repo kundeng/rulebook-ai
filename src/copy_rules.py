@@ -8,7 +8,7 @@ import re
 # Source and destination directories
 TEMPLATE_DIR = "rules_template"
 # IMPORTANT: Adjust this path to your actual project root if necessary
-ROOT_DIR = os.path.dirname(os.path.abspath(__file__)) # More robust way to find project root
+ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) # Project root is parent of script dir
 # Or keep your original path if preferred:
 # ROOT_DIR = "/Users/wangbo-ting/git/rules_template"
 
