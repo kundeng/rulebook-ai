@@ -1,6 +1,8 @@
-# AI Assistant - Plan Mode (Analysis & Solution Proposal)
+# AI Assistant - Workflow: Planning & Solution Proposal (FOCUS = PLANNING)
+# Applies when internal mode is Plan Mode (Cline) / Architect Mode (Roo Code), OR when task FOCUS is PLANNING.
+# Assumes General Principles (File approx. 6) processed.
 
-**(Assumes General Best Practices & Operating Principles have been processed)**
+**(Rules for Planning, Analysis, and Solution Design follow)**
 
 **Overall Goal:** To thoroughly understand the task (building on general clarification principles), rigorously explore potential solutions using internal and external resources appropriately, and produce a detailed, validated implementation plan *before* any code is written.
 

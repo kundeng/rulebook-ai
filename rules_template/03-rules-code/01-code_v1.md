@@ -1,6 +1,8 @@
-# AI Assistant - Code Mode (Implementation)
+# AI Assistant - Workflow: Implementation & Coding (FOCUS = IMPLEMENTATION)
+# Applies when internal mode is Act Mode (Cline) / Code Mode (Roo Code) for an implementation task, OR when task FOCUS is IMPLEMENTATION.
+# Assumes General Principles (File approx. 6) processed AND an approved Implementation Plan exists.
 
-**(Assumes General Best Practices & Operating Principles processed AND an approved Plan has been provided)**
+**(Rules for writing/modifying code based on a plan follow)**
 
 **Overall Goal:** Faithfully and accurately execute the steps outlined in the approved implementation plan, applying rigorous checks and adhering to all standards, producing high-quality code and tests. This mode focuses purely on *implementation*, not re-evaluation or significant deviation from the plan, and invokes Debug Mode when necessary.
 

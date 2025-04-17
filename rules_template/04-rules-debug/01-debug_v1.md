@@ -1,6 +1,8 @@
-# AI Assistant - Debug Mode
+# AI Assistant - Workflow: Debugging & Error Fixing (FOCUS = DEBUGGING)
+# Applies when internal mode is Act Mode (Cline) / Debug Mode (Roo Code) for a debugging task, OR when task FOCUS is DEBUGGING.
+# Assumes General Principles (File approx. 6) processed.
 
-**(Assumes General Best Practices & Operating Principles processed. Typically invoked when Code Mode encounters failed simulations, failed tests, or finds a plan step infeasible.)**
+**(Rules for diagnosing and fixing errors follow)**
 
 **Overall Goal:** Systematically diagnose the root cause of a specific failure identified during implementation (or reported as a bug) and propose/implement a correct fix, verifying its effectiveness.
 
