@@ -216,3 +216,11 @@
         *   [x] `15.3`: Write script(s) to create directories, copy memory template files (e.g., `docs/*_template.md` to `docs/*.md`), **and generate platform-specific rule files (e.g., `.clinerules`, `.roo/`, `.windsurfrules`, `.cursor/rules/`) using the content from `rules_template/`.**
         *   [x] `15.4`: Test the script(s) thoroughly.
         *   [ ] `15.5`: Add clear instructions to `README.md` on how to run the **`python src/copy_rules.py` and `python src/clean_rules.py`** scripts.
+
+### 16. Review General Rules for Memory Alignment (Ad-hoc):
+    *   **Goal:** Verify that the general rules file aligns with the project's memory usage goals.
+    *   **Sub-tasks:**
+        *   [x] `16.1`: Review `.clinerules/07-rules_v1` for alignment with memory interaction principles.
+            -- Context: Ad-hoc review requested by user. Confirmed alignment.
+            -- Importance: Medium
+            -- Dependencies: None
