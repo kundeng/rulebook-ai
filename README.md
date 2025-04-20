@@ -54,6 +54,37 @@ This template provides a starting point for AI pair-coding projects. To get star
 
 (Copy above prompt as first prompt!)
 
+### Environment Setup (Using Conda)
+
+Before running the tools described in the rules, set up the Conda environment:
+
+1.  **Create the environment:**
+    ```bash
+    conda create -n rules_template python=3.11 -y 
+    ```
+    *(Ensure you have Conda installed. We recommend Python 3.11, but adjust if needed.)*
+
+2.  **Activate the environment:**
+    ```bash
+    conda activate rules_template
+    ```
+    *(You'll need to activate this environment in any terminal session where you intend to run the tools.)*
+
+3.  **Install dependencies:**
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+4.  **Install playwright:**
+    ```bash
+    playwright install
+    ```
+5.  **Configure your environment:**
+    ```bash
+    - Setup your API keys in `.env` (optional, check out rules_template/light-spec/01-rules/06-rules_v1.md for API tool context) 
+
+With the environment set up and activated, you can run the Python tools as described in the rules files (e.g., `python tools/llm_api.py ...`).
+
 ## Rule Loading Summary (Based on Official Docs & Template Implementation)
 
 | AI Assistant | Rule Type         | Official Location & Name(s)                              | Official Loading Mechanism                                                                                                                                                           | Template Implementation & Notes                                                                                                                                                                                          |

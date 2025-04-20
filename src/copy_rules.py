@@ -6,7 +6,7 @@ import errno
 import re
 
 # Source and destination directories
-TEMPLATE_DIR = "rules_template/heavy-spec"
+TEMPLATE_DIR = "rules_template/light-spec"
 # IMPORTANT: Adjust this path to your actual project root if necessary
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) # Project root is parent of script dir
 # Or keep your original path if preferred:

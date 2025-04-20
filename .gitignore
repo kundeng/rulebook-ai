@@ -1,6 +1,5 @@
 # ignore packages/repos, modelcontextprotocol is for perplexity, and tools folder has non-MCP tools for llm, but before adding description in documents should not add into repo for now. 
 modelcontextprotocol/
-tools/
 
 # Python
 __pycache__/
@@ -29,7 +28,6 @@ MANIFEST
 venv/
 ENV/
 env/
-.env
 .venv
 env.bak/
 venv.bak/
