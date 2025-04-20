@@ -30,3 +30,5 @@ It is also beneficial for:
 3.  **Minimal Token Usage:** Organized rule files to leverage platform-specific loading mechanisms where possible.
 4.  **Common Memory Bank:** A structured documentation system (`docs/`, `tasks/`) provides shared, persistent context.
 5.  **Fundamental Software Engineering Principles:** Integrates established practices for planning, implementation, debugging, and documentation.
+6.  **User Customization & Extensibility:** Provides clear guidelines and structure allowing users to easily adapt the rules and Memory Bank templates to fit specific project requirements or personal workflow preferences.
+7.  **Onboarding & Community Support:** Includes comprehensive documentation, quick start guides, and examples to facilitate easy adoption, along with clear contribution guidelines to foster community involvement and improvement.
