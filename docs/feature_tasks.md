@@ -12,6 +12,7 @@ P2 - Medium: Important for completeness, robustness, or supporting secondary goa
 P3 - Low: Nice-to-have; improves the experience but not essential for core function or initial goals.
 
 ## Core Features & Specific Tasks/Specs
+*(refer @/tasks/task_plan.md for task status tracking)*
 
 **1. Cross-Platform Compatibility & Rule Adaptation**
 

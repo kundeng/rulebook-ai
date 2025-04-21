@@ -37,22 +37,64 @@ This template is particularly beneficial for:
 
 ## Quickstart: Using this Template for AI Coding
 
-This template provides a starting point for AI pair-coding projects. To get started quickly:
+This template repository serves as the central source for master rule sets. To use these rules in your own projects, you'll utilize the `src/manage_rules.py` script provided within *this* repository. This script replaces the old `src/copy_rules.py` and `src/clean_rules.py`.
 
-1. **Generate Rule Files Using Scripts:**
-   - Run the following command from the project root directory to copy template rule files to the correct locations for all supported platforms:
-     ```bash
-     python src/copy_rules.py
-     ```
-   - **What it does:** Copies rule files from `rules_template/` to `.cursor/rules/`, `.clinerules`, `.roo/`, and `.windsurfrules`, formatting them for each platform.
-   - **To undo:** Run `python src/clean_rules.py` to remove generated files.
+**Core Concepts:**
 
-2. **Start Coding:**
-   - Begin using Cursor, CLINE, RooCode, or Windsurf with the pre-configured rules.
-   - **Initial Prompt (for existing projects):**
-     > Follow Custom Prompt to initialize and document the project in Memory Files following the structure and instructions for documenting in Memory Files. Write everything about the project in Memory Files, build a good context for the project. 
+*   **Source Template Repo:** This repository, containing master rules (e.g., `rules_template/light-spec/`) and the `manage_rules.py` script.
+*   **Target Repo:** Your project repository (e.g., `~/git/my_cool_project`) where you want to use the rules.
+*   **Target Source of Truth:** A folder created *inside your Target Repo* (default: `project_rules_template/`) by the `install` command. It holds the specific rule files for *your* project, initially copied from the Source Template Repo. **Commit this folder to your Target Repo's version control.**
+*   **Target Platform Rules:** Generated, platform-specific rule directories (e.g., `.cursor/rules/`, `.clinerules`, `.roo/`, `.windsurfrules`) created *inside your Target Repo* by the `sync` command. **Add these folders to your Target Repo's `.gitignore` file.**
 
-(Copy above prompt as first prompt!)
+**Workflow & Commands:**
+
+*(Run these commands from your terminal, inside your checked-out copy of **this** `rules_template` repository)*
+
+1.  **Install Rules into Your Project:**
+    *   Use the `install` command to copy a rule template from this repo into your target project and perform an initial sync.
+    *   **Command:**
+        ```bash
+        # Syntax: python src/manage_rules.py install <path_to_your_target_repo>
+        # Example:
+        python src/manage_rules.py install ~/git/my_cool_project
+        ```
+    *   **Action:**
+        *   Copies `rules_template/light-spec/` (or another specified template) to `~/git/my_cool_project/project_rules_template/`.
+        *   Generates the initial Target Platform Rules (e.g., `.cursor/rules/`, `.clinerules`) inside `~/git/my_cool_project/` based on the new `project_rules_template/`.
+    *   **Follow Up:**
+        *   Add the generated directories (e.g., `.cursor/`, `.clinerules`, `.roo/`, `.windsurfrules`) to your target project's (`~/git/my_cool_project/`) `.gitignore`.
+        *   Commit the newly created `project_rules_template/` directory within your target project.
+
+2.  **Customize Rules (In Your Target Project):**
+    *   Modify the rule files directly within the `project_rules_template/` directory *inside your target project* (`~/git/my_cool_project/project_rules_template/`). This is where you tailor the rules for *that specific project*.
+
+3.  **Synchronize Customizations:**
+    *   After editing files in your target project's `project_rules_template/` directory, run the `sync` command to update the Target Platform Rules used by the AI assistants.
+    *   **Command:**
+        ```bash
+        # Syntax: python src/manage_rules.py sync <path_to_your_target_repo>
+        # Example:
+        python src/manage_rules.py sync ~/git/my_cool_project
+        ```
+    *   **Action:**
+        *   Reads the current rules from `~/git/my_cool_project/project_rules_template/`.
+        *   Deletes existing Target Platform Rules (e.g., `.cursor/rules/`, `.clinerules`).
+        *   Regenerates the Target Platform Rules based on the updated content in `project_rules_template/`.
+
+4.  **Start Coding:**
+    *   Use your AI coding assistants (Cursor, CLINE, etc.) in your target project. They will now use the synchronized, platform-specific rules.
+    *   **Initial Prompt Suggestion (for setting up memory in a new project):**
+        > Using the project's custom rules, initialize the Memory Bank files (docs/, tasks/) based on the project's current state or initial requirements. Follow the structure and instructions defined in the rules for documenting project context.
+
+5.  **Clean Up (Remove Rules from Target Project):**
+    *   To completely remove the rules framework (both the Target Source of Truth and the generated Platform Rules) from your target project, use the `clean` command.
+    *   **Command:**
+        ```bash
+        # Syntax: python src/manage_rules.py clean <path_to_your_target_repo>
+        # Example:
+        python src/manage_rules.py clean ~/git/my_cool_project
+        ```
+    *   **Action:** Removes `~/git/my_cool_project/project_rules_template/` and the generated rule directories (e.g., `.cursor/`, `.clinerules`).
 
 ### Environment Setup (Using Conda)
 

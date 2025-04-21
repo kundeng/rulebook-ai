@@ -25,6 +25,7 @@ It is also beneficial for:
 
 ## Core Features:
 *(This section remains largely the same, but ensures alignment with README)*
+*(refer @/docs/feature_tasks.md for tasks and @/tasks/task_plan.md for task status tracking)*
 1.  **Cross-Platform Compatibility:** Respects Cursor, CLINE, RooCode Rule guidelines and mechanisms natively.
 2.  **Latest Compatibility:** Designed to be compatible with the latest versions of supported platforms.
 3.  **Minimal Token Usage:** Organized rule files to leverage platform-specific loading mechanisms where possible.
