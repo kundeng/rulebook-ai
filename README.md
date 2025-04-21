@@ -37,7 +37,7 @@ This template is particularly beneficial for:
 
 ## Quickstart: Using this Template for AI Coding
 
-This template repository serves as the central source for master rule sets. To use these rules in your own projects, you'll utilize the `src/manage_rules.py` script provided within *this* repository. This script replaces the old `src/copy_rules.py` and `src/clean_rules.py`.
+This template repository serves as the central source for master rule sets. To use these rules in your own projects, you'll utilize the `src/manage_rules.py` script provided within *this* repository.
 
 **Core Concepts:**
 
