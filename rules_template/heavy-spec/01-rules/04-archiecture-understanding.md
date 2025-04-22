@@ -10,7 +10,7 @@ alwaysApply: false
 ---
 # Architecture Understanding
 READ_ARCHITECTURE: |
-  File: docs/architecture.md @architecture.md
+  File: /memory/docs/architecture.md @architecture.md
   Required parsing:
   1. Load and parse complete Mermaid diagram
   2. Extract and understand:

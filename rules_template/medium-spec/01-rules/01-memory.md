@@ -41,7 +41,7 @@ flowchart TD
 ``` 
 ## Core Files (Required)
   7 files: 
-  1. [product_requirement_docs.md](mdc:docs/product_requirement_docs.md) (/docs/product_requirement_docs.md): Product Requirement Document (PRD) for the project or an SOP. 
+  1. [product_requirement_docs.md](mdc:/memory/docs/product_requirement_docs.md) (/memory/docs/product_requirement_docs.md): Product Requirement Document (PRD) for the project or an SOP. 
   - Why this project exists
   - Problems it solves
   - Defines core requirements and goals
@@ -49,26 +49,26 @@ flowchart TD
   - Source of truth for project scope
   - Created at project start if it doesn't exist
 
-  2. [architecture.md](mdc:docs/architecture.md) (/docs/architecture.md): System architecture
+  2. [architecture.md](mdc:/memory/docs/architecture.md) (/memory/docs/architecture.md): System architecture
   - How it should work
   - Component relationships
   - Dependencies
   
-  3. [technical.md](mdc:docs/technical.md) (/docs/technical.md): Development environment and stack
+  3. [technical.md](mdc:/memory/docs/technical.md) (/memory/docs/technical.md): Development environment and stack
   - Technologies used
   - Development setup
   - Key technical decisions
   - Design patterns in use
   - Technical constraints
 
-  4. [tasks_plan.md](mdc:tasks/tasks_plan.md) (/tasks/tasks_plan.md): Detailed Task backlog
+  4. [tasks_plan.md](mdc:/memory/tasks/tasks_plan.md) (/memory/tasks/tasks_plan.md): Detailed Task backlog
   - In-Depth Tasks list and Project Progress
   - What works
   - What's left to build
   - Current status
   - Known issues
   
-  5. [active_context.md](mdc:tasks/active_context.md) (/tasks/active_context.md): Current state of development
+  5. [active_context.md](mdc:/memory/tasks/active_context.md) (/memory/tasks/active_context.md): Current state of development
   - Current work focus
   - Active decisions and considerations
   - Recent changes
@@ -161,7 +161,7 @@ flowchart TD
     Start --> Process
 ```
 
-Note: When triggered by **update memory files**, I MUST review every Core memory  file, even if some don't require updates. Focus particularly on [active_context.md](mdc:/tasks/active_context.md) and [tasks_plan.md](mdc:/tasks/tasks_plan.md) as they track current state.
+Note: When triggered by **update memory files**, I MUST review every Core memory  file, even if some don't require updates. Focus particularly on [active_context.md](mdc:/memory/tasks/active_context.md) and [tasks_plan.md](mdc:/memory/tasks/tasks_plan.md) as they track current state.
 
 # Project Intelligence ( [lessons-learned.mdc](mdc:/rules_template/01-rules/lessons-learned.mdc) [/rules_template/01-rules/lessons-learned.mdc] )
 

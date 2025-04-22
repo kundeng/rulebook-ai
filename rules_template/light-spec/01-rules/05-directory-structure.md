@@ -12,8 +12,8 @@ alwaysApply: false
 ```mermaid
 flowchart TD
     Root[Project Root]
-    Root --> Docs[docs/]
-    Root --> Tasks[tasks/]
+    Root --> Docs[/memory/docs/]
+    Root --> Tasks[/memory/tasks/]
     Root --> Cursor[.cursor/rules/]
     Root --> CLINE[.clinerules/]
     Root --> Roo[.roo/]

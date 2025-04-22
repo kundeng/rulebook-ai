@@ -11,7 +11,11 @@ TEMPLATE_DIR = "rules_template/light-spec"
 # Source directory for memory templates (relative to ROOT_DIR)
 MEMORY_TEMPLATE_SOURCE_DIR = "memory_template"
 # Name of the directory to store memory templates within the target repo
-MEMORY_TEMPLATE_TARGET_DIR_NAME = "memory"
+MEMORY_TEMPLATE_TARGET_DIR_NAME = "memory_template"
+# Source directory for tools (relative to ROOT_DIR) - NEW
+TOOLS_SOURCE_DIR = "tools"
+# Name of the directory to store tools within the target repo - NEW
+TOOLS_TARGET_DIR_NAME = "tools"
 # Project root of this rules_template repository
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -224,11 +228,15 @@ def handle_install(args):
     # Source and target for MEMORY TEMPLATES
     memory_template_source_path = os.path.join(ROOT_DIR, MEMORY_TEMPLATE_SOURCE_DIR)
     memory_template_target_path = os.path.join(target_repo_path, MEMORY_TEMPLATE_TARGET_DIR_NAME)
+    # Source and target for TOOLS - NEW
+    tools_source_path = os.path.join(ROOT_DIR, TOOLS_SOURCE_DIR)
+    tools_target_path = os.path.join(target_repo_path, TOOLS_TARGET_DIR_NAME)
 
-    print(f"--- Installing rules and memory templates to {target_repo_path} ---")
+    print(f"--- Installing rules, memory templates, and tools to {target_repo_path} ---")
     print(f"Using rule template: {args.template_name}")
     print(f"Target Rule Source of Truth: {source_of_truth_rules_dir_target}")
     print(f"Target Memory Templates Dir: {memory_template_target_path}")
+    print(f"Target Tools Dir: {tools_target_path}") # NEW
 
     # 1. Install RULE templates into the source of truth directory
     print(f"\nStep 1: Copying RULE templates ({args.source_of_truth_dir_name}/)...")
@@ -245,8 +253,7 @@ def handle_install(args):
     # 2. Install MEMORY template directory
     print(f"\nStep 2: Copying MEMORY template directory ({MEMORY_TEMPLATE_TARGET_DIR_NAME}/)...")
     if not os.path.exists(memory_template_source_path):
-         print(f"Error: Source memory template directory not found: {memory_template_source_path}. Skipping memory template copy.")
-         return # Stop if memory copy fails
+         print(f"Warning: Source memory template directory not found: {memory_template_source_path}. Skipping memory template copy.") # Changed Error to Warning
     elif os.path.exists(memory_template_target_path):
         print(f"Warning: Target memory template directory already exists: {memory_template_target_path}. Skipping memory template copy.")
     else:
@@ -255,14 +262,25 @@ def handle_install(args):
             print(f"Successfully copied memory templates to {memory_template_target_path}")
         except Exception as e:
             print(f"Error copying memory templates: {e}")
-            # Decide if this is fatal or just a warning
-            # return
 
-    # 3. Run initial SYNC to generate platform-specific rules
-    print(f"\nStep 3: Running initial sync...")
+    # 3. Install TOOLS directory - NEW
+    print(f"\nStep 3: Copying TOOLS directory ({TOOLS_TARGET_DIR_NAME}/)...")
+    if not os.path.exists(tools_source_path):
+        print(f"Warning: Source tools directory not found: {tools_source_path}. Skipping tools copy.")
+    elif os.path.exists(tools_target_path):
+        print(f"Warning: Target tools directory already exists: {tools_target_path}. Skipping tools copy.")
+    else:
+        try:
+            shutil.copytree(tools_source_path, tools_target_path)
+            print(f"Successfully copied tools to {tools_target_path}")
+        except Exception as e:
+            print(f"Error copying tools directory: {e}")
+
+    # 4. Run initial SYNC to generate platform-specific rules (Renumbered step)
+    print(f"\nStep 4: Running initial sync...")
     handle_sync(args) # Pass args to use correct target path and rule SoT dir name
 
-    # 4. Remind user about .gitignore and committing new directories
+    # 5. Remind user about .gitignore and committing new directories (Renumbered step)
     print(f"\n--- Installation Complete ---")
     print(f"\nIMPORTANT:")
     print(f"1. Add the following lines to .gitignore in {target_repo_path}:")
@@ -274,9 +292,13 @@ def handle_install(args):
     print(f"\n2. Commit the NEW directories added to your project:")
     print(f"   {args.source_of_truth_dir_name}/")
     print(f"   {MEMORY_TEMPLATE_TARGET_DIR_NAME}/")
+    print(f"   {TOOLS_TARGET_DIR_NAME}/") # NEW
     print(f"\n3. REMINDER: Ensure your rule files (in {args.source_of_truth_dir_name}/) reference memory files")
     print(f"   using paths relative to the project root, starting with '{MEMORY_TEMPLATE_TARGET_DIR_NAME}/',")
     print(f"   e.g., '{MEMORY_TEMPLATE_TARGET_DIR_NAME}/docs/product_requirement_docs.md'")
+    print(f"\n4. REMINDER: Ensure your rule files (in {args.source_of_truth_dir_name}/) reference tools") # NEW
+    print(f"   using paths relative to the project root, starting with '{TOOLS_TARGET_DIR_NAME}/',") # NEW
+    print(f"   e.g., 'python {TOOLS_TARGET_DIR_NAME}/my_script.py'") # NEW
 
 
 def handle_sync(args):
@@ -318,7 +340,6 @@ def handle_sync(args):
         os.remove(windsurf_file_path)
         print(f"Removed: {windsurf_file_path}")
 
-
     # Generate new rules
     print("\nGenerating new platform rule files...")
     print("--- Processing Cursor rules ---")
@@ -340,6 +361,8 @@ def handle_clean(args):
     source_of_truth_rules_dir_target = os.path.join(target_repo_path, args.source_of_truth_dir_name)
     # Path to memory templates in target
     memory_template_target_path = os.path.join(target_repo_path, MEMORY_TEMPLATE_TARGET_DIR_NAME)
+    # Path to tools in target - NEW
+    tools_target_path = os.path.join(target_repo_path, TOOLS_TARGET_DIR_NAME)
 
     print(f"--- Cleaning rules framework from {target_repo_path} ---")
 
@@ -350,17 +373,18 @@ def handle_clean(args):
     roo_rules_dir = os.path.join(target_repo_path, ".roo")
     windsurf_file_path = os.path.join(target_repo_path, ".windsurfrules")
 
-    # List of ALL items to remove (Generated rules + Installed templates)
+    # List of ALL items to remove (Generated rules + Installed templates/tools)
     items_to_remove = [
         cursor_parent_dir,
         cline_dir,
         roo_rules_dir,
         windsurf_file_path,
-        source_of_truth_rules_dir_target, # Added rule source of truth
-        memory_template_target_path      # Added memory template dir
+        source_of_truth_rules_dir_target, # Rule source of truth
+        memory_template_target_path,      # Memory template dir
+        tools_target_path                 # Tools dir - NEW
     ]
 
-    print("Removing generated platform rules and installed template directories...")
+    print("Removing generated platform rules and installed template/tools directories...")
     removed_count = 0
     for item_path in items_to_remove:
         try:
@@ -376,23 +400,22 @@ def handle_clean(args):
         except Exception as e:
             print(f"Error removing {item_path}: {e}")
 
-
     print(f"\n--- Clean operation complete. Removed {removed_count} items. ---")
     print(f"Removed items included generated rules and directories:")
     print(f"  '{args.source_of_truth_dir_name}/'")
     print(f"  '{MEMORY_TEMPLATE_TARGET_DIR_NAME}/'")
+    print(f"  '{TOOLS_TARGET_DIR_NAME}/'") # NEW
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Manage AI assistant rule sets and memory templates in target repositories.")
+    parser = argparse.ArgumentParser(description="Manage AI assistant rule sets, memory templates, and tools in target repositories.") # Updated description
     subparsers = parser.add_subparsers(dest="command", help="Available commands", required=True)
 
     # Install command
-    install_parser = subparsers.add_parser("install", help="Install rule sets and memory templates to a target repository")
+    install_parser = subparsers.add_parser("install", help="Install rule sets, memory templates, and tools to a target repository") # Updated help
     install_parser.add_argument("target_repo_path", help="Path to the target repository")
     install_parser.add_argument("--template-name", default="light-spec", help="Name of the rule template subdirectory in rules_template/ (default: light-spec)")
     install_parser.add_argument("--source-of-truth-dir-name", default="project_rules_template", help="Name of the directory to store rule templates within the target repo (default: project_rules_template)")
-    # No need for a specific arg for memory dir name if it's fixed like this
     install_parser.set_defaults(func=handle_install)
 
     # Sync command
@@ -402,10 +425,9 @@ def main():
     sync_parser.set_defaults(func=handle_sync)
 
     # Clean command
-    clean_parser = subparsers.add_parser("clean", help="Clean generated rules and installed template directories from a target repository")
+    clean_parser = subparsers.add_parser("clean", help="Clean generated rules and installed template/tools directories from a target repository") # Updated help
     clean_parser.add_argument("target_repo_path", help="Path to the target repository")
     clean_parser.add_argument("--source-of_truth-dir-name", default="project_rules_template", help="Name of the rule source of truth directory within the target repo (default: project_rules_template)")
-    # No need for a specific arg for memory dir name if it's fixed like this
     clean_parser.set_defaults(func=handle_clean)
 
     args = parser.parse_args()
