@@ -2,6 +2,9 @@
 
 # Universal Rules Template for AI Coding Assistants
 
+* Bugs or ideas → open an **Issue** in the repo  
+* Anonymous feedback: [Go to the Google Form](https://docs.google.com/forms/d/e/1FAIpQLSeW57QtPEWIRhHY1iOb8f5KQZTGLSeeb_PN2iZLd0Aw_pVYxw/viewform?usp=header)
+
 ## Supercharge Your AI Coding Workflow Across Cursor, CLINE, RooCode, and Windsurf
 
 Tired of inconsistent AI behavior across different coding assistants? Struggling to maintain context and enforce best practices on complex projects? This template provides a robust, cross-platform framework designed to elevate your AI pair-programming experience.
