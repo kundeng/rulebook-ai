@@ -90,3 +90,9 @@ dmypy.json
 *.db
 *.pid
 *.swp 
+
+# AI coding IDE files
+.clinerules/
+.cursor/
+.roo/
+.windsurfrules
