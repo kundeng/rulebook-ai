@@ -48,6 +48,10 @@ def tmp_source_repo_root(tmp_path_factory):
     (source_base_dir / TMP_SOURCE_TOOL_STARTERS_DIR_NAME / "formatter_tool.sh").write_text("#!/bin/bash\necho 'Executing test formatter tool'")
     (source_base_dir / TMP_SOURCE_TOOL_STARTERS_DIR_NAME / "NEW_TOOL_SCRIPT.py").write_text("print('A new tool script for testing non-destructive copy.')")
 
+    # Create dummy env.example and requirements.txt at the root of tmp_source_repo_root
+    (source_base_dir / "env.example").write_text("TEST_ENV_VAR=example_value\n")
+    (source_base_dir / "requirements.txt").write_text("test-package==1.0.0\n")
+
     # 2. Create the src/ subdirectory within tmp_source_repo_root
     tmp_src_dir = source_base_dir / TMP_SOURCE_SRC_DIR_NAME
     tmp_src_dir.mkdir(parents=True, exist_ok=True)

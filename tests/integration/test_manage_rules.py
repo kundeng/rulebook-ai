@@ -57,6 +57,14 @@ def test_install_default_rule_set(script_runner, tmp_path): # tmp_path provides 
     gh_copilot_content = gh_copilot_instructions_file.read_text()                               # New
     assert "Test Light-spec: Main Directive" in gh_copilot_content                              # New
 
+    # 6. Check for env.example and requirements.txt
+    assert (tmp_target_repo_root / "env.example").is_file()
+    # Assuming conftest.py will create "TEST_ENV_VAR=example_value" in env.example
+    assert "TEST_ENV_VAR=example_value" in (tmp_target_repo_root / "env.example").read_text()
+    assert (tmp_target_repo_root / "requirements.txt").is_file()
+    # Assuming conftest.py will create "test-package==1.0.0" in requirements.txt
+    assert "test-package==1.0.0" in (tmp_target_repo_root / "requirements.txt").read_text()
+
 
 def test_install_specific_rule_set(script_runner, tmp_path):
     """Test `install --rule-set heavy-spec`."""
@@ -75,6 +83,12 @@ def test_install_specific_rule_set(script_runner, tmp_path):
     assert "Test Heavy-spec: Advanced Config" in windsurf_content
     gh_copilot_content = (tmp_target_repo_root / ".github" / "copilot-instructions.md").read_text() # New
     assert "Test Heavy-spec: Advanced Config" in gh_copilot_content                                # New
+
+    # Check for env.example and requirements.txt (should also be copied with heavy-spec)
+    assert (tmp_target_repo_root / "env.example").is_file()
+    assert "TEST_ENV_VAR=example_value" in (tmp_target_repo_root / "env.example").read_text()
+    assert (tmp_target_repo_root / "requirements.txt").is_file()
+    assert "test-package==1.0.0" in (tmp_target_repo_root / "requirements.txt").read_text()
 
 
 def test_sync_after_manual_project_rules_modification(script_runner, tmp_path):
@@ -138,6 +152,8 @@ def test_clean_all_with_confirmation_yes(script_runner, tmp_path):
     assert not (tmp_target_repo_root / TARGET_TOOLS_DIR).exists()
     assert not (tmp_target_repo_root / ".cursor").exists()
     assert not (tmp_target_repo_root / ".github").exists() # Assuming .github is removed if it only contained our file
+    assert not (tmp_target_repo_root / "env.example").exists()
+    assert not (tmp_target_repo_root / "requirements.txt").exists()
     # [TODO] test message too fragile, figure out new test ways 
     # assert "This will remove ALL framework components" in result.stdout
 
@@ -154,6 +170,8 @@ def test_clean_all_with_confirmation_no(script_runner, tmp_path):
 
     assert (tmp_target_repo_root / TARGET_PROJECT_RULES_DIR).is_dir()
     assert (tmp_target_repo_root / TARGET_MEMORY_BANK_DIR).is_dir()
+    assert (tmp_target_repo_root / "env.example").is_file()
+    assert (tmp_target_repo_root / "requirements.txt").is_file()
     # [TODO] test message too fragile, figure out new test ways
     # assert "Clean operation cancelled." in result.stdout
 

@@ -21,6 +21,10 @@ PROJECT_FRAMEWORK_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file_
 TARGET_GITHUB_COPILOT_DIR = ".github"
 TARGET_COPILOT_INSTRUCTIONS_FILE = "copilot-instructions.md"
 
+# Constants for env.example and requirements.txt
+SOURCE_ENV_EXAMPLE_FILE = "env.example"
+SOURCE_REQUIREMENTS_TXT_FILE = "requirements.txt"
+
 
 # --- Helper Functions ---
 # (copy_file, get_ordered_source_files, copy_tree_non_destructive,
@@ -232,8 +236,34 @@ def handle_install(args):
         if copied_count > 0: print(f"Successfully copied {copied_count} new items to '{target_tools_dir}'.")
         else: print(f"No new tool starter items to copy to '{target_tools_dir}'. Existing files preserved.")
 
-    # 4. Run initial SYNC
-    print(f"\nStep 4: Running initial sync...")
+    # 4. Copy env.example
+    source_env_example_file = os.path.join(PROJECT_FRAMEWORK_ROOT, SOURCE_ENV_EXAMPLE_FILE)
+    target_env_example_file = os.path.join(target_repo_path, SOURCE_ENV_EXAMPLE_FILE)
+    print(f"\nStep 4: Copying '{SOURCE_ENV_EXAMPLE_FILE}' to target repository root...")
+    if os.path.isfile(source_env_example_file):
+        if not os.path.exists(target_env_example_file):
+            if copy_file(source_env_example_file, target_env_example_file):
+                print(f"Successfully copied '{SOURCE_ENV_EXAMPLE_FILE}'.")
+        else:
+            print(f"'{SOURCE_ENV_EXAMPLE_FILE}' already exists in target. Skipping.")
+    else:
+        print(f"Warning: Source '{SOURCE_ENV_EXAMPLE_FILE}' not found at '{source_env_example_file}'. Skipping.")
+
+    # 5. Copy requirements.txt
+    source_requirements_txt_file = os.path.join(PROJECT_FRAMEWORK_ROOT, SOURCE_REQUIREMENTS_TXT_FILE)
+    target_requirements_txt_file = os.path.join(target_repo_path, SOURCE_REQUIREMENTS_TXT_FILE)
+    print(f"\nStep 5: Copying '{SOURCE_REQUIREMENTS_TXT_FILE}' to target repository root...")
+    if os.path.isfile(source_requirements_txt_file):
+        if not os.path.exists(target_requirements_txt_file):
+            if copy_file(source_requirements_txt_file, target_requirements_txt_file):
+                print(f"Successfully copied '{SOURCE_REQUIREMENTS_TXT_FILE}'.")
+        else:
+            print(f"'{SOURCE_REQUIREMENTS_TXT_FILE}' already exists in target. Skipping.")
+    else:
+        print(f"Warning: Source '{SOURCE_REQUIREMENTS_TXT_FILE}' not found at '{source_requirements_txt_file}'. Skipping.")
+
+    # 6. Run initial SYNC
+    print(f"\nStep 6: Running initial sync...")
     sync_args = argparse.Namespace(target_repo_path=args.target_repo_path)
     if handle_sync(sync_args) != 0:
         print("Error during initial sync. Please check messages above.")
@@ -250,9 +280,11 @@ def handle_install(args):
     print(f"   {TARGET_GITHUB_COPILOT_DIR}/{TARGET_COPILOT_INSTRUCTIONS_FILE}") # New
     print(f"   # Add other generated rule directories if applicable")
     # ... (rest of output messages) ...
-    print(f"\n2. Commit the following directories added/updated in your project:")
+    print(f"\n2. Commit the following files/directories added/updated in your project:")
     print(f"   {TARGET_MEMORY_BANK_DIR}/")
     print(f"   {TARGET_TOOLS_DIR}/")
+    print(f"   {SOURCE_ENV_EXAMPLE_FILE}")
+    print(f"   {SOURCE_REQUIREMENTS_TXT_FILE}")
     print(f"   (The '{TARGET_PROJECT_RULES_DIR}/' directory is managed by this script: replaced by 'install', removed by 'clean-rules'.)")
     # ...
     return 0
@@ -381,11 +413,16 @@ def handle_clean_all(args):
     roo_rules_dir = os.path.join(target_repo_path, ".roo")
     windsurf_file_path = os.path.join(target_repo_path, ".windsurfrules")
     gh_copilot_parent_dir_path = os.path.join(target_repo_path, TARGET_GITHUB_COPILOT_DIR) # Remove the whole .github dir
+    target_env_example_file = os.path.join(target_repo_path, SOURCE_ENV_EXAMPLE_FILE)
+    target_requirements_txt_file = os.path.join(target_repo_path, SOURCE_REQUIREMENTS_TXT_FILE)
+
 
     items_to_remove = [
         project_rules_target_dir, memory_bank_target_dir, tools_target_dir,
         cursor_parent_dir, cline_dir, roo_rules_dir, windsurf_file_path,
-        gh_copilot_parent_dir_path, # New - remove .github/
+        gh_copilot_parent_dir_path,
+        target_env_example_file,
+        target_requirements_txt_file,
     ]
     # ... (loop and removal logic as before) ...
     print("Removing all framework components...")

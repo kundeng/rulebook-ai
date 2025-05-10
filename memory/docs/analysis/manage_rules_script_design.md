@@ -28,8 +28,9 @@ This document outlines the design for a new Python script, `src/manage_rules.py`
         1.  Copies the specified rule set (default: `light-spec`) from the Source Repository's `rule_sets/<rule-set-name>` directory into `<target_repo_path>/project_rules/`. If `project_rules/` already exists, it will be overwritten or cleared first to ensure a fresh copy of the chosen rule set. *(A warning should be issued if overwriting)*.
         2.  Copies the content of the Source Repository's `memory_starters/` directory into `<target_repo_path>/memory/`. If `memory/` exists, new starter files from the source will be copied if they don't exist in the target; existing files in the target `memory/` will **not** be overwritten.
         3.  Copies the content of the Source Repository's `tool_starters/` directory into `<target_repo_path>/tools/`. If `tools/` exists, new starter files/subdirectories from the source will be copied if they don't exist in the target; existing files/subdirectories in the target `tools/` will **not** be overwritten.
-        4.  Immediately runs the `sync` logic (using `<target_repo_path>/project_rules/` as the source).
-    *   **Output:** Prints progress messages. Suggests adding generated platform rule directories/files (including `.github/copilot-instructions.md`) to `.gitignore`. Recommends committing `memory/` and `tools/` to version control. Informs the user that `project_rules/` will be managed by the script (and removed by `clean-rules`).
+        4.  Copies `env.example` and `requirements.txt` from the Source Repository's root to `<target_repo_path>/env.example` and `<target_repo_path>/requirements.txt`. If `env.example` / `requirements.txt` already exists in the target, it will **not** be overwritten.
+        5.  Immediately runs the `sync` logic (using `<target_repo_path>/project_rules/` as the source).
+    *   **Output:** Prints progress messages. Suggests adding generated platform rule directories/files (including `.github/copilot-instructions.md`) to `.gitignore`. Recommends committing `memory/`, `tools/`, `env.example`, and `requirements.txt` to version control. Informs the user that `project_rules/` will be managed by the script (and removed by `clean-rules`).
 
 *   **`sync <target_repo_path>`**
     *   **Action:** Reads rules from `<target_repo_path>/project_rules/`. Deletes any existing Target Platform Rules directories/files (including `.github/copilot-instructions.md`). Regenerates the Target Platform Rules for all supported platforms.
@@ -49,8 +50,8 @@ This document outlines the design for a new Python script, `src/manage_rules.py`
         1.  The generated Target Platform Rules directories/files (including the `.github/` directory if it was created/managed by this script for `copilot-instructions.md`).
         2.  The `project_rules/` directory.
         3.  The `memory/` directory.
-        4.  The `tools/` directory.
-    *   **Important:** This command **MUST prompt for user confirmation** before proceeding, clearly stating that `memory/` and `tools/` (which may contain user customizations) will be deleted.
+        4.  The `tools/` directory. The `env.example` and `requirements.txt` file (environment for tools).
+    *   **Important:** This command **MUST prompt for user confirmation** before proceeding, clearly stating that `memory/`, `tools/`, `env.example`, and `requirements.txt` (which may contain user customizations) will be deleted.
     *   **Use Case:** Completely uninstall all components of the framework from the target repository.
     *   **Output:** Prints progress messages. Includes a prominent warning and confirmation prompt before deletion, and a summary of what was removed.
 
@@ -65,7 +66,7 @@ This document outlines the design for a new Python script, `src/manage_rules.py`
 *   Adapt file processing logic from `copy_rules.py`.
 *   Implement robust path handling and error checking.
 *   Provide clear user feedback.
-*   `install`: Ensure non-destructive copying for `memory/` and `tools/`. Ensure `project_rules/` is freshly populated from the chosen rule set (e.g., clear and copy, or overwrite with warning).
+*   `install`: Ensure non-destructive copying for `memory/`, `tools/`, `env.example`, and `requirements.txt`. Ensure `project_rules/` is freshly populated from the chosen rule set (e.g., clear and copy, or overwrite with warning).
 *   `clean-all`: **Must** include a user confirmation step.
 *   Directory names for framework components (e.g., `rule_sets` in source, `project_rules`, `memory`, `tools` in target, `memory_starters`, `tool_starters` in source) will be hardcoded as constants within the script.
 *   The `concatenate_ordered_files` helper function should ensure parent directories for the destination file are created (e.g., `.github/` for `copilot-instructions.md`).
