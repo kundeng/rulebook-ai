@@ -442,6 +442,33 @@ def handle_clean_all(args):
     return 0
 
 
+def handle_list_rules(args):
+    source_rule_sets_main_dir = os.path.join(PROJECT_FRAMEWORK_ROOT, SOURCE_RULE_SETS_DIR)
+    print(f"--- Listing available rule sets from: {source_rule_sets_main_dir} ---")
+
+    if not os.path.isdir(source_rule_sets_main_dir):
+        print(f"Error: Source rule sets directory '{source_rule_sets_main_dir}' not found.")
+        return 1
+
+    available_rule_sets = []
+    for item_name in sorted(os.listdir(source_rule_sets_main_dir)):
+        item_path = os.path.join(source_rule_sets_main_dir, item_name)
+        if os.path.isdir(item_path):
+            # Ignore directories starting with '.' or '_' (e.g., .git, __pycache__)
+            if not item_name.startswith('.') and not item_name.startswith('_'):
+                available_rule_sets.append(item_name)
+    
+    if not available_rule_sets:
+        print("No rule sets found.")
+    else:
+        print("\nAvailable rule sets:")
+        for rule_set_name in available_rule_sets:
+            print(f"  - {rule_set_name}")
+    
+    print("\n--- Listing complete ---")
+    return 0
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="Manage AI assistant rule sets, project memory banks, and supporting tools."
@@ -484,6 +511,13 @@ def main():
     )
     clean_all_parser.add_argument("target_repo_path", help="Path to the target repository.")
     clean_all_parser.set_defaults(func=handle_clean_all)
+
+    # List-rules command
+    list_rules_parser = subparsers.add_parser(
+        "list-rules",
+        help="List all available rule sets that can be installed."
+    )
+    list_rules_parser.set_defaults(func=handle_list_rules)
 
     args = parser.parse_args()
     

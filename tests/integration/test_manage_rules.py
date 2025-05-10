@@ -193,3 +193,29 @@ def test_clean_all_with_confirmation_no(script_runner, tmp_path):
     assert (tmp_target_repo_root / TARGET_MEMORY_BANK_DIR).is_dir()
     # [TODO] test message too fragile, figure out new test ways
     # assert "Clean operation cancelled." in result.stdout
+
+def test_list_rules(script_runner, tmp_source_repo_root): # tmp_source_repo_root fixture ensures rule_sets exist
+    """Test the `list-rules` command."""
+    # tmp_source_repo_root (from conftest.py) creates:
+    # - rule_sets/light-spec
+    # - rule_sets/heavy-spec
+    # - rule_sets/empty-ruleset (which is a directory)
+    # - rule_sets/.hidden_ruleset (should be ignored)
+    # - rule_sets/_private_ruleset (should be ignored)
+    # - rule_sets/not_a_dir_ruleset.txt (should be ignored)
+
+
+    result = script_runner(["list-rules"])
+    assert result.returncode == 0, f"Script failed. STDERR:\n{result.stderr}\nSTDOUT:\n{result.stdout}"
+
+    stdout = result.stdout
+    assert "Available rule sets:" in stdout
+    assert "- heavy-spec" in stdout    # From conftest.py
+    assert "- light-spec" in stdout    # From conftest.py
+    
+    # Ensure ignored items are not listed
+    assert ".hidden_ruleset" not in stdout
+    assert "_private_ruleset" not in stdout
+    assert "not_a_dir_ruleset.txt" not in stdout
+    
+    assert "--- Listing complete ---" in stdout

@@ -62,22 +62,23 @@ def tmp_source_repo_root(tmp_path_factory):
 
 
 def _run_script_from_tmp_source(
-        tmp_source_root_path, 
-        command_args_list,    
-        tmp_target_path,      
-        confirm_input=None    
+        tmp_source_root_path,
+        command_args_list,
+        tmp_target_path=None, # Made optional
+        confirm_input=None
     ):
-    
+
     # Path to the manage_rules.py script WITHIN the temporary source structure
     script_to_run_path = tmp_source_root_path / TMP_SOURCE_SRC_DIR_NAME / COPIED_MANAGE_RULES_SCRIPT_NAME
-    
+
     full_command = [
         "python",
         str(script_to_run_path), # e.g., .../tmp_source_repo_0/src/manage_rules.py
-        *command_args_list,
-        str(tmp_target_path) 
+        *command_args_list
     ]
-    
+    if tmp_target_path: # Only add target_path if it's provided
+        full_command.append(str(tmp_target_path))
+
     # The Current Working Directory (CWD) is set to tmp_source_root_path.
     # When manage_rules.py (now in .../tmp_source_repo_0/src/) calculates its
     # PROJECT_FRAMEWORK_ROOT using os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
@@ -99,11 +100,11 @@ def _run_script_from_tmp_source(
 
 @pytest.fixture
 def script_runner(tmp_source_repo_root):
-    def runner_func(command_args_list, tmp_target_path_for_script, confirm_input=None):
+    def runner_func(command_args_list, tmp_target_path_for_script=None, confirm_input=None): # Made optional
         return _run_script_from_tmp_source(
             tmp_source_repo_root,
             command_args_list,
-            tmp_target_path_for_script,
+            tmp_target_path_for_script, # This can be None
             confirm_input
         )
     return runner_func
