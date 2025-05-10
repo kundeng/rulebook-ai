@@ -5,17 +5,17 @@
 * Bugs or ideas → open an **Issue** in the repo  
 * Anonymous feedback: [Go to the Google Form](https://docs.google.com/forms/d/e/1FAIpQLSeW57QtPEWIRhHY1iOb8f5KQZTGLSeeb_PN2iZLd0Aw_pVYxw/viewform?usp=header)
 
-## Supercharge Your AI Coding Workflow Across Cursor, CLINE, RooCode, and Windsurf
+## Supercharge Your AI Coding Workflow Across Cursor, CLINE, RooCode, Windsurf, and Github Copilot
 
 Tired of inconsistent AI behavior across different coding assistants? Struggling to maintain context and enforce best practices on complex projects? This template provides a robust, cross-platform framework designed to elevate your AI pair-programming experience.
 
-Leveraging established software engineering principles and a structured documentation system, this template ensures your AI assistants (like Cursor, CLINE, RooCode, and Windsurf) operate consistently, understand your project deeply, and follow optimal workflows. Move beyond simple prototypes and build sophisticated applications with AI partners that truly understand your project's architecture, requirements, and history.
+Leveraging established software engineering principles and a structured documentation system, this template ensures your AI assistants (like Cursor, CLINE, RooCode, Windsurf, and Github Copilot) operate consistently, understand your project deeply, and follow optimal workflows. Move beyond simple prototypes and build sophisticated applications with AI partners that truly understand your project's architecture, requirements, and history.
 
 ## Why Use This Template?
 
 *   **Consistent AI Behavior:** Define clear workflows (Plan, Implement, Debug) and principles for your AI, ensuring predictable and high-quality output regardless of the platform used.
 *   **Persistent Project Memory:** Implement a structured documentation system (`docs/`, `tasks/`) that acts as a shared "memory bank," providing deep context to the AI about requirements, architecture, technical decisions, and progress.
-*   **Cross-Platform Compatibility:** Designed from the ground up to work seamlessly with Cursor, CLINE, RooCode, and Windsurf, respecting their specific rule-loading mechanisms.
+*   **Cross-Platform Compatibility:** Designed from the ground up to work seamlessly with Cursor, CLINE, RooCode, Windsurf, and Github Copilot, respecting their specific rule-loading mechanisms.
 *   **Enforce Best Practices:** Integrate fundamental software engineering principles directly into the AI's instructions, promoting code quality, maintainability, and structured development.
 *   **Reduced Setup Time:** Get started quickly with a pre-configured structure and ruleset, adaptable to your specific project needs.
 *   **Optimized for Complex Projects:** The structured memory and workflow approach provides the necessary context and guidance for AI assistants working on more than just simple scripts or prototypes.
@@ -32,7 +32,7 @@ This template is particularly beneficial for:
 
 ## Key Features (Benefits-Focused)
 
-1.  **Work Seamlessly Across Platforms:** Native support and configuration guidance for Cursor, CLINE, RooCode, and Windsurf ensures your rules work consistently wherever you code.
+1.  **Work Seamlessly Across Platforms:** Native support and configuration guidance for Cursor, CLINE, RooCode, Windsurf, and Github Copilot ensures your rules work consistently wherever you code.
 2.  **Maintain Consistent AI Context:** The structured "Memory Bank" (core documentation files) provides deep, persistent context, reducing repetitive explanations and improving AI understanding.
 3.  **Enforce Software Engineering Best Practices:** Guide your AI to follow established principles for planning, implementation, debugging, modularity, and testing.
 4.  **Optimize Token Usage:** Rules are organized to leverage platform-specific loading mechanisms (where available) to minimize unnecessary token consumption.
@@ -49,6 +49,7 @@ This template repository serves as the central source for master rule sets. To u
 *   **Target Project Rules Directory:** A folder named **`project_rules/`** created *inside your Target Repo* by the `install` command. It holds the specific rule files for *your* project, copied from a chosen set in the Source Template Repo's `rule_sets/` directory. This folder is used by the `sync` command and **removed by the `clean-rules` command**. It is managed by the script, though you can version control it for manual backups if desired.
 *   **Target Memory Bank Directory:** A folder named **`memory/`** created *inside your Target Repo* during installation. It's populated with project-specific memory documents from the Source Template Repo's `memory_starters/` (new starter files are copied if they don't exist; existing files are **not** overwritten). **This folder should be version controlled in your Target Repo.**
 *   **Target Tools Directory:** A folder named **`tools/`** created *inside your Target Repo* during installation. It's populated with utility scripts or configurations from the Source Template Repo's `tool_starters/` (new starter files/subdirectories are copied if they don't exist; existing files/subdirectories are **not** overwritten). **This folder should be version controlled in your Target Repo.**
+*   **Target `env.example` and `requirements.txt`:** The `env.example` and `requirements.txt` files are copied from the Source Template Repo's root to *your Target Repo's root* during installation (non-destructively; existing files are preserved). **These files should be version controlled in your Target Repo.**
 *   **Target Platform Rules:** Generated, platform-specific rule directories/files (e.g., `.cursor/rules/`, `.clinerules/`, `.roo/`, `.windsurfrules`, `.github/copilot-instructions.md`) created *inside your Target Repo* by the `sync` command using `project_rules/` as input. **These folders/files should be added to your Target Repo's `.gitignore` file.**
 
 **Workflow & Commands:**
@@ -77,10 +78,11 @@ This template repository serves as the central source for master rule sets. To u
         *   Copies the specified rule set (default: `light-spec`) from this repo's `rule_sets/<rule_set_name>/` to `~/git/my_cool_project/project_rules/`. (Overwrites `project_rules/` if it exists, with a warning).
         *   Copies content from this repo's `memory_starters/` to `~/git/my_cool_project/memory/` (non-destructively; existing files are preserved).
         *   Copies content from this repo's `tool_starters/` to `~/git/my_cool_project/tools/` (non-destructively; existing files/subdirectories are preserved).
+        *   Copies `env.example` and `requirements.txt` from this repo's root to `~/git/my_cool_project/` (non-destructively; existing files are preserved).
         *   Automatically runs the `sync` command to generate the initial Target Platform Rules (e.g., `.cursor/rules/`, `.clinerules/`, `.github/copilot-instructions.md`) inside `~/git/my_cool_project/` based on the new `project_rules/`.
     *   **Follow Up:**
         *   Add the generated directories/files (e.g., `.cursor/`, `.clinerules/`, `.roo/`, `.windsurfrules`, `.github/copilot-instructions.md`) to your target project's (`~/git/my_cool_project/`) `.gitignore`.
-        *   Commit the newly created/updated `memory/` and `tools/` directories within your target project.
+        *   Commit the newly created/updated `memory/`, `tools/`, `env.example`, and `requirements.txt` files/directories within your target project.
         *   Note: The `project_rules/` directory is managed by this script (it's replaced by `install` and removed by `clean-rules`).
 
 3.  **Customize Rules (In Your Target Project's `project_rules/` - Advanced):**
@@ -116,15 +118,15 @@ This template repository serves as the central source for master rule sets. To u
     *   **Action:** Removes `~/git/my_cool_project/project_rules/` and the generated rule directories/files (e.g., `.cursor/`, `.clinerules/`, `.github/copilot-instructions.md`). The `memory/` and `tools/` directories are **not** affected.
 
 7.  **Clean Up All Framework Components (Full Uninstall):**
-    *   To completely remove *all* framework components (Target Platform Rules, `project_rules/`, `memory/`, and `tools/`) from your target project, use the `clean-all` command.
-    *   **Important:** This command will prompt for confirmation because it removes the `memory/` and `tools/` directories, which may contain your project-specific customizations.
+    *   To completely remove *all* framework components (Target Platform Rules, `project_rules/`, `memory/`, `tools/`, `env.example`, and `requirements.txt`) from your target project, use the `clean-all` command.
+    *   **Important:** This command will prompt for confirmation because it removes `memory/`, `tools/`, `env.example`, and `requirements.txt`, which may contain your project-specific customizations.
     *   **Command:**
         ```bash
         # Syntax: python src/manage_rules.py clean-all <path_to_your_target_repo>
         # Example:
         python src/manage_rules.py clean-all ~/git/my_cool_project
         ```
-    *   **Action:** After confirmation, removes `project_rules/`, `memory/`, `tools/`, and all generated rule directories/files from `~/git/my_cool_project/`.
+    *   **Action:** After confirmation, removes `project_rules/`, `memory/`, `tools/`, `env.example`, `requirements.txt`, and all generated rule directories/files from `~/git/my_cool_project/`.
 
 ### Environment Setup (Using Conda)
 
@@ -160,7 +162,7 @@ With the environment set up and activated, you can run the Python tools as descr
 ## Rule Loading Summary (Based on Official Docs & Template Implementation)
 For detail, go to [rule_loading_summary.md](memory/docs/user_guide/rule_loading_summary.md)
 
-# Tips in General Using Cursor, CLINE, RooCode, Windsurf:
+# Tips in General Using Cursor, CLINE, RooCode, Windsurf, and Github Copilot:
 ## CLINE/RooCode:
 1. Every time you change Roo Code **mode** in the middle of an task, it changes the system prompt and reset the prompt caching.
 
@@ -172,7 +174,7 @@ For detail, go to [rule_template.md](memory/docs/user_guide/rule_template.md)
 
 # Rule Files:
 
-This template relies on a carefully orchestrated system of directories and files for Cursor, Windsurf, CLINE and RooCode Within each environment, there are exactly three crucial files that shape how the AI operates:
+This template relies on a carefully orchestrated system of directories and files for Cursor, Windsurf, Github Copilot, CLINE and RooCode Within each environment, there are exactly three crucial files that shape how the AI operates:
 
 1. <strong>rules</strong> –
    Thois can house generic rules. Bring your own flavour to this minimal document. Below are three files: (a) plan, (b) implement, (c) debug, that defines workflows for these three tasks based on refining 100s of rule repositories and software engineering best practices:
@@ -362,7 +364,7 @@ This structure ensures that different aspects of the project, such as code, test
 
 ## Advantages of Using the Rules Template
 
-1.  **Cross-Platform Compatibility:** Usable seamlessly with Cursor, CLINE, RooCode, Windsurf, and other AI coding assistants.
+1.  **Cross-Platform Compatibility:** Usable seamlessly with Cursor, CLINE, RooCode, Windsurf, Github Copilot, and other AI coding assistants.
 2.  **Context Sharing:** Enables context sharing and consistent workflows across different AI assistants, facilitating collaborative and platform-agnostic development.
 3.  **Up-to-Date Compatibility:** Designed to be compatible with the latest versions of Cursor and CLINE, ensuring long-term usability.
 4.  **Automated Documentation Generation:**  Provides the foundation for automatically generating comprehensive project documentation in PDF format, streamlining documentation efforts.
