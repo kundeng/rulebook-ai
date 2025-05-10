@@ -44,35 +44,51 @@ This template repository serves as the central source for master rule sets. To u
 
 **Core Concepts:**
 
-*   **Source Template Repo:** This repository, containing master rules (e.g., `rules_template/light-spec/`) and the `manage_rules.py` script.
+*   **Source Template Repo:** This repository, containing master rule sets (in `rule_sets/`), master memory bank starter documents (in `memory_starters/`), master tool starters (in `tool_starters/`), and the `manage_rules.py` script.
 *   **Target Repo:** Your project repository (e.g., `~/git/my_cool_project`) where you want to use the rules.
-*   **Target Source of Truth:** A folder created *inside your Target Repo* (default: `project_rules_template/`) by the `install` command. It holds the specific rule files for *your* project, initially copied from the Source Template Repo. **Commit this folder to your Target Repo's version control.**
-*   **Target Platform Rules:** Generated, platform-specific rule directories (e.g., `.cursor/rules/`, `.clinerules`, `.roo/`, `.windsurfrules`) created *inside your Target Repo* by the `sync` command. **Add these folders to your Target Repo's `.gitignore` file.**
+*   **Target Project Rules Directory:** A folder named **`project_rules/`** created *inside your Target Repo* by the `install` command. It holds the specific rule files for *your* project, copied from a chosen set in the Source Template Repo's `rule_sets/` directory. This folder is used by the `sync` command and **removed by the `clean-rules` command**. It is managed by the script, though you can version control it for manual backups if desired.
+*   **Target Memory Bank Directory:** A folder named **`memory/`** created *inside your Target Repo* during installation. It's populated with project-specific memory documents from the Source Template Repo's `memory_starters/` (new starter files are copied if they don't exist; existing files are **not** overwritten). **This folder should be version controlled in your Target Repo.**
+*   **Target Tools Directory:** A folder named **`tools/`** created *inside your Target Repo* during installation. It's populated with utility scripts or configurations from the Source Template Repo's `tool_starters/` (new starter files/subdirectories are copied if they don't exist; existing files/subdirectories are **not** overwritten). **This folder should be version controlled in your Target Repo.**
+*   **Target Platform Rules:** Generated, platform-specific rule directories/files (e.g., `.cursor/rules/`, `.clinerules/`, `.roo/`, `.windsurfrules`, `.github/copilot-instructions.md`) created *inside your Target Repo* by the `sync` command using `project_rules/` as input. **These folders/files should be added to your Target Repo's `.gitignore` file.**
 
 **Workflow & Commands:**
 
 *(Run these commands from your terminal, inside your checked-out copy of **this** `rules_template` repository)*
 
-1.  **Install Rules into Your Project:**
-    *   Use the `install` command to copy a rule template from this repo into your target project and perform an initial sync.
+1.  **List Available Rule Sets (Optional):**
+    *   Use the `list-rules` command to see which rule sets are available for installation from this Source Template Repo.
     *   **Command:**
         ```bash
-        # Syntax: python src/manage_rules.py install <path_to_your_target_repo>
-        # Example:
+        python src/manage_rules.py list-rules
+        ```
+    *   **Action:** Scans the `rule_sets/` directory in this repository and lists all available rule set names.
+
+2.  **Install Rules and Framework Components into Your Project:**
+    *   Use the `install` command to copy a chosen rule set, memory starters, and tool starters from this repo into your target project, and then perform an initial sync.
+    *   **Command:**
+        ```bash
+        # Syntax: python src/manage_rules.py install <path_to_your_target_repo> [--rule-set <rule_set_name>]
+        # Example (using default 'light-spec' rule set):
         python src/manage_rules.py install ~/git/my_cool_project
+        # Example (specifying a rule set):
+        python src/manage_rules.py install ~/git/my_cool_project --rule-set heavy-spec
         ```
     *   **Action:**
-        *   Copies `rules_template/light-spec/` (or another specified template) to `~/git/my_cool_project/project_rules_template/`.
-        *   Generates the initial Target Platform Rules (e.g., `.cursor/rules/`, `.clinerules`) inside `~/git/my_cool_project/` based on the new `project_rules_template/`.
+        *   Copies the specified rule set (default: `light-spec`) from this repo's `rule_sets/<rule_set_name>/` to `~/git/my_cool_project/project_rules/`. (Overwrites `project_rules/` if it exists, with a warning).
+        *   Copies content from this repo's `memory_starters/` to `~/git/my_cool_project/memory/` (non-destructively; existing files are preserved).
+        *   Copies content from this repo's `tool_starters/` to `~/git/my_cool_project/tools/` (non-destructively; existing files/subdirectories are preserved).
+        *   Automatically runs the `sync` command to generate the initial Target Platform Rules (e.g., `.cursor/rules/`, `.clinerules/`, `.github/copilot-instructions.md`) inside `~/git/my_cool_project/` based on the new `project_rules/`.
     *   **Follow Up:**
-        *   Add the generated directories (e.g., `.cursor/`, `.clinerules`, `.roo/`, `.windsurfrules`) to your target project's (`~/git/my_cool_project/`) `.gitignore`.
-        *   Commit the newly created `project_rules_template/` directory within your target project.
+        *   Add the generated directories/files (e.g., `.cursor/`, `.clinerules/`, `.roo/`, `.windsurfrules`, `.github/copilot-instructions.md`) to your target project's (`~/git/my_cool_project/`) `.gitignore`.
+        *   Commit the newly created/updated `memory/` and `tools/` directories within your target project.
+        *   Note: The `project_rules/` directory is managed by this script (it's replaced by `install` and removed by `clean-rules`).
 
-2.  **Customize Rules (In Your Target Project):**
-    *   Modify the rule files directly within the `project_rules_template/` directory *inside your target project* (`~/git/my_cool_project/project_rules_template/`). This is where you tailor the rules for *that specific project*.
+3.  **Customize Rules (In Your Target Project's `project_rules/` - Advanced):**
+    *   If you need to make project-specific modifications to the rule sources *before* they are processed by `sync`, you can modify files directly within the `project_rules/` directory *inside your target project* (`~/git/my_cool_project/project_rules/`).
+    *   **Important:** Be aware that the `clean-rules` command will remove the entire `project_rules/` directory. If you make customizations here, ensure you have a backup or understand they will be lost if you run `clean-rules` and then `install` again. For persistent project-specific AI guidance, focus on customizing the `memory/` and `tools/` directories.
 
-3.  **Synchronize Customizations:**
-    *   After editing files in your target project's `project_rules_template/` directory, run the `sync` command to update the Target Platform Rules used by the AI assistants.
+4.  **Synchronize Customizations (if `project_rules/` was manually changed):**
+    *   If you've manually edited files in your target project's `project_rules/` directory, run the `sync` command to update the Target Platform Rules used by the AI assistants.
     *   **Command:**
         ```bash
         # Syntax: python src/manage_rules.py sync <path_to_your_target_repo>
@@ -80,24 +96,35 @@ This template repository serves as the central source for master rule sets. To u
         python src/manage_rules.py sync ~/git/my_cool_project
         ```
     *   **Action:**
-        *   Reads the current rules from `~/git/my_cool_project/project_rules_template/`.
-        *   Deletes existing Target Platform Rules (e.g., `.cursor/rules/`, `.clinerules`).
-        *   Regenerates the Target Platform Rules based on the updated content in `project_rules_template/`.
+        *   Reads the current rules from `~/git/my_cool_project/project_rules/`.
+        *   Deletes existing Target Platform Rules (e.g., `.cursor/rules/`, `.clinerules/`).
+        *   Regenerates the Target Platform Rules based on the updated content in `project_rules/`.
 
-4.  **Start Coding:**
+5.  **Start Coding:**
     *   Use your AI coding assistants (Cursor, CLINE, etc.) in your target project. They will now use the synchronized, platform-specific rules.
     *   **Initial Prompt Suggestion (for setting up memory in a new project):**
         > Using the project's custom rules, initialize the Memory Bank files (docs/, tasks/) based on the project's current state or initial requirements. Follow the structure and instructions defined in the rules for documenting project context.
 
-5.  **Clean Up (Remove Rules from Target Project):**
-    *   To completely remove the rules framework (both the Target Source of Truth and the generated Platform Rules) from your target project, use the `clean` command.
+6.  **Clean Up Rules (Preserving Memory & Tools):**
+    *   To remove the generated Target Platform Rules and the `project_rules/` directory from your target project, while keeping your customized `memory/` and `tools/` directories intact, use the `clean-rules` command.
     *   **Command:**
         ```bash
-        # Syntax: python src/manage_rules.py clean <path_to_your_target_repo>
+        # Syntax: python src/manage_rules.py clean-rules <path_to_your_target_repo>
         # Example:
-        python src/manage_rules.py clean ~/git/my_cool_project
+        python src/manage_rules.py clean-rules ~/git/my_cool_project
         ```
-    *   **Action:** Removes `~/git/my_cool_project/project_rules_template/` and the generated rule directories (e.g., `.cursor/`, `.clinerules`).
+    *   **Action:** Removes `~/git/my_cool_project/project_rules/` and the generated rule directories/files (e.g., `.cursor/`, `.clinerules/`, `.github/copilot-instructions.md`). The `memory/` and `tools/` directories are **not** affected.
+
+7.  **Clean Up All Framework Components (Full Uninstall):**
+    *   To completely remove *all* framework components (Target Platform Rules, `project_rules/`, `memory/`, and `tools/`) from your target project, use the `clean-all` command.
+    *   **Important:** This command will prompt for confirmation because it removes the `memory/` and `tools/` directories, which may contain your project-specific customizations.
+    *   **Command:**
+        ```bash
+        # Syntax: python src/manage_rules.py clean-all <path_to_your_target_repo>
+        # Example:
+        python src/manage_rules.py clean-all ~/git/my_cool_project
+        ```
+    *   **Action:** After confirmation, removes `project_rules/`, `memory/`, `tools/`, and all generated rule directories/files from `~/git/my_cool_project/`.
 
 ### Environment Setup (Using Conda)
 
@@ -131,23 +158,7 @@ Before running the tools described in the rules, set up the Conda environment:
 With the environment set up and activated, you can run the Python tools as described in the rules files (e.g., `python tools/llm_api.py ...`).
 
 ## Rule Loading Summary (Based on Official Docs & Template Implementation)
-
-| AI Assistant | Rule Type         | Official Location & Name(s)                              | Official Loading Mechanism                                                                                                                                                           | Template Implementation & Notes                                                                                                                                                                                          |
-| :----------- | :---------------- | :------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Cursor**   | Global            | Cursor Settings ("Rules for AI")                         | Always applied.                                                                                                                                                                        | N/A (User setting)                                                                                                                                                                                       |
-|              | Project           | `.cursor/rules/` (contains `.mdc` files)                 | Automatic loading based on file `globs`.                                                                                                                                               | Template uses this directory structure correctly.                                                                                                                                                        |
-|              | Project (Legacy)  | `.cursorrules` (root)                                    | Loaded for backward compatibility.                                                                                                                                                     | Not used by this template.                                                                                                                                                                               |
-| **CLINE**    | Global            | Cline Extension Settings ("Custom Instructions")         | Always applied first.                                                                                                                                                                  | **Template Workaround:** Intended for mode-specific rules via manual copy-paste from `clinerules/plan`, `implement`, `debug`. **Currently unreliable due to UI bug.**                                               |
-|              | Project           | `.clinerules` (root)                                     | Appended after Global instructions.                                                                                                                                                    | Template provides `.clinerules` for general project rules & **AI guidance** on which mode-specific file (`clinerules/plan`, etc.) to reference internally.                                                               |
-|              | Project           | `.clinerules/` directory                                 | Files loaded recursively and merged after Global instructions. Takes precedence over single `.clinerules` file.                                                                        | Officially supported for general rules. Template's `clinerules/` contents (`plan`, etc.) are primarily referenced via AI guidance in `.clinerules` due to lack of native mode-specific file loading & UI bug. |
-| **RooCode**  | Global            | RooCode Prompts Tab ("Custom Instructions for All Modes")  | Applied after Language Preference (if set).                                                                                                                                            | N/A (User setting)                                                                                                                                                                                       |
-|              | Mode (Global)     | RooCode Prompts Tab ("Mode-specific Custom Instructions")  | Applied after Global instructions for the specific mode.                                                                                                                               | N/A (User setting)                                                                                                                                                                                       |
-|              | Mode (Workspace)  | `.roo/rules-{modeSlug}/` directory                       | Preferred method. Files loaded alphabetically after Global & Mode (Prompts Tab) instructions. Takes precedence over `.roorules-{modeSlug}` file.                                      | **Template uses incorrect `.clinerules-{mode}` naming.** Files need renaming/moving to `.roo/rules-{modeSlug}/` (e.g., `.roo/rules-architect/`) to work. (See To-Do #1)                                   |
-|              | Mode (Workspace)  | `.roorules-{modeSlug}` (root)                            | Fallback method if `.roo/rules-{modeSlug}/` is empty/missing.                                                                                                                          | Not used by this template.                                                                                                                                                                               |
-|              | Workspace         | `.roo/rules/` directory                                  | Preferred method. Files loaded alphabetically after all Mode instructions. Takes precedence over `.roorules` file.                                                                     | **Template uses incorrect `.clinerules` naming.** General rules (memory, dir-structure) should be moved here. (See To-Do #1)                                                                         |
-|              | Workspace         | `.roorules` (root)                                       | Fallback method if `.roo/rules/` is empty/missing.                                                                                                                                     | Not used by this template.                                                                                                                                                                               |
-| **Windsurf** | Global            | `global_rules.md` (via Windsurf Settings)                | Always applied first. Max 6000 chars.                                                                                                                                                  | N/A (User setting)                                                                                                                                                                                       |
-|              | Workspace         | `.windsurfrules` (root)                                  | Applied after Global rules. Max 6000 chars. Total rules capped at 12000 chars.                                                                                                         | Template does not yet provide an example `.windsurfrules` file (Task 5.2).                                                                                                                               |
+For detail, go to [rule_loading_summary.md](memory/docs/user_guide/rule_loading_summary.md)
 
 # Tips in General Using Cursor, CLINE, RooCode, Windsurf:
 ## CLINE/RooCode:
@@ -157,50 +168,7 @@ With the environment set up and activated, you can run the Python tools as descr
 
 This template provides a robust and adaptable framework of rules designed to enhance the performance of AI coding assistants like Cursor and CLINE. Rooted in established software engineering principles and documentation best practices, it ensures consistent and effective AI-assisted development across different platforms.
 
-## Directory Structure
-
-Below is the top-level directory structure from <em>clinerules/directory-structure</em>. This structure is central to how the project is organized:
-
-```mermaid
-flowchart TD
-    Root[Project Root]
-    Root --> Docs[docs/]
-    Root --> Tasks[tasks/]
-    Root --> Cursor[.cursor/rules/]
-    Root --> CLINE[.clinerules]    
-    Root --> SourceCode[src/]
-    Root --> Test[test/]
-    Root --> Utils[utils/]
-    Root --> Config[config/]
-    Root --> Data[data/]
-    Root --> Other[Other Directories]
-```
-
-• <code>.cursor/rules/</code> – Custom rules for Cursor  
-• <code>.clinerules/</code> – Custom rules for CLINE  
-• <code>docs/</code> – Project documentation, architecture, and reference materials  
-• <code>tasks/</code> – Task plans, active context, RFCs, and general to-do items  
-• <code>src/</code> – Main source code  
-• <code>test/</code> – Testing suite  
-• <code>utils/</code> – Utility scripts or libraries  
-• <code>config/</code> – Configuration files  
-• <code>data/</code> – Data resources  
-• (and potentially more directories as the project grows)
-
-## Core Principles
-The main aim of this template is to have rules that are fundamentally backed by software engineering concepts and have a documentation that is usually followed in large software teams.
-
-The same documentation will form the context for the AI Coding.
-Now, these same rules have been written for Cursor, CLINE and Windsurf custom rules format. Thus, having a uniform rule based across these systems. And as the context is saved as documentation in the files, so it is platform agnostic.
-
-This template is built upon two fundamental pillars:
-
-**a) Software Engineering Best Practices:**  Embracing time-tested methodologies to ensure code quality, maintainability, and efficiency.
-
-**b) Software Development Documentation:**  Leveraging comprehensive documentation to provide context, guide development, and serve as persistent memory for AI coding assistants.
-
-By combining these principles, the Rules Template aims to provide a structured and reliable approach to AI-assisted coding.
-And based on the popular knowledge and research in these two fileds, we came up with this template.
+For detail, go to [rule_template.md](memory/docs/user_guide/rule_template.md)
 
 # Rule Files:
 
@@ -405,15 +373,6 @@ This structure ensures that different aspects of the project, such as code, test
 9.  **Potential for Auto-Evolving Rules:**  Opens up possibilities for AI-driven rule evolution and refinement, allowing the template to adapt and improve over time.
 
 By adhering to the principles and structure outlined in this Rules Template, development teams can leverage AI coding assistants more effectively, ensuring consistency, quality, and maintainability across their projects.
-
-## To-Do:
-- [x] 1: **Adapt template files for RooCode's official format.** Rename/move `.clinerules` content (memory, dir-structure) and `.clinerules-{mode}` files (plan, implement, debug) into the correct `.roo/rules/` and `.roo/rules-{modeSlug}/` structure.
-- [x] 2: Add example content to each file (Task 3 in tasks_plan.md)
-- [ ] 3: Add FAQs (Task 4 in tasks_plan.md)
-- [x] 4: Investigate RooCode incompatibility claim (Task 6 in tasks_plan.md - *Note: This claim in the old README seems unfounded based on official docs*).
-- [x] 5: Explore native CLINE loading alternatives (Task 7 in tasks_plan.md)
-- [x] 6: Improve `.clinerules` guidance (Task 9 in tasks_plan.md)
-- [x] 7: Create example `.windsurfrules` file (Task 5.2 in tasks_plan.md)
 
 ## Additional Notes:
 
