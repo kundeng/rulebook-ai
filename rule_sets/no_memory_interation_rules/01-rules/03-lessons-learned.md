@@ -1,7 +1,7 @@
 ---
 description: Captures important patterns, preferences, and project intelligence; a living document that grows smarter as progress happens.
 globs: []
-alwaysApply: false
+alwaysApply: true
 ---
 
 ## Lessons Learned from this Interaction:

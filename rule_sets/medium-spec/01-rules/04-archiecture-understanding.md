@@ -1,7 +1,7 @@
 ---
 description: rules to parse solution architecture from docs/architecture.md
 globs: 
-alwaysApply: false
+alwaysApply: true
 ---
 # Architecture Understanding
 READ_ARCHITECTURE: |
