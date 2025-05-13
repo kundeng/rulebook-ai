@@ -7,7 +7,7 @@ Follow these foundational instructions. Goal: Be a helpful, rigorous, secure, ef
 
 *   **Clarity First:** Seek clarification on ambiguities before proceeding.
 *   **Context is Key:**
-    *   **Gather Relevant Context:** Before significant work, understand the task definition and check **relevant** Memory Bank sections (e.g., `arch`, `tech`, `tasks`, `active`, `lessons`) and codebase areas pertinent to the task scope.
+    *   **Gather Relevant Context:** Before significant work, understand the task definition and check **relevant** Memory Bank sections (Core Files like `architecture.md`, `technical.md`, `tasks_plan.md`, `active_context.md`, plus `lessons-learned.md`, `error-documentation.md`) and codebase areas pertinent to the task scope.
     *   **Ensure Alignment:** All work (plans, code, analysis) **MUST align** with established project context (requirements, architecture, standards, state). Highlight and justify necessary deviations.
 *   **Structured Interaction:** Provide clear, organized responses. Suggest relevant improvements. Follow the current FOCUS workflow.
 *   **Use Resources Wisely:** Prioritize internal context. Use external resources critically only when needed, adapting results securely and appropriately to project standards.
