@@ -38,6 +38,34 @@ This template is particularly beneficial for:
 4.  **Optimize Token Usage:** Rules are organized to leverage platform-specific loading mechanisms (where available) to minimize unnecessary token consumption.
 5.  **Latest Compatibility:** Designed and tested with recent versions of the supported AI assistants.
 
+## Leveraging Your AI's Enhanced Brain: Example Interactions
+
+Once Rulebook-AI is set up with a chosen rule set (in `project_rules/`) and the memory bank (in `memory/`), you can interact with your AI coding assistant much more effectively. Here are a few crucial examples of how to leverage this enhanced context and guidance. Remember to use your AI assistant's specific syntax for referencing files (e.g., `@filename` in Cursor or Copilot).
+
+1.  **Maintain Project Structure & Planning:**
+    *   **Goal:** Use the AI to help keep your project documentation and task lists up-to-date.
+    *   **Example Prompt (in your AI chat):**
+        ```
+        Based on section 3.2 of @memory/docs/product_requirement_docs.md, create three new tasks in @memory/tasks/tasks_plan.md for the upcoming 'User Profile Redesign' feature. For each task, include a brief description, assign it a unique ID, and estimate its priority (High/Medium/Low).
+        ```
+    *   **Why this is important:** This demonstrates the AI actively participating in project management by updating the "memory bank" itself. It ensures your planning documents stay synchronized with insights derived from foundational requirements, turning the AI into a proactive assistant beyond just code generation.
+2.  **Retrieve Context-Specific Information Instantly:**
+    *   **Goal:** Quickly access key project details without manually searching through documents.
+    *   **Example Prompt (in your AI chat):**
+        ```
+        What is the current status of task 'API-003' as listed in @memory/tasks/tasks_plan.md? Also, remind me which database technology we decided on according to @memory/docs/architecture.md.
+        ```
+    *   **Why this is important:** This highlights the power of the "persistent memory bank." The AI acts as a knowledgeable team member, capable of quickly recalling specific project decisions, technical details, and task statuses, significantly improving your workflow efficiency.
+3.  **Implement Features with Deep Context & Guided Workflow:**
+    *   **Goal:** Guide the AI to develop code by following defined procedures and referencing precise project context.
+    *   **Example Prompt (in your AI chat):**
+        ```
+        Using the workflow defined in @project_rules/implement.md, please develop the `updateUserProfile` function. The detailed requirements for this function are specified under the 'User Profile Update' task in @memory/tasks/active_context.md. Ensure the implementation aligns with the API design guidelines found in @memory/docs/technical.md.
+        ```
+    *   **Why this is important:** This is the core development loop where Rulebook-AI shines. It shows the AI leveraging both the *procedural rules* (how to approach implementation, from `project_rules/\`) and the rich *contextual memory* (what to implement and its surrounding technical landscape, from `memory/\`). This leads to more accurate, consistent, and context-aware code generation, reducing rework and improving quality.
+
+These examples illustrate how providing structured rules and a persistent memory bank allows for more sophisticated and productive interactions with your AI coding assistant. Experiment with referencing different files from your `project_rules/\` and `memory/\` directories to best suit your workflow.
+
 ## Quickstart: Using this Template for AI Coding
 
 This template repository serves as the central source for master rule sets. To use these rules in your own projects, you'll utilize the `src/manage_rules.py` script provided within *this* repository.
@@ -174,7 +202,7 @@ For detail, go to [rule_template.md](memory/docs/user_guide/rule_template.md)
 
 # Rule Files:
 
-This template relies on a carefully orchestrated system of directories and files for Cursor, Windsurf, Github Copilot, CLINE and RooCode Within each environment, there are exactly three crucial files that shape how the AI operates:
+This template relies on a carefully orchestrated system of directories and files for Cursor, Windsurf, Github Copilot, CLINE and RooCode. These components work together to provide a consistent and context-aware experience with your AI assistant. The **'rule' files** (e.g., `plan.md`, `implement.md`, `debug.md` found within a chosen rule set like `light-spec/`) are designed to define *how your AI should approach tasks*. They dictate specific workflows for planning, coding, or debugging, rooted in software engineering best practices. These rules guide the AI's *process* and operational methodology. The **'memory' files** and the `memory/\` directory structure (populated from `memory_starters/\` during installation) are designed to provide the AI with *persistent, structured knowledge about your specific project*. This includes its requirements (@`memory/docs/product_requirement_docs.md`), architecture (@`memory/docs/architecture.md`), ongoing tasks (@`memory/tasks/tasks_plan.md`), and learned information. This forms the AI's *contextual understanding* and long-term project "memory." Within each environment, there are crucial files that shape how the AI operates:
 
 1. <strong>rules</strong> –
    Thois can house generic rules. Bring your own flavour to this minimal document. Below are three files: (a) plan, (b) implement, (c) debug, that defines workflows for these three tasks based on refining 100s of rule repositories and software engineering best practices:
@@ -223,7 +251,6 @@ For **Windsurf**, use `.windsurfrules` for workspace rules:
 .windsurfrules
 ```
 
-
 ## Key Files and Concepts
 
 This template is organized around three core files, each addressing a critical aspect of the development process:
@@ -260,7 +287,6 @@ So this five phased, solution strategy workflow is to be followed at every part 
 
 The `memory` files (located in `clinerules/memory` and `cursor/rules/memory.mdc`) establish a robust documentation system that serves as persistent memory for the project and the AI assistant. This system is inspired by standard software development documentation practices, including PRDs, architecture plans, technical specifications, and RFCs. So, keeping these software life-cycle documentation is as focus. We develop our memory bank to have these document in sync to provide the complete context for the project. We have few additional files for current context and task plan in tasks/.
 
-
 **Memory Files Structure:**
 
 The memory system is structured into Core Files (required) and Context Files (optional), forming a hierarchical knowledge base for the project.
@@ -291,27 +317,23 @@ flowchart TD
     TECH --o LIT
     TASKS --o RFC
 
-  
 ```
 
 **Core Files (Required):**
 
-  1.  **`product_requirement_docs.md` (docs/product_requirement_docs.md):** Product Requirement Document (PRD) or Standard Operating Procedure (SOP).
+1.  **`product_requirement_docs.md` (docs/product_requirement_docs.md):** Product Requirement Document (PRD) or Standard Operating Procedure (SOP).
     - Defines the project's purpose, problems it solves, core requirements, and goals.
     - Serves as the foundational document and source of truth for project scope.
 
     Product Requirement Documents (PRDs) are foundational blueprints in software development, defining what a product should achieve and guiding teams to align on scope, features, and objectives .
-
 
 2.  **`architecture.md` (docs/architecture.md):** System Architecture Document.
     - Outlines the system's design, component relationships, and dependencies.
 
     Software architecture documentation is a blueprint that captures design decisions, component interactions, and non-functional requirements.
 
-
 3.  **`technical.md` (docs/technical.md):** Technical Specifications Document.
     - Details the development environment, technologies used, key technical decisions, design patterns, and technical constraints.
-
 
 4.  **`tasks_plan.md` (tasks/tasks_plan.md):** Task Backlog and Project Progress Tracker.
     - Provides an in-depth list of tasks, tracks project progress, current status, and known issues.
@@ -333,7 +355,6 @@ flowchart TD
 
 2.  **`tasks/rfc/`:** Request for Comments (RFC) Directory.
     - Stores RFCs for individual tasks in LaTeX format (`tasks/rfc/*.tex`), providing detailed specifications and discussions for specific functionalities.
-
 
 **Additional Context:**
 
