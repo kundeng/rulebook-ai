@@ -11,7 +11,7 @@ flowchart TD
     Root --> Cursor[.cursor/rules/]
     Root --> CLINE[.clinerules]
     Root --> RooCode[.roo] 
-    Root --> Windsurf[.windsurfrules]
+    Root --> Windsurf[.windsurf/rules/]
     Root --> GithubCopilot[.github/copilot-instructions.md]   
     Root --> SourceCode[src/]
     Root --> Test[test/]
@@ -24,7 +24,7 @@ flowchart TD
 • <code>.cursor/rules/</code> – Custom rules for Cursor  
 • <code>.clinerules/</code> – Custom rules for CLINE
 • <code>.roo/</code> – Custom rules for Roo Code
-• <code>.windsurfrules</code> – Custom rules for Windsurf
+• <code>.windsurf/rules/</code> – Custom rules for Windsurf (directory containing individual .md rule files)
 • <code>.github/copilot-instructions.md</code> – Custom rules for Github Copilot  
 • <code>memory/docs/</code> – Project documentation, architecture, and reference materials  
 • <code>memory/tasks/</code> – Task plans, active context, RFCs, and general to-do items  

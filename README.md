@@ -78,7 +78,7 @@ This template repository serves as the central source for master rule sets. To u
 *   **Target Memory Bank Directory:** A folder named **`memory/`** created *inside your Target Repo* during installation. It's populated with project-specific memory documents from the Source Template Repo's `memory_starters/` (new starter files are copied if they don't exist; existing files are **not** overwritten). **This folder should be version controlled in your Target Repo.**
 *   **Target Tools Directory:** A folder named **`tools/`** created *inside your Target Repo* during installation. It's populated with utility scripts or configurations from the Source Template Repo's `tool_starters/` (new starter files/subdirectories are copied if they don't exist; existing files/subdirectories are **not** overwritten). **This folder should be version controlled in your Target Repo.**
 *   **Target `env.example` and `requirements.txt`:** The `env.example` and `requirements.txt` files are copied from the Source Template Repo's root to *your Target Repo's root* during installation (non-destructively; existing files are preserved). **These files should be version controlled in your Target Repo.**
-*   **Target Platform Rules:** Generated, platform-specific rule directories/files (e.g., `.cursor/rules/`, `.clinerules/`, `.roo/`, `.windsurfrules`, `.github/copilot-instructions.md`) created *inside your Target Repo* by the `sync` command using `project_rules/` as input. **These folders/files should be added to your Target Repo's `.gitignore` file.**
+*   **Target Platform Rules:** Generated, platform-specific rule directories/files (e.g., `.cursor/rules/`, `.clinerules/`, `.roo/`, `.windsurf/rules/`, `.github/copilot-instructions.md`) created *inside your Target Repo* by the `sync` command using `project_rules/` as input. **These folders/files should be added to your Target Repo's `.gitignore` file.**
 
 **Workflow & Commands:**
 
@@ -109,7 +109,7 @@ This template repository serves as the central source for master rule sets. To u
         *   Copies `env.example` and `requirements.txt` from this repo's root to `~/git/my_cool_project/` (non-destructively; existing files are preserved).
         *   Automatically runs the `sync` command to generate the initial Target Platform Rules (e.g., `.cursor/rules/`, `.clinerules/`, `.github/copilot-instructions.md`) inside `~/git/my_cool_project/` based on the new `project_rules/`.
     *   **Follow Up:**
-        *   Add the generated directories/files (e.g., `.cursor/`, `.clinerules/`, `.roo/`, `.windsurfrules`, `.github/copilot-instructions.md`) to your target project's (`~/git/my_cool_project/`) `.gitignore`.
+        *   Add the generated directories/files (e.g., `.cursor/`, `.clinerules/`, `.roo/`, `.windsurf/`, `.github/copilot-instructions.md`) to your target project's (`~/git/my_cool_project/`) `.gitignore`.
         *   Commit the newly created/updated `memory/`, `tools/`, `env.example`, and `requirements.txt` files/directories within your target project.
         *   Note: The `project_rules/` directory is managed by this script (it's replaced by `install` and removed by `clean-rules`).
 
@@ -246,9 +246,11 @@ For **RooCode**, the *correct* structure (which this template needs to adopt - S
 └── rules-debug/        # Mode-specific rules (e.g., debug)
     └── ...
 ```
-For **Windsurf**, use `.windsurfrules` for workspace rules:
+For **Windsurf**, rules are generated in the `.windsurf/rules/` directory, with each rule as a separate `.md` file.
 ```bash
-.windsurfrules
+.windsurf/rules/
+├── 01-example-rule.md
+└── 02-another-rule.md
 ```
 
 ## Key Files and Concepts
