@@ -94,6 +94,7 @@ This template repository serves as the central source for master rule sets. To u
 
 2.  **Install Rules and Framework Components into Your Project:**
     *   Use the `install` command to copy a chosen rule set, memory starters, and tool starters from this repo into your target project, and then perform an initial sync.
+        * **NOTE** for windsurf user, after install rules, activate rules in GUI (see this [bug fix](https://github.com/botingw/rulebook-ai/issues/13#issuecomment-2911331241))
     *   **Command:**
         ```bash
         # Syntax: python src/manage_rules.py install <path_to_your_target_repo> [--rule-set <rule_set_name>]
