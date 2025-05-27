@@ -47,12 +47,18 @@ def test_install_default_rule_set(script_runner, tmp_path): # tmp_path provides 
     assert (tmp_target_repo_root / ".cursor" / "rules").is_dir()
     assert (tmp_target_repo_root / ".clinerules").is_dir()
     assert (tmp_target_repo_root / ".roo").is_dir()
-    assert (tmp_target_repo_root / ".windsurfrules").is_file()
+    assert (tmp_target_repo_root / ".windsurf" / "rules").is_dir() # New: Check for .windsurf/rules directory
+    assert not (tmp_target_repo_root / ".windsurfrules").exists() # New: Assert old path does not exist
     gh_copilot_instructions_file = tmp_target_repo_root / ".github" / "copilot-instructions.md" # New
     assert gh_copilot_instructions_file.is_file()                                                # New
     
+    # Check for specific numbered .md files in .windsurf/rules
+    assert (tmp_target_repo_root / ".windsurf" / "rules" / "01-01-main-directive.md").is_file()
+    assert (tmp_target_repo_root / ".windsurf" / "rules" / "02-python_rules.md").is_file()
+    assert (tmp_target_repo_root / ".windsurf" / "rules" / "03-top_level_light_rule.md").is_file()
+
     # Check content of a generated file to ensure it's from the correct source rules
-    windsurf_content = (tmp_target_repo_root / ".windsurfrules").read_text()
+    windsurf_content = (tmp_target_repo_root / ".windsurf" / "rules" / "01-01-main-directive.md").read_text() # New: Read from new path
     assert "Test Light-spec: Main Directive" in windsurf_content
     gh_copilot_content = gh_copilot_instructions_file.read_text()                               # New
     assert "Test Light-spec: Main Directive" in gh_copilot_content                              # New
@@ -151,14 +157,14 @@ def test_clean_all_with_confirmation_yes(script_runner, tmp_path):
     assert not (tmp_target_repo_root / TARGET_MEMORY_BANK_DIR).exists()
     assert not (tmp_target_repo_root / TARGET_TOOLS_DIR).exists()
     assert not (tmp_target_repo_root / ".cursor").exists()
+    assert not (tmp_target_repo_root / ".cursor").exists()
+    assert not (tmp_target_repo_root / ".clinerules").exists() # Added assertion for .clinerules
+    assert not (tmp_target_repo_root / ".roo").exists() # Added assertion for .roo
+    assert not (tmp_target_repo_root / ".windsurf").exists() # New: Check for the .windsurf directory
+    # assert not (tmp_target_repo_root / ".windsurfrules").exists() # Ensure old path is removed - Deprecated by Windsurf
     assert not (tmp_target_repo_root / ".github").exists() # Assuming .github is removed if it only contained our file
     assert not (tmp_target_repo_root / "env.example").exists()
     assert not (tmp_target_repo_root / "requirements.txt").exists()
-    # [TODO] test message too fragile, figure out new test ways 
-    # assert "This will remove ALL framework components" in result.stdout
-
-    # [TODO] test message too fragile, figure out new test ways 
-    # assert "Clean operation complete." in result.stdout
 
 def test_clean_all_with_confirmation_no(script_runner, tmp_path):
     tmp_target_repo_root = tmp_path / "project_for_clean_all_no"

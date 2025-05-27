@@ -276,7 +276,7 @@ def handle_install(args):
     print(f"   .cursor/rules/")
     print(f"   .clinerules/")
     print(f"   .roo/")
-    print(f"   .windsurfrules")
+    print(f"   .windsurf/")
     print(f"   {TARGET_GITHUB_COPILOT_DIR}/{TARGET_COPILOT_INSTRUCTIONS_FILE}") # New
     print(f"   # Add other generated rule directories if applicable")
     # ... (rest of output messages) ...
@@ -305,13 +305,18 @@ def handle_sync(args):
     cursor_parent_dir = os.path.dirname(cursor_dir)
     cline_dir = os.path.join(target_repo_path, ".clinerules")
     roo_rules_dir = os.path.join(target_repo_path, ".roo")
-    windsurf_file_path = os.path.join(target_repo_path, ".windsurfrules")
+    # windsurf_file_path = os.path.join(target_repo_path, ".windsurfrules") # Old Windsurf path
+    windsurf_rules_dir = os.path.join(target_repo_path, ".windsurf", "rules") # New Windsurf directory
+    windsurf_parent_dir = os.path.join(target_repo_path, ".windsurf") # New Windsurf parent directory
     # New: GitHub Copilot instructions path
     gh_copilot_instructions_path = os.path.join(target_repo_path, TARGET_GITHUB_COPILOT_DIR, TARGET_COPILOT_INSTRUCTIONS_FILE)
     gh_copilot_parent_dir = os.path.dirname(gh_copilot_instructions_path)
 
     os.makedirs(cursor_parent_dir, exist_ok=True)
     os.makedirs(gh_copilot_parent_dir, exist_ok=True) # Ensure .github directory exists
+    # Ensure the new Windsurf parent directory exists before attempting to remove its contents
+    os.makedirs(windsurf_parent_dir, exist_ok=True)
+
 
     # Remove existing generated rules
     if os.path.exists(cursor_dir): shutil.rmtree(cursor_dir)
@@ -319,7 +324,11 @@ def handle_sync(args):
         if os.path.isfile(cline_dir): os.remove(cline_dir)
         elif os.path.isdir(cline_dir): shutil.rmtree(cline_dir)
     if os.path.exists(roo_rules_dir): shutil.rmtree(roo_rules_dir)
-    if os.path.isfile(windsurf_file_path): os.remove(windsurf_file_path)
+    # Remove the old Windsurf file if it exists (will deprecate in the future)
+    if os.path.isfile(os.path.join(target_repo_path, ".windsurfrules")): os.remove(os.path.join(target_repo_path, ".windsurfrules"))
+    # Remove the new Windsurf rules if it exists
+    if os.path.exists(windsurf_rules_dir): shutil.rmtree(windsurf_rules_dir)
+
     if os.path.isfile(gh_copilot_instructions_path): os.remove(gh_copilot_instructions_path) # New
 
     # Generate new rules
@@ -331,7 +340,7 @@ def handle_sync(args):
     print("  Processing RooCode rules...")
     copy_and_restructure_roocode(project_rules_dir_in_target, roo_rules_dir)
     print("  Processing Windsurf rules...")
-    concatenate_ordered_files(project_rules_dir_in_target, windsurf_file_path)
+    copy_and_number_files(project_rules_dir_in_target, windsurf_rules_dir, extension_mode='add_md')
     print("  Processing GitHub Copilot instructions...") # New
     concatenate_ordered_files(project_rules_dir_in_target, gh_copilot_instructions_path) # New
 
@@ -346,7 +355,8 @@ def handle_clean_rules(args):
     cursor_parent_dir = os.path.join(target_repo_path, ".cursor")
     cline_dir = os.path.join(target_repo_path, ".clinerules")
     roo_rules_dir = os.path.join(target_repo_path, ".roo")
-    windsurf_file_path = os.path.join(target_repo_path, ".windsurfrules")
+    # windsurf_file_path = os.path.join(target_repo_path, ".windsurfrules") # Old Windsurf path
+    windsurf_parent_dir_path = os.path.join(target_repo_path, ".windsurf") # New Windsurf directory
     # New: GitHub Copilot instructions path and its parent if it might be removed
     gh_copilot_instructions_path = os.path.join(target_repo_path, TARGET_GITHUB_COPILOT_DIR, TARGET_COPILOT_INSTRUCTIONS_FILE)
     gh_copilot_parent_dir_path = os.path.join(target_repo_path, TARGET_GITHUB_COPILOT_DIR)
@@ -357,7 +367,8 @@ def handle_clean_rules(args):
         cursor_parent_dir,
         cline_dir,
         roo_rules_dir,
-        windsurf_file_path,
+        # windsurf_file_path, # Remove old Windsurf file
+        windsurf_parent_dir_path, # Remove new Windsurf directory
         gh_copilot_instructions_path, # New
     ]
     # Optionally, remove .github if it becomes empty and was created by us
@@ -411,7 +422,8 @@ def handle_clean_all(args):
     cursor_parent_dir = os.path.join(target_repo_path, ".cursor")
     cline_dir = os.path.join(target_repo_path, ".clinerules")
     roo_rules_dir = os.path.join(target_repo_path, ".roo")
-    windsurf_file_path = os.path.join(target_repo_path, ".windsurfrules")
+    # windsurf_file_path = os.path.join(target_repo_path, ".windsurfrules") # Old Windsurf path
+    windsurf_dir_path = os.path.join(target_repo_path, ".windsurf") # New Windsurf directory
     gh_copilot_parent_dir_path = os.path.join(target_repo_path, TARGET_GITHUB_COPILOT_DIR) # Remove the whole .github dir
     target_env_example_file = os.path.join(target_repo_path, SOURCE_ENV_EXAMPLE_FILE)
     target_requirements_txt_file = os.path.join(target_repo_path, SOURCE_REQUIREMENTS_TXT_FILE)
@@ -419,7 +431,9 @@ def handle_clean_all(args):
 
     items_to_remove = [
         project_rules_target_dir, memory_bank_target_dir, tools_target_dir,
-        cursor_parent_dir, cline_dir, roo_rules_dir, windsurf_file_path,
+        cursor_parent_dir, cline_dir, roo_rules_dir,
+        # windsurf_file_path, # Remove old Windsurf file
+        windsurf_dir_path, # Remove new Windsurf directory
         gh_copilot_parent_dir_path,
         target_env_example_file,
         target_requirements_txt_file,
@@ -435,7 +449,7 @@ def handle_clean_all(args):
                 shutil.rmtree(item_path)
                 print(f"Removed directory: {item_path}")
         except FileNotFoundError:
-            pass 
+            pass
         except Exception as e:
             print(f"Error removing '{item_path}': {e}")
     print(f"\n--- Full clean operation complete. ---")
@@ -493,11 +507,11 @@ def main():
     list_rules_parser.set_defaults(func=handle_list_rules) # No target_repo_path needed
 
     args = parser.parse_args()
-    
+
     exit_code = args.func(args)
-    if not isinstance(exit_code, int): 
+    if not isinstance(exit_code, int):
         print(f"Warning: Command handler for '{args.command}' did not return an explicit integer exit code.")
-        exit_code = 1 if exit_code is not None else 0 
+        exit_code = 1 if exit_code is not None else 0
     return exit_code
 
 

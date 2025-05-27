@@ -9,7 +9,7 @@ This document outlines the design for a new Python script, `src/manage_rules.py`
 3.  **Target Project Rules Directory:** A folder named **`project_rules/`** *created inside* the Target Repo during installation. It holds project-specific rule files, copied from a chosen set in the Source Repository. **This folder is considered temporary by `clean-rules` but can be version-controlled if desired for manual restoration between `clean-rules` and `install` operations.**
 4.  **Target Memory Bank Directory:** A folder named **`memory/`** *created inside* the Target Repo during installation, holding project-specific memory documents, populated from the Source Repository's `memory_starters/`. **This folder should be version controlled within the Target Repo.**
 5.  **Target Tools Directory:** A folder named **`tools/`** *created inside* the Target Repo during installation, holding utility scripts or configurations, populated from the Source Repository's `tool_starters/`. **This folder should be version controlled within the Target Repo.**
-6.  **Target Platform Rules:** The generated, platform-specific rule directories/files (e.g., `.clinerules/`, `.cursor/rules/`, `.roo/`, `.windsurfrules`, `.github/copilot-instructions.md`) created *inside* the Target Repo by the `sync` command using `project_rules/` as input. **These folders/files should be added to the Target Repo's `.gitignore` file.**
+6.  **Target Platform Rules:** The generated, platform-specific rule directories/files (e.g., `.clinerules/`, `.cursor/rules/`, `.roo/`, `.windsurf/rules/`, `.github/copilot-instructions.md`) created *inside* the Target Repo by the `sync` command using `project_rules/` as input. **These folders/files should be added to the Target Repo's `.gitignore` file.**
 
 **3. Features & Advantages**
 
@@ -39,7 +39,7 @@ This document outlines the design for a new Python script, `src/manage_rules.py`
 
 *   **`clean-rules <target_repo_path>`**
     *   **Action:**
-        1.  Removes the generated Target Platform Rules directories/files (e.g., `.clinerules/`, `.cursor/rules/`, `.roo/`, `.windsurfrules`, `.github/copilot-instructions.md`) from `<target_repo_path>`. If `.github/copilot-instructions.md` is the only file in `.github/`, the `.github/` directory may also be removed.
+        1.  Removes the generated Target Platform Rules directories/files (e.g., `.clinerules/`, `.cursor/rules/`, `.roo/`, `.windsurf/rules/`, `.github/copilot-instructions.md`) from `<target_repo_path>`. If `.github/copilot-instructions.md` is the only file in `.github/`, the `.github/` directory may also be removed.
         2.  Removes the **`project_rules/`** directory itself from `<target_repo_path>`.
         3.  The `memory/` and `tools/` directories are **NOT** removed.
     *   **Use Case:** Remove all rule-related files (both generated and their sources) to allow for a fresh `install` of a different rule set or to revert to a clean state without rules, while preserving the project memory bank and tools.
@@ -84,3 +84,4 @@ This document outlines the design for a new Python script, `src/manage_rules.py`
 6.  Explain how `install` handles pre-existing `memory/` and `tools/` directories (non-overwriting, only adds new starter files).
 7.  Document support for GitHub Copilot via `.github/copilot-instructions.md` generation.
 8.  Defer detailed guides on writing custom rules (beyond choosing a rule set via `install`) for later.
+9.  **Note:** This script now assumes compatibility with Windsurf versions that use the `.windsurf/rules/` structure for loading workspace rules. Users on older versions may need to update Windsurf.
