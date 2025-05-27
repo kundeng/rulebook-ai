@@ -102,8 +102,10 @@ def copy_and_number_files(source_dir, dest_dir, extension_mode='keep'):
             processed_filename = filename_stem
         elif extension_mode == 'add_mdc':
             processed_filename = filename_stem + ".mdc"
-        else: 
-             processed_filename = filename_no_prefix
+        elif extension_mode == 'add_md': # Explicitly handle 'add_md'
+            processed_filename = filename_stem + ".md"
+        else: # Default is 'keep'
+            processed_filename = filename_no_prefix
         new_filename = "{:02d}-{}".format(next_num, processed_filename)
         dest_path = os.path.join(dest_dir, new_filename)
         copy_file(source_path, dest_path)

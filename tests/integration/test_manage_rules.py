@@ -53,12 +53,12 @@ def test_install_default_rule_set(script_runner, tmp_path): # tmp_path provides 
     assert gh_copilot_instructions_file.is_file()                                                # New
     
     # Check for specific numbered .md files in .windsurf/rules
-    assert (tmp_target_repo_root / ".windsurf" / "rules" / "01-01-main-directive.md").is_file()
+    assert (tmp_target_repo_root / ".windsurf" / "rules" / "01-main-directive.md").is_file()
     assert (tmp_target_repo_root / ".windsurf" / "rules" / "02-python_rules.md").is_file()
     assert (tmp_target_repo_root / ".windsurf" / "rules" / "03-top_level_light_rule.md").is_file()
 
     # Check content of a generated file to ensure it's from the correct source rules
-    windsurf_content = (tmp_target_repo_root / ".windsurf" / "rules" / "01-01-main-directive.md").read_text() # New: Read from new path
+    windsurf_content = (tmp_target_repo_root / ".windsurf" / "rules" / "01-main-directive.md").read_text() # New: Read from new path
     assert "Test Light-spec: Main Directive" in windsurf_content
     gh_copilot_content = gh_copilot_instructions_file.read_text()                               # New
     assert "Test Light-spec: Main Directive" in gh_copilot_content                              # New
@@ -85,7 +85,10 @@ def test_install_specific_rule_set(script_runner, tmp_path):
     assert not (project_rules_target / "01-core" / "01-main-directive.md").exists() # from light-spec
 
     # Check generated file content for heavy-spec rule
-    windsurf_content = (tmp_target_repo_root / ".windsurfrules").read_text()
+    # Expected path for the first rule file from 'heavy-spec'
+    heavy_spec_rule_file = tmp_target_repo_root / ".windsurf" / "rules" / "01-config_heavy.md"
+    assert heavy_spec_rule_file.is_file()
+    windsurf_content = heavy_spec_rule_file.read_text()
     assert "Test Heavy-spec: Advanced Config" in windsurf_content
     gh_copilot_content = (tmp_target_repo_root / ".github" / "copilot-instructions.md").read_text() # New
     assert "Test Heavy-spec: Advanced Config" in gh_copilot_content                                # New
@@ -106,16 +109,21 @@ def test_sync_after_manual_project_rules_modification(script_runner, tmp_path):
     modified_content = " *** MODIFIED CONTENT FOR SYNC TEST *** "
     rule_to_modify.write_text(modified_content)
 
-    windsurf_file_path = tmp_target_repo_root / ".windsurfrules"
+    # Path to the specific synced Windsurf rule file
+    synced_windsurf_rule_file = tmp_target_repo_root / ".windsurf" / "rules" / "01-main-directive.md"
     gh_copilot_file_path = tmp_target_repo_root / ".github" / "copilot-instructions.md" # New
-    if windsurf_file_path.exists(): windsurf_file_path.unlink()
-    if gh_copilot_file_path.exists(): gh_copilot_file_path.unlink()                     # New
+    
+    # Remove the files if they exist to ensure sync creates them
+    if (tmp_target_repo_root / ".windsurf").exists(): 
+        shutil.rmtree(tmp_target_repo_root / ".windsurf")
+    if gh_copilot_file_path.exists(): 
+        gh_copilot_file_path.unlink()                     # New
 
     result = script_runner(["sync"], tmp_target_repo_root)
     assert result.returncode == 0, f"Sync script failed. STDERR:\n{result.stderr}"
     
-    assert windsurf_file_path.is_file()
-    assert modified_content in windsurf_file_path.read_text()
+    assert synced_windsurf_rule_file.is_file()
+    assert modified_content in synced_windsurf_rule_file.read_text()
     
     assert gh_copilot_file_path.is_file()                                              # New
     assert modified_content in gh_copilot_file_path.read_text()                        # New
@@ -130,6 +138,7 @@ def test_clean_rules_removes_rules_and_generated_keeps_memory_tools(script_runne
 
     assert not (tmp_target_repo_root / TARGET_PROJECT_RULES_DIR).exists()
     assert not (tmp_target_repo_root / ".cursor").exists()
+    assert not (tmp_target_repo_root / ".windsurf").exists() # Ensure the .windsurf directory is removed
     assert not (tmp_target_repo_root / ".github" / "copilot-instructions.md").exists() # New
     # Also check if the .github directory itself is removed if it becomes empty, or if it should remain.
     # For simplicity, let's assume if copilot-instructions.md is the only thing there, .github might be removed.
@@ -178,6 +187,13 @@ def test_clean_all_with_confirmation_no(script_runner, tmp_path):
     assert (tmp_target_repo_root / TARGET_MEMORY_BANK_DIR).is_dir()
     assert (tmp_target_repo_root / "env.example").is_file()
     assert (tmp_target_repo_root / "requirements.txt").is_file()
+    
+    # Verify that Windsurf rules directory remains when "no" is selected
+    assert (tmp_target_repo_root / ".windsurf").is_dir()
+    assert (tmp_target_repo_root / ".windsurf" / "rules").is_dir()
+    # Optionally, check for a specific file within it too (assuming default install)
+    assert (tmp_target_repo_root / ".windsurf" / "rules" / "01-main-directive.md").is_file()
+    
     # [TODO] test message too fragile, figure out new test ways
     # assert "Clean operation cancelled." in result.stdout
 
