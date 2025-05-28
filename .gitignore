@@ -96,7 +96,7 @@ dmypy.json
 .cursor/
 .roo/
 .windsurfrules
-windsurf
+.windsurf/
 .github/
 project_rules/
 tools/
