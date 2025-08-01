@@ -79,27 +79,30 @@ disallow_incomplete_defs = false
 [tool.tox]
 legacy_tox_ini = """
 [tox]
-envlist = integration
+toxworkdir = {toxinidir}/test_env
+isolated_build = True
+envlist = py3
 
-[testenv:integration]
-# Install test dependencies first
-deps = 
+[testenv]
+# No usedevelop - we'll install explicitly in commands_pre
+# No extras needed - all dependencies explicitly listed in deps
+deps =
     pytest>=8.0.0
     pytest-asyncio>=0.23.5
-# Install the package with dev extras
-extras = dev
-# Allow external commands
-allowlist_externals = echo
-# Pre-commands: Verbose installation with verification
-commands_pre = 
-    pip install -e . -v
+    pytest-cov>=4.1.0
+    pytest-mock>=3.12.0
+    respx>=0.20.2
+    darglint>=1.8.1
+
+# No setenv needed - package is installed in dev mode
+
+commands_pre =
     python -c "import sys; print(f'Python: {sys.executable}')"
+    pip install -e .
     python -c "import rulebook_ai; print(f'✅ Package installed: rulebook-ai v{rulebook_ai.__version__}')"
     python -c "from rulebook_ai.core import RuleManager; print('✅ Core module importable')"
-    python -m rulebook_ai.cli --help
-    echo "✅ Installation verification complete"
-# Run integration tests with verbose output
-commands = pytest tests/integration -v -s
-# Use the test_env directory for tox environments (easy inspection)
-toxworkdir = {toxinidir}/test_env
+
+commands =
+    python -m pytest tests/ -v -s --cov=rulebook_ai --cov-report=term-missing
+    python -m pytest tests/integration -v -s --cov=rulebook_ai --cov-append --no-cov-on-fail
 """
