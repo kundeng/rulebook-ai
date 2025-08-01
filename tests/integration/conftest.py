@@ -2,6 +2,8 @@ import pytest
 import os
 import shutil
 import subprocess
+import sys
+from pathlib import Path
 
 # --- Absolute path to the root of your ACTUAL project framework ---
 FRAMEWORK_ROOT_ACTUAL = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
@@ -104,11 +106,47 @@ def _run_script_from_tmp_source(
 
 @pytest.fixture
 def script_runner(tmp_source_repo_root):
-    def runner_func(command_args_list, tmp_target_path_for_script=None, confirm_input=None): # Made optional
+    """Returns a function that runs the script with the given arguments."""
+    def _run_script(args, tmp_target_path=None, confirm_input=None):
         return _run_script_from_tmp_source(
             tmp_source_repo_root,
-            command_args_list,
-            tmp_target_path_for_script, # This can be None
+            args,
+            tmp_target_path,
             confirm_input
         )
-    return runner_func
+    return _run_script
+
+
+@pytest.fixture(scope="session")
+def tools_symlink():
+    """
+    Create a symlink from 'tools' to 'tool_starters' in the site-packages directory.
+    This allows tests to import from 'tools' while the actual code is in 'tool_starters'.
+    
+    This is a temporary solution until the project is fully modernized and the imports
+    are updated to match the actual directory structure.
+    """
+    # Get the site-packages directory
+    site_packages = None
+    for path in sys.path:
+        if "site-packages" in path:
+            site_packages = Path(path)
+            break
+    
+    if not site_packages:
+        pytest.skip("Could not find site-packages directory")
+    
+    # Check if tools symlink already exists
+    tools_link = site_packages / "tools"
+    tool_starters_path = Path(FRAMEWORK_ROOT_ACTUAL) / "tool_starters"
+    
+    if not tools_link.exists():
+        # Create symlink
+        tools_link.symlink_to(tool_starters_path, target_is_directory=True)
+        yield tools_link
+        # Clean up
+        if tools_link.exists() and tools_link.is_symlink():
+            tools_link.unlink()
+    else:
+        # Symlink already exists, just yield it
+        yield tools_link

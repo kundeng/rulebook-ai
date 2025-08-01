@@ -1,0 +1,105 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rulebook-ai"
+version = "0.1.0"
+description = "AI rulebook management for large language models"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+authors = [
+    {name = "Rulebook AI Contributors"}
+]
+dependencies = [
+    # Web scraping
+    "playwright>=1.41.0",
+    "html5lib>=1.1",
+    
+    # Search engine
+    "duckduckgo-search>=7.2.1",
+    
+    # LLM integration
+    "openai>=1.59.8",  # o1 support
+    "anthropic>=0.42.0",
+    "python-dotenv>=1.0.0",
+    
+    # Google Generative AI
+    "google-generativeai",
+    "grpcio==1.71.0",  # For Google GenAI preventing WARNING
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.5",
+    "unittest2>=1.1.0",
+    "ruff>=0.0.292",
+    "mypy>=1.5.1",
+    "pre-commit>=3.5.0",
+    "tox>=4.0.0",
+]
+
+[project.scripts]
+rulebook-ai = "rulebook_ai.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["rulebook_ai*"]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"
+select = ["E", "F", "I", "B", "C4", "C90", "UP", "N", "ANN", "S", "A"]
+ignore = ["ANN101", "ANN102", "ANN401"]
+
+[tool.ruff.isort]
+known-first-party = ["rulebook_ai"]
+
+[tool.mypy]
+python_version = "3.9"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = false
+no_implicit_optional = false
+strict_optional = true
+
+[[tool.mypy.overrides]]
+module = ["tests.*"]
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+envlist = integration
+
+[testenv:integration]
+# Install test dependencies first
+deps = 
+    pytest>=8.0.0
+    pytest-asyncio>=0.23.5
+# Install the package with dev extras
+extras = dev
+# Allow external commands
+allowlist_externals = echo
+# Pre-commands: Verbose installation with verification
+commands_pre = 
+    pip install -e . -v
+    python -c "import sys; print(f'Python: {sys.executable}')"
+    python -c "import rulebook_ai; print(f'✅ Package installed: rulebook-ai v{rulebook_ai.__version__}')"
+    python -c "from rulebook_ai.core import RuleManager; print('✅ Core module importable')"
+    python -m rulebook_ai.cli --help
+    echo "✅ Installation verification complete"
+# Run integration tests with verbose output
+commands = pytest tests/integration -v -s
+# Use the test_env directory for tox environments (easy inspection)
+toxworkdir = {toxinidir}/test_env
+"""
