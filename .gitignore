@@ -66,6 +66,7 @@ log/
 htmlcov/
 .tox/
 .nox/
+test_env/
 .coverage
 .coverage.*
 .cache
