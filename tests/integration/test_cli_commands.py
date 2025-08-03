@@ -1,6 +1,7 @@
 import os
 import shutil
 import re # For checking generated rule file formats
+import pytest
 
 # --- Expected directory names in the TARGET project (tmp_target_repo_root) ---
 TARGET_PROJECT_RULES_DIR = "project_rules"

@@ -55,7 +55,7 @@ def rule_manager(temp_dir):
 
 
 def test_install(rule_manager, temp_dir):
-    """Test the install method."""
+    """Test the full installation workflow."""
     project_root = Path(temp_dir)
     target_dir = project_root / "target"
     target_dir.mkdir()
@@ -66,6 +66,7 @@ def test_install(rule_manager, temp_dir):
         include_copilot=True
     )
     
+    # Verify the end-to-end installation process worked
     assert result == 0
     assert (target_dir / "project_rules").exists()
     assert (target_dir / "memory").exists()

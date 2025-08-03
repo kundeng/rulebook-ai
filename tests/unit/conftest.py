@@ -1,13 +1,13 @@
-"""Integration tests for the rulebook_ai.core module."""
+"""Unit test configuration and fixtures."""
 
+import pytest
 import os
 import tempfile
 import shutil
 from pathlib import Path
-import pytest
 
-# Import RuleManager using standard import - testing installed package
-from rulebook_ai.core import RuleManager
+# Path to project root for accessing test data
+PROJECT_ROOT = Path(__file__).parent.parent.parent
 
 
 @pytest.fixture
@@ -19,8 +19,21 @@ def temp_dir():
 
 
 @pytest.fixture
-def rule_manager(temp_dir):
-    """Create a RuleManager instance for testing."""
+def test_data_dir():
+    """Return path to test data directory."""
+    data_dir = Path(__file__).parent / "data"
+    data_dir.mkdir(exist_ok=True)
+    return data_dir
+
+
+@pytest.fixture
+def mock_rule_manager_env(temp_dir):
+    """
+    Create a minimal environment for testing RuleManager methods.
+    
+    This fixture creates just enough directory structure and files
+    to test RuleManager methods without involving the full package.
+    """
     # Create a mock project structure in the temp directory
     project_root = Path(temp_dir)
     
@@ -49,25 +62,4 @@ def rule_manager(temp_dir):
     with open(project_root / ".env.example", "w") as f:
         f.write("API_KEY=your-api-key-here")
     
-    # Initialize RuleManager with the test project root
-    manager = RuleManager(project_root=project_root)
-    return manager
-
-
-def test_install(rule_manager, temp_dir):
-    """Test the install method."""
-    project_root = Path(temp_dir)
-    target_dir = project_root / "target"
-    target_dir.mkdir()
-    
-    result = rule_manager.install(
-        rule_set="test-set", 
-        project_dir=str(target_dir),
-        include_copilot=True
-    )
-    
-    assert result == 0
-    assert (target_dir / "project_rules").exists()
-    assert (target_dir / "memory").exists()
-    assert (target_dir / "tools").exists()
-    assert (target_dir / ".github" / "copilot-instructions.md").exists()
+    return project_root

@@ -4,6 +4,8 @@ Note: The actual installation is handled by tox with full visibility via command
 This test verifies that the installation was successful and basic functionality works.
 """
 
+import pytest
+
 def test_package_import():
     """Test that the package can be imported successfully."""
     import rulebook_ai
