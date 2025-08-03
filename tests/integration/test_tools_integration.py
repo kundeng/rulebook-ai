@@ -60,19 +60,21 @@ def test_cli_doctor_command():
 def test_rule_manager_functionality():
     """Test that RuleManager can be used programmatically."""
     from rulebook_ai.core import RuleManager
+    import os
     
-    with tempfile.TemporaryDirectory() as temp_dir:
-        project_dir = Path(temp_dir)
-        
-        # Create a RuleManager instance
-        manager = RuleManager(str(project_dir))
-        assert manager is not None
-        
-        # Test basic functionality
-        rules = manager.list_rules()
-        assert isinstance(rules, list)
-        
-        print("✅ RuleManager programmatic access works")
+    # Use the test_env directory as specified in the project structure
+    test_env_dir = Path(__file__).parent.parent.parent / "test_env" / "mock_project"
+    os.makedirs(test_env_dir, exist_ok=True)
+    
+    # Create a RuleManager instance
+    manager = RuleManager(str(test_env_dir))
+    assert manager is not None
+    
+    # Test basic functionality
+    rules = manager.list_rules()
+    assert isinstance(rules, list)
+    
+    print("✅ RuleManager programmatic access works")
 
 
 def test_package_entry_points():
@@ -94,24 +96,26 @@ def test_package_entry_points():
 def test_tool_installation_workflow():
     """Test a basic tool installation workflow."""
     from rulebook_ai.core import RuleManager
+    import os
     
-    with tempfile.TemporaryDirectory() as temp_dir:
-        project_dir = Path(temp_dir)
-        
-        # Create basic project structure
-        (project_dir / "src").mkdir()
-        (project_dir / "tests").mkdir()
-        
-        # Initialize RuleManager
-        manager = RuleManager(str(project_dir))
-        
-        # Test that we can query available rules
-        try:
-            rules = manager.list_rules()
-            print(f"✅ Found {len(rules)} available rule sets")
-        except Exception as e:
-            print(f"ℹ️  Rule listing test: {e}")
-        
-        # Test basic directory structure creation
-        assert project_dir.exists()
-        print("✅ Basic tool installation workflow test completed")
+    # Use the test_env directory as specified in the project structure
+    test_env_dir = Path(__file__).parent.parent.parent / "test_env" / "mock_project"
+    os.makedirs(test_env_dir, exist_ok=True)
+    
+    # Create basic project structure
+    os.makedirs(test_env_dir / "src", exist_ok=True)
+    os.makedirs(test_env_dir / "tests", exist_ok=True)
+    
+    # Initialize RuleManager
+    manager = RuleManager(str(test_env_dir))
+    
+    # Test that we can query available rules
+    try:
+        rules = manager.list_rules()
+        print(f"✅ Found {len(rules)} available rule sets")
+    except Exception as e:
+        print(f"ℹ️  Rule listing test: {e}")
+    
+    # Test basic directory structure creation
+    assert test_env_dir.exists()
+    print("✅ Basic tool installation workflow test completed")

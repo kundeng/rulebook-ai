@@ -36,19 +36,30 @@ class RuleManager:
         Initialize the RuleManager with project paths.
         
         Args:
-            project_root: Root directory of the project. If None, uses the directory 
-                          of this package's parent.
+            project_root: Root directory of the target project. If None, uses the current directory.
         """
+        # Determine package path (where our package is installed)
+        self.package_path = Path(__file__).parent.absolute()
+        
+        # Determine source paths (within our package)
+        self.source_rules_dir = self.package_path / SOURCE_RULE_SETS_DIR
+        self.source_memory_dir = self.package_path / SOURCE_MEMORY_STARTERS_DIR
+        self.source_tools_dir = self.package_path / SOURCE_TOOL_STARTERS_DIR
+        
+        # If source dirs don't exist in package, try to find them in development mode
+        # This is for development convenience
+        if not self.source_rules_dir.exists():
+            dev_root = self.package_path.parent.parent
+            self.source_rules_dir = dev_root / SOURCE_RULE_SETS_DIR
+            self.source_memory_dir = dev_root / SOURCE_MEMORY_STARTERS_DIR
+            self.source_tools_dir = dev_root / SOURCE_TOOL_STARTERS_DIR
+        
+        # Determine target project root
         if project_root is None:
-            # Use the parent directory of this file as the default project root
-            self.project_root = Path(__file__).parent.parent.parent.absolute()
+            # Default to current directory
+            self.project_root = Path.cwd().absolute()
         else:
             self.project_root = Path(project_root).absolute()
-        
-        # Source directories (within rulebook-ai package)
-        self.source_rules_dir = self.project_root / SOURCE_RULE_SETS_DIR
-        self.source_memory_dir = self.project_root / SOURCE_MEMORY_STARTERS_DIR
-        self.source_tools_dir = self.project_root / SOURCE_TOOL_STARTERS_DIR
         
         # Target directories (within user's project)
         self.target_rules_dir = self.project_root / TARGET_PROJECT_RULES_DIR

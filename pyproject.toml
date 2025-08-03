@@ -51,6 +51,22 @@ include = ["rulebook_ai*"]
 [tool.setuptools]
 package-dir = {"" = "src"}
 
+[tool.setuptools.package-data]
+"rulebook_ai" = [
+    "rule_sets/**/*",
+    "memory_starters/**/*",
+    "tool_starters/**/*",
+    "memory/**/*"
+]
+
+[tool.setuptools.exclude-package-data]
+"rulebook_ai" = [
+    "*.pyc",
+    "__pycache__/*",
+    "*.egg-info/*"
+]
+
+
 [tool.ruff]
 line-length = 100
 target-version = "py39"
@@ -82,6 +98,7 @@ legacy_tox_ini = """
 toxworkdir = {toxinidir}/test_env
 isolated_build = True
 envlist = py3
+skipsdist = False
 
 [testenv]
 # No usedevelop - we'll install explicitly in commands_pre
@@ -94,11 +111,10 @@ deps =
     respx>=0.20.2
     darglint>=1.8.1
 
-# No setenv needed - package is installed in dev mode
-
+# For integration tests, use standard pip to simulate a real user environment
+# The package is built by tox automatically (skipsdist = False)
 commands_pre =
     python -c "import sys; print(f'Python: {sys.executable}')"
-    pip install -e .
     python -c "import rulebook_ai; print(f'✅ Package installed: rulebook-ai v{rulebook_ai.__version__}')"
     python -c "from rulebook_ai.core import RuleManager; print('✅ Core module importable')"
 
