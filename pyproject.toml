@@ -76,6 +76,13 @@ ignore = ["ANN101", "ANN102", "ANN401"]
 [tool.ruff.isort]
 known-first-party = ["rulebook_ai"]
 
+[tool.pytest]
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"
+addopts = "-v"
+
 [tool.mypy]
 python_version = "3.9"
 warn_return_any = true
