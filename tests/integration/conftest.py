@@ -31,14 +31,17 @@ def tmp_source_repo_root(tmp_path_factory):
     source_base_dir = tmp_path_factory.mktemp("tmp_source_repo_") # This is our tmp_source_repo_root
     
     # 1. Create dummy template directories directly under tmp_source_repo_root
-    (source_base_dir / TMP_SOURCE_RULE_SETS_DIR_NAME / "light-spec" / "01-core").mkdir(parents=True, exist_ok=True)
-    (source_base_dir / TMP_SOURCE_RULE_SETS_DIR_NAME / "light-spec" / "02-style").mkdir(parents=True, exist_ok=True)
-    (source_base_dir / TMP_SOURCE_RULE_SETS_DIR_NAME / "heavy-spec" / "01-advanced").mkdir(parents=True, exist_ok=True)
+    # Create actual rule set directory structure to match real data
+    (source_base_dir / TMP_SOURCE_RULE_SETS_DIR_NAME / "light-spec" / "01-rules").mkdir(parents=True, exist_ok=True)
+    (source_base_dir / TMP_SOURCE_RULE_SETS_DIR_NAME / "light-spec" / "02-rules-architect").mkdir(parents=True, exist_ok=True)
+    (source_base_dir / TMP_SOURCE_RULE_SETS_DIR_NAME / "heavy-spec" / "01-rules").mkdir(parents=True, exist_ok=True)
 
-    (source_base_dir / TMP_SOURCE_RULE_SETS_DIR_NAME / "light-spec" / "01-core" / "01-main-directive.md").write_text("Test Light-spec: Main Directive")
-    (source_base_dir / TMP_SOURCE_RULE_SETS_DIR_NAME / "light-spec" / "02-style" / "python_rules.md").write_text("Test Light-spec: Python Style")
-    (source_base_dir / TMP_SOURCE_RULE_SETS_DIR_NAME / "heavy-spec" / "01-advanced" / "config_heavy.md").write_text("Test Heavy-spec: Advanced Config")
-    (source_base_dir / TMP_SOURCE_RULE_SETS_DIR_NAME / "light-spec" / "top_level_light_rule.txt").write_text("Top level light rule")
+    # Create test files matching actual rule set structure
+    (source_base_dir / TMP_SOURCE_RULE_SETS_DIR_NAME / "light-spec" / "01-rules" / "00-meta-rules.md").write_text("Test Light-spec: Main Directive")
+    (source_base_dir / TMP_SOURCE_RULE_SETS_DIR_NAME / "light-spec" / "01-rules" / "01-memory.md").write_text("Test Light-spec: Memory")
+    (source_base_dir / TMP_SOURCE_RULE_SETS_DIR_NAME / "light-spec" / "02-rules-architect" / "01-plan_v1.md").write_text("Test Light-spec: Python Style")
+    (source_base_dir / TMP_SOURCE_RULE_SETS_DIR_NAME / "heavy-spec" / "01-rules" / "00-meta-rules.md").write_text("Test Heavy-spec: Advanced Config")
+    (source_base_dir / TMP_SOURCE_RULE_SETS_DIR_NAME / "light-spec" / "03-top-level.md").write_text("Top level light rule")
 
     (source_base_dir / TMP_SOURCE_MEMORY_STARTERS_DIR_NAME).mkdir(parents=True, exist_ok=True)
     (source_base_dir / TMP_SOURCE_MEMORY_STARTERS_DIR_NAME / "ARCHITECTURE_OVERVIEW.md").write_text("Test Memory: Architecture Overview")
@@ -74,29 +77,22 @@ def _run_script_from_tmp_source(
         confirm_input=None
     ):
 
-    # Path to the manage_rules.py script WITHIN the temporary source structure
-    script_to_run_path = tmp_source_root_path / TMP_SOURCE_SRC_DIR_NAME / COPIED_MANAGE_RULES_SCRIPT_NAME
-
+    # Use the modern rulebook-ai CLI instead of old manage_rules.py script
     full_command = [
-        "python",
-        str(script_to_run_path), # e.g., .../tmp_source_repo_0/src/manage_rules.py
+        "rulebook-ai",
         *command_args_list
     ]
     if tmp_target_path: # Only add target_path if it's provided
-        full_command.append(str(tmp_target_path))
+        full_command.extend(["--project-dir", str(tmp_target_path)])
 
-    # The Current Working Directory (CWD) is set to tmp_source_root_path.
-    # When manage_rules.py (now in .../tmp_source_repo_0/src/) calculates its
-    # PROJECT_FRAMEWORK_ROOT using os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-    # it will correctly resolve to tmp_source_root_path.
-    print(f"Running: {' '.join(full_command)} (CWD: {tmp_source_root_path})")
+    # Execute the modern rulebook-ai CLI command
+    print(f"Running: {' '.join(full_command)}")
     process = subprocess.run(
         full_command,
         capture_output=True,
         text=True,
         input=(confirm_input + "\n") if confirm_input is not None else None,
-        check=False, 
-        cwd=tmp_source_root_path # Execute from the root of the temporary source framework
+        check=False 
     )
     
     print(f"STDOUT:\n{process.stdout}")

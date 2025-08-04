@@ -97,9 +97,11 @@ dmypy.json
 .cursor/
 .roo/
 .windsurfrules
-.windsurf/
+.windsurf/rules/
 # GitHub Copilot but allow workflows
 .github/copilot-instructions.md
+memory/
 project_rules/
 tools/
+
 

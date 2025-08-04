@@ -52,3 +52,69 @@ def test_copy_file(rule_manager, temp_dir):
     assert result is True
     assert dest_file.exists()
     assert dest_file.read_text() == "Test content"
+
+
+def test_copy_and_number_files_with_extensions(rule_manager, temp_dir):
+    """Test copy_and_number_files with different extension modes."""
+    project_root = Path(temp_dir)
+    source_dir = project_root / "source"
+    dest_dir = project_root / "dest"
+    source_dir.mkdir()
+    dest_dir.mkdir()
+    
+    # Create test files
+    (source_dir / "test1.md").write_text("Test 1")
+    (source_dir / "test2.md").write_text("Test 2")
+    
+    # Test add_mdc mode (for Cursor)
+    count = rule_manager.copy_and_number_files(source_dir, dest_dir, extension_mode='add_mdc')
+    assert count == 2
+    assert (dest_dir / "01-test1.mdc").exists()
+    assert (dest_dir / "02-test2.mdc").exists()
+
+
+def test_install_assistant_rules_creates_directories(rule_manager, temp_dir):
+    """Test that _install_assistant_rules creates the correct directories."""
+    project_root = Path(temp_dir)
+    source_dir = project_root / "source"
+    source_dir.mkdir()
+    
+    # Create test rule files
+    (source_dir / "test-rule.md").write_text("Test rule content")
+    
+    # Test cursor installation
+    rule_manager._install_assistant_rules(source_dir, project_root, ['cursor'])
+    assert (project_root / ".cursor" / "rules").exists()
+    assert (project_root / ".cursor" / "rules" / "01-test-rule.mdc").exists()
+    
+    # Test windsurf installation
+    rule_manager._install_assistant_rules(source_dir, project_root, ['windsurf'])
+    assert (project_root / ".windsurf" / "rules").exists()
+    assert (project_root / ".windsurf" / "rules" / "01-test-rule.md").exists()
+    
+    # Test cline installation
+    rule_manager._install_assistant_rules(source_dir, project_root, ['cline'])
+    assert (project_root / ".clinerules").exists()
+    assert (project_root / ".clinerules" / "01-test-rule").exists()
+
+
+def test_assistant_specific_file_extensions(rule_manager, temp_dir):
+    """Test that different assistants get correct file extensions."""
+    project_root = Path(temp_dir)
+    source_dir = project_root / "source"
+    source_dir.mkdir()
+    
+    (source_dir / "rule.md").write_text("Test content")
+    
+    # Test each assistant type
+    rule_manager._install_cursor_rules(source_dir, project_root)
+    assert (project_root / ".cursor" / "rules" / "01-rule.mdc").exists()
+    
+    rule_manager._install_windsurf_rules(source_dir, project_root)
+    assert (project_root / ".windsurf" / "rules" / "01-rule.md").exists()
+    
+    rule_manager._install_cline_rules(source_dir, project_root)
+    assert (project_root / ".clinerules" / "01-rule").exists()  # no extension
+    
+    rule_manager._install_roo_rules(source_dir, project_root)
+    assert (project_root / ".roo" / "rules").exists()

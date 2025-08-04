@@ -52,6 +52,34 @@ def parse_args(args: Optional[List[str]] = None) -> argparse.Namespace:
         help="Skip creating GitHub Copilot instructions"
     )
     
+    # Assistant-specific installation flags
+    assistant_group = install_parser.add_mutually_exclusive_group()
+    assistant_group.add_argument(
+        "--cursor",
+        action="store_true",
+        help="Install rules for Cursor AI assistant only"
+    )
+    assistant_group.add_argument(
+        "--windsurf",
+        action="store_true",
+        help="Install rules for Windsurf AI assistant only"
+    )
+    assistant_group.add_argument(
+        "--cline",
+        action="store_true",
+        help="Install rules for Cline AI assistant only"
+    )
+    assistant_group.add_argument(
+        "--roo",
+        action="store_true",
+        help="Install rules for RooCode AI assistant only"
+    )
+    assistant_group.add_argument(
+        "--all-assistants", "-a",
+        action="store_true",
+        help="Install rules for all AI assistants"
+    )
+    
     # Sync command
     sync_parser = subparsers.add_parser("sync", help="Synchronize with a rule set")
     sync_parser.add_argument(
@@ -67,6 +95,34 @@ def parse_args(args: Optional[List[str]] = None) -> argparse.Namespace:
         "--no-copilot",
         action="store_true",
         help="Skip updating GitHub Copilot instructions"
+    )
+    
+    # Assistant-specific sync flags
+    sync_assistant_group = sync_parser.add_mutually_exclusive_group()
+    sync_assistant_group.add_argument(
+        "--cursor",
+        action="store_true",
+        help="Sync rules for Cursor AI assistant only"
+    )
+    sync_assistant_group.add_argument(
+        "--windsurf",
+        action="store_true",
+        help="Sync rules for Windsurf AI assistant only"
+    )
+    sync_assistant_group.add_argument(
+        "--cline",
+        action="store_true",
+        help="Sync rules for Cline AI assistant only"
+    )
+    sync_assistant_group.add_argument(
+        "--roo",
+        action="store_true",
+        help="Sync rules for RooCode AI assistant only"
+    )
+    sync_assistant_group.add_argument(
+        "--all-assistants", "-a",
+        action="store_true",
+        help="Sync rules for all AI assistants"
     )
     
     # Clean-rules command
@@ -103,11 +159,29 @@ def handle_install(args: argparse.Namespace) -> int:
         Exit code (0 for success)
     """
     rule_manager = RuleManager()
+    
+    # Determine which assistants to install for
+    assistants = []
+    if args.cursor:
+        assistants = ['cursor']
+    elif args.windsurf:
+        assistants = ['windsurf']
+    elif args.cline:
+        assistants = ['cline']
+    elif args.roo:
+        assistants = ['roo']
+    elif args.all_assistants:
+        assistants = ['cursor', 'windsurf', 'cline', 'roo']
+    else:
+        # Default behavior - install for all assistants like original
+        assistants = ['cursor', 'windsurf', 'cline', 'roo']
+    
     return rule_manager.install(
         rule_set=args.rule_set,
         project_dir=args.project_dir,
         clean_first=args.clean,
-        include_copilot=not args.no_copilot
+        include_copilot=not args.no_copilot,
+        assistants=assistants
     )
 
 
@@ -122,10 +196,28 @@ def handle_sync(args: argparse.Namespace) -> int:
         Exit code (0 for success)
     """
     rule_manager = RuleManager()
+    
+    # Determine which assistants to sync
+    assistants = []
+    if args.cursor:
+        assistants = ['cursor']
+    elif args.windsurf:
+        assistants = ['windsurf']
+    elif args.cline:
+        assistants = ['cline']
+    elif args.roo:
+        assistants = ['roo']
+    elif args.all_assistants:
+        assistants = ['cursor', 'windsurf', 'cline', 'roo']
+    else:
+        # Default behavior - sync all existing assistants
+        assistants = None
+    
     return rule_manager.sync(
         rule_set=args.rule_set,
         project_dir=args.project_dir,
-        include_copilot=not args.no_copilot
+        include_copilot=not args.no_copilot,
+        assistants=assistants
     )
 
 
