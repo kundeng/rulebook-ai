@@ -1,4 +1,5 @@
 ---
+trigger: always_on
 description: Captures important patterns, preferences, and project intelligence; a living document that grows smarter as progress happens.
 globs: []
 alwaysApply: true

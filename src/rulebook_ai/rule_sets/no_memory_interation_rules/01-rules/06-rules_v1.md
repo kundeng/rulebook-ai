@@ -1,3 +1,7 @@
+---
+trigger: always_on
+---
+
 # AI Assistant - General Best Practices & Operating Principles
 
 **Preamble:**

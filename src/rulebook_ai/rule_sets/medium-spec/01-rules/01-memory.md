@@ -1,4 +1,5 @@
 ---
+trigger: always_on
 description: ALWAYS INCLUDE to HAVE Project Context.
 globs: 
 alwaysApply: true

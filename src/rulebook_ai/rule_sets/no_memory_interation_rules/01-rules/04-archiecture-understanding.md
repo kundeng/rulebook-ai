@@ -1,4 +1,5 @@
 ---
+trigger: always_on
 description: rules to parse solution architecture from docs/architecture.md
 globs: 
 alwaysApply: true

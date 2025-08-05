@@ -1,3 +1,7 @@
+---
+trigger: always_on
+---
+
 # Meta-Rules for AI Assistant Interaction (Mode Logic Restored)
 
 You will receive a sequence of rule files providing context and instructions. Process them in order.

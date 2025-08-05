@@ -336,19 +336,35 @@ class RuleManager:
         rules_count = self.copy_tree_non_destructive(rule_set_source_dir, target_rules_dir)
         print(f"Copied {rules_count} new rule files.")
         
-        # Copy memory starters non-destructively
-        memory_count = self.copy_tree_non_destructive(
-            self.source_memory_dir, 
-            target_memory_dir
-        )
-        print(f"Copied {memory_count} new memory starter files.")
+        # Copy memory starters non-destructively (ruleset-specific first, then global fallback)
+        ruleset_memory_dir = rule_set_source_dir / "memory_starters"
+        if ruleset_memory_dir.exists():
+            memory_count = self.copy_tree_non_destructive(
+                ruleset_memory_dir, 
+                target_memory_dir
+            )
+            print(f"Copied {memory_count} new ruleset-specific memory starter files.")
+        else:
+            memory_count = self.copy_tree_non_destructive(
+                self.source_memory_dir, 
+                target_memory_dir
+            )
+            print(f"Copied {memory_count} new global memory starter files.")
         
-        # Copy tool starters non-destructively
-        tools_count = self.copy_tree_non_destructive(
-            self.source_tools_dir, 
-            target_tools_dir
-        )
-        print(f"Copied {tools_count} new tool starter files.")
+        # Copy tool starters non-destructively (ruleset-specific first, then global fallback)
+        ruleset_tools_dir = rule_set_source_dir / "tool_starters"
+        if ruleset_tools_dir.exists():
+            tools_count = self.copy_tree_non_destructive(
+                ruleset_tools_dir, 
+                target_tools_dir
+            )
+            print(f"Copied {tools_count} new ruleset-specific tool starter files.")
+        else:
+            tools_count = self.copy_tree_non_destructive(
+                self.source_tools_dir, 
+                target_tools_dir
+            )
+            print(f"Copied {tools_count} new global tool starter files.")
         
         # Copy .env.example if it exists
         env_example_path = self.project_root / SOURCE_ENV_EXAMPLE_FILE

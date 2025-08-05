@@ -2,31 +2,32 @@
 trigger: always_on
 ---
 
-# AI Assistant - Workflow: Planning & Solution Proposal (FOCUS = PLANNING) (Enhanced)
-# Applies when internal mode is Plan Mode (Cline) / Architect Mode (Roo Code), OR when task FOCUS is PLANNING.
-# Assumes General Principles (File approx. 6 - Enhanced) processed, including initial Memory Bank consultation.
+# AI Assistant - Sprint Planning Workflow (SPRINT PHASE = PLANNING)
+# Applies when sprint phase is PLANNING: sprint planning, backlog refinement, story breakdown, capacity planning
+# Assumes General Sprint Principles processed, including initial Sprint Memory Bank consultation.
 
-**(Rules for Planning, Analysis, and Solution Design follow)**
+**(Rules for Sprint Planning, Story Analysis, and Sprint Goal Design follow)**
 
-**Overall Goal:** To thoroughly understand the task (building on general clarification principles), rigorously explore potential solutions integrating project context from the Memory Bank, and produce a detailed, validated implementation plan *before* any code is written.
+**Overall Goal:** To thoroughly understand sprint requirements within the context of project goals, break down work into manageable sprint stories, estimate effort and capacity, and produce a detailed, validated sprint plan that aligns with team velocity and project objectives.
 
 ## Process & Best Practices:
 
-1.  **Deep Dive into Requirements & Achieve Certainty:**
-    *   **(Mandatory First Step - Intensive Clarification & Context Integration)**
-        *   Apply the general clarification principle with *maximum rigor*. Actively probe for *all* ambiguities, edge cases, and assumptions related to the specific task requirements.
-        *   **Mandatory Memory Consult:** Explicitly consult `product_requirement_docs.md` (for alignment with overall goals/scope) and `tasks_plan.md` (for status, dependencies, related issues of *this specific task*). **Reference key findings** from these documents.
-        *   Re-state complex requirements to confirm understanding.
-    *   **Anticipate Needs:** Suggest related considerations or alternative scenarios pertinent to *this specific task*, potentially informed by `lessons-learned.md`.
-    *   **Goal:** Achieve 100% clarity and confidence on *this specific task's* requirements and its context within the project. If uncertainty remains, explicitly state what information is still needed.
+1.  **Sprint Context Analysis & Goal Setting:**
+    *   **(Mandatory First Step - Sprint Context Integration)**
+        *   **Mandatory Sprint Memory Consult:** Explicitly consult `product_requirement_docs.md` (for alignment with overall product goals), `sprint_plan.md` (for current sprint status, velocity history, and capacity), and `sprint_history.md` (for historical patterns and lessons). **Reference key findings** from these documents.
+        *   Analyze current sprint capacity, team velocity, and any existing sprint commitments or constraints.
+        *   Clarify sprint goals and how proposed work aligns with product roadmap and release objectives.
+        *   Re-state complex sprint requirements to confirm understanding and scope.
+    *   **Sprint Scope Definition:** Define clear sprint boundaries, identify dependencies, and establish acceptance criteria that can be validated within the sprint timeframe.
+    *   **Goal:** Achieve 100% clarity on sprint objectives, team capacity, and work scope. If uncertainty remains about sprint feasibility, explicitly state what information is needed.
 
-2.  **Decompose the Problem & Explore Solutions:**
-    *   **(Leverage Internal Context First - As per General Rules)**
-    *   **Mandatory Memory Consult:** Explicitly consult `architecture.md` (to understand relevant components, boundaries, interactions) and `technical.md` (for established patterns, stack limitations, preferred libraries, existing utilities) **before** brainstorming solutions.
-    *   **Decomposition:** Break the core problem down into smaller, logical sub-problems or functional components, respecting boundaries identified in `architecture.md`. Outline a high-level approach consistent with the architecture.
-    *   **Brainstorm Multiple Solutions:** Generate *multiple* potential implementation approaches for key sub-problems. Solutions MUST consider constraints from `architecture.md` and `technical.md`.
-    *   **Define Evaluation Criteria:** Establish clear criteria for comparing solutions *specifically for this task* (e.g., maintainability, performance, security, complexity, **alignment with `architecture.md` and `technical.md` patterns**, effort).
-    *   **Utilize Tools for Solution Ideas (If Necessary):** Follow general guidelines if internal resources lack specific patterns needed for *solution design*.
+2.  **Story Breakdown & Sprint Planning:**
+    *   **(Leverage Sprint Historical Context)**
+    *   **Mandatory Memory Consult:** Explicitly consult `architecture.md` (for technical boundaries and component dependencies) and `technical.md` (for development patterns, technical debt, and tooling constraints) **before** creating sprint stories.
+    *   **Epic to Story Breakdown:** Decompose larger features into sprint-sized stories that can be completed within 1-3 days, respecting architectural boundaries and technical constraints.
+    *   **Story Estimation:** Use historical velocity data from `sprint_history.md` to estimate story points or time requirements. Consider team capacity and any known blockers.
+    *   **Dependency Mapping:** Identify and document dependencies between stories and external factors that could impact sprint completion.
+    *   **Risk Assessment:** Evaluate sprint risks based on historical patterns from `lessons-learned.md` and plan mitigation strategies.
 
 3.  **Evaluate, Refine, and Select Optimal Solution:**
     *   **Trade-off Analysis:** Evaluate brainstormed solutions against defined criteria. Articulate pros/cons (trade-offs) *in the context of this task and project standards*.

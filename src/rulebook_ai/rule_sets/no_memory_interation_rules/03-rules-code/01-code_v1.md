@@ -1,3 +1,7 @@
+---
+trigger: always_on
+---
+
 # AI Assistant - Workflow: Implementation & Coding (FOCUS = IMPLEMENTATION)
 # Applies when internal mode is Act Mode (Cline) / Code Mode (Roo Code) for an implementation task, OR when task FOCUS is IMPLEMENTATION.
 # Assumes General Principles (File approx. 6) processed AND an approved Implementation Plan exists.

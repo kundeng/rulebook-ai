@@ -4,30 +4,40 @@ description: ALWAYS INCLUDE to HAVE Project Context.
 globs: 
 alwaysApply: true
 ---
-# Memory Files Structure
-This outlines the fundamental principles, required files, workflow structure, and essential procedures that govern documentation, and maintaining a memory using file system.
-The Memory Files consists of required core files and optional context files. Files build upon each other in a clear hierarchy:
+# Sprint-Based Memory Files Structure
+This outlines the fundamental principles, required files, workflow structure, and essential procedures that govern sprint-based documentation and memory management using the file system.
+The Sprint Memory Files consist of required core files organized around sprint cycles and project evolution:
+
 ```mermaid
 flowchart TD
     PB[product_requirement_docs.md] --> PC[technical.md]
     PB --> SP[architecture.md]
 
-    SP --> TC[tasks_plan.md]
+    SP --> TC[sprint_plan.md]
     PC --> TC
     PB --> TC
     
     TC --> AC[active_context.md]
+    TC --> SH[sprint_history.md]
 
     AC --> ER[error-documentation.md]
     AC --> LL[lessons-learned.md]
+    AC --> SR[sprint_retrospective.md]
     
-    subgraph LIT[ @/docs/literature ]
-        L1[...]
-        L2[...]
+    SH --> SR
+    SR --> TC
+    
+    subgraph SPRINT_DOCS[ Sprint Documentation ]
+        SD1[Sprint Goals & Acceptance Criteria]
+        SD2[Sprint Backlog & Stories]
+        SD3[Sprint Progress & Velocity]
+        SD4[Sprint Retrospectives]
     end
     
-    subgraph RFC[ @/tasks/rfc/ ]
-        R1[...]
+    subgraph LIT[ @/docs/literature ]
+        L1[Sprint Methodology References]
+        L2[Development Best Practices]
+    end
         R2[...]
     end
     
@@ -35,48 +45,58 @@ flowchart TD
     TC --o RFC
 
 ``` 
-## Core Files (Required)
-  7 files: 
+## Core Sprint Files (Required)
+  8 files organized around sprint methodology: 
   1. [product_requirement_docs.md](mdc:/memory/docs/product_requirement_docs.md) (/memory/docs/product_requirement_docs.md): Product Requirement Document (PRD) for the project or an SOP. 
-  - Why this project exists
-  - Problems it solves
-  - Defines core requirements and goals
-  - Foundation document that shapes all other files
-  - Source of truth for project scope
-  - Created at project start if it doesn't exist
+  - Why this project exists and sprint goals alignment
+  - Problems it solves per release/iteration
+  - Defines core requirements and sprint-deliverable features
+  - Foundation document that shapes sprint planning
+  - Source of truth for project scope and sprint boundaries
+  - Updated at sprint boundaries to reflect evolving requirements
 
-  2. [architecture.md](mdc:/memory/docs/architecture.md) (/memory/docs/architecture.md): System architecture
-  - How it should work
-  - Component relationships
-  - Dependencies
+  2. [architecture.md](mdc:/memory/docs/architecture.md) (/memory/docs/architecture.md): System architecture with sprint evolution
+  - How it should work and architectural decisions per sprint
+  - Component relationships and their sprint-based development
+  - Dependencies and their delivery timeline
   
-  3. [technical.md](mdc:/memory/docs/technical.md) (/memory/docs/technical.md): Development environment and stack
-  - Technologies used
-  - Development setup
-  - Key technical decisions
-  - Design patterns in use
-  - Technical constraints
+  3. [technical.md](mdc:/memory/docs/technical.md) (/memory/docs/technical.md): Development environment and technical sprint decisions
+  - Technologies used and technical debt management
+  - Development setup and sprint tooling
+  - Key technical decisions made during sprints
+  - Design patterns adopted per sprint cycle
+  - Technical constraints and sprint impact
 
-  4. [tasks_plan.md](mdc:/memory/tasks/tasks_plan.md) (/memory/tasks/tasks_plan.md): Detailed Task backlog
-  - In-Depth Tasks list and Project Progress
-  - What works
-  - What's left to build
-  - Current status
-  - Known issues
+  4. [sprint_plan.md](mdc:/memory/tasks/sprint_plan.md) (/memory/tasks/sprint_plan.md): Current and historical sprint planning
+  - Sprint goals, acceptance criteria, and commitments
+  - Sprint backlog and story breakdown
+  - Sprint progress tracking and velocity metrics
+  - Sprint retrospective learnings and improvements
+  - Historical sprint data for planning accuracy
   
-  5. [active_context.md](mdc:/memory/tasks/active_context.md) (/memory/tasks/active_context.md): Current state of development
-  - Current work focus
-  - Active decisions and considerations
-  - Recent changes
-  - Next steps
+  5. [active_context.md](mdc:/memory/tasks/active_context.md) (/memory/tasks/active_context.md): Current sprint state and daily progress
+  - Current sprint focus and daily progress
+  - Active sprint decisions and blockers
+  - Recent sprint changes and adaptations
+  - Next sprint steps and preparation
 
-  6. [error-documentation.md](mdc:/rules_template/01-rules/error-documentation.md) (/rules_template/01-rules/error-documentation.md): 
-  - During your interaction, if you find a fix to a mistake in this project or a correction you received reusable, you should take note in the error-documentation.md file so you will not make the same mistake again.
-  - Known issues: their state, context, and resolution
+  6. [sprint_history.md](mdc:/memory/tasks/sprint_history.md) (/memory/tasks/sprint_history.md): Completed sprints and project evolution
+  - Historical record of completed sprints
+  - Sprint goals achieved and missed
+  - Sprint retrospective outcomes and actions
+  - Project evolution timeline and major milestones
 
-  7. [lessons-learned.md](mdc:/rules_template/01-rules/lessons-learned.md) (/rules_template/01-rules/lessons-learned.md): learning journal for each project
-  - It captures important patterns, preferences, and project intelligence
-  - It is detailed in lessons-learned.md
+  7. [error-documentation.md](mdc:/rules_template/01-rules/error-documentation.md) (/rules_template/01-rules/error-documentation.md): Sprint-context error tracking
+  - Sprint-related errors and resolutions
+  - Blockers encountered during sprints and how they were resolved
+  - Technical debt identified and managed per sprint
+  - Known issues: their state, context, and sprint impact
+
+  8. [lessons-learned.md](mdc:/rules_template/01-rules/lessons-learned.md) (/rules_template/01-rules/lessons-learned.md): Sprint methodology learning journal
+  - Sprint-specific patterns, preferences, and team intelligence
+  - Sprint retrospective insights and process improvements
+  - Velocity patterns and estimation accuracy learnings
+  - Team dynamics and collaboration insights from sprints
 
 ## Context Files (Optional)
 Detailed docs. Retrieve on demand if needed for context.

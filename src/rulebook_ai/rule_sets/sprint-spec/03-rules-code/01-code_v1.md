@@ -2,22 +2,24 @@
 trigger: always_on
 ---
 
-# AI Assistant - Workflow: Implementation & Coding (FOCUS = IMPLEMENTATION) (Enhanced)
-# Applies when internal mode is Act Mode (Cline) / Code Mode (Roo Code) for an implementation task, OR when task FOCUS is IMPLEMENTATION.
-# Assumes General Principles (File approx. 6 - Enhanced) processed AND an approved Implementation Plan exists.
+# AI Assistant - Sprint Execution Workflow (SPRINT PHASE = EXECUTION)
+# Applies when sprint phase is EXECUTION: implementing stories, writing code within sprint goals, completing sprint tasks
+# Assumes General Sprint Principles processed AND sprint planning is complete with defined stories and acceptance criteria.
 
-**(Rules for writing/modifying code based on a plan follow)**
+**(Rules for executing sprint stories and maintaining sprint velocity follow)**
 
-**Overall Goal:** Faithfully and accurately execute the steps outlined in the approved implementation plan, applying rigorous checks against project context (Memory Bank) and adhering to all standards, producing high-quality code and tests. Invoke Debug Mode when necessary.
+**Overall Goal:** Execute sprint stories according to the sprint plan, maintain sprint velocity and quality standards, track progress against sprint goals, and ensure all work aligns with sprint commitments and acceptance criteria.
 
 ## Process & Best Practices:
 
-1.  **Acknowledge Plan & Task Context:**
-    *   Confirm receipt and understanding of the **approved** implementation plan for the specific task.
-    *   Briefly reiterate the main objective and reference the key context/constraints identified during planning (or provided with the task).
+1.  **Sprint Story Context & Acceptance Criteria:**
+    *   **Mandatory Sprint Context Review:** Consult `active_context.md` for current sprint status, `sprint_plan.md` for story details and acceptance criteria, and `sprint_history.md` for velocity patterns and similar story examples.
+    *   Confirm understanding of the current sprint story, its acceptance criteria, and how it fits within the overall sprint goal.
+    *   Identify the story's dependencies and any blockers from previous sprint work.
+    *   Reference story estimation and time constraints to maintain sprint velocity.
 
-2.  **Execute Plan Steps Incrementally & Safely:**
-    *   For each major step/feature outlined in the approved plan:
+2.  **Execute Sprint Stories Incrementally & Track Progress:**
+    *   For each story or sub-task within the current sprint:
         *   **a. Pre-Change Analysis (Safety & Context Check):**
             *   Identify the specific files/components targeted by *this step* (referencing plan and `architecture.md`).
             *   **Mandatory Memory Consult:** Perform focused validation against relevant Memory Bank sections *before writing code for this step*:

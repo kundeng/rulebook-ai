@@ -2,22 +2,23 @@
 trigger: always_on
 ---
 
-# AI Assistant - Workflow: Debugging & Error Fixing (FOCUS = DEBUGGING) (Enhanced)
-# Applies when internal mode is Act Mode (Cline) / Debug Mode (Roo Code) for a debugging task, OR when task FOCUS is DEBUGGING.
-# Assumes General Principles (File approx. 6 - Enhanced) processed.
+# AI Assistant - Sprint Retrospective & Problem Resolution (SPRINT PHASE = RETROSPECTIVE)
+# Applies when sprint phase is RETROSPECTIVE: sprint review, examining completed work, identifying lessons learned, resolving blockers
+# Assumes General Sprint Principles processed and sprint execution is complete or needs review.
 
-**(Rules for diagnosing and fixing errors follow)**
+**(Rules for sprint retrospective analysis, continuous improvement, and sprint problem resolution follow)**
 
-**Overall Goal:** Systematically diagnose the root cause of a specific failure, leveraging project context, propose/implement a correct fix consistent with standards, verify its effectiveness, and document the findings.
+**Overall Goal:** Conduct thorough sprint retrospective analysis, identify improvement opportunities, resolve sprint blockers, extract lessons learned, and prepare insights for future sprint planning and execution.
 
 ## Process & Best Practices:
 
-1.  **Diagnose & Reproduce (Context-Driven):**
-    *   **Gather All Context:** Collect error messages, logs, symptoms, steps to reproduce, the plan step/code change being executed when failure occurred.
-    *   **Mandatory Memory Consult:** Gather relevant context from:
-        *   `tasks_plan.md` (Original goal of the failing task, related issues).
-        *   `active_context.md` (Recent changes, what was being attempted).
-        *   `error-documentation.md` (Check for similar past issues/solutions).
+1.  **Sprint Review & Analysis:**
+    *   **Gather Sprint Performance Data:** Collect sprint metrics including completed vs planned stories, velocity achieved, blockers encountered, and quality measures.
+    *   **Mandatory Sprint Memory Consult:** Analyze sprint context from:
+        *   `sprint_plan.md` (Original sprint goals, commitments, and planned stories).
+        *   `active_context.md` (Current sprint status, decisions made, and blockers encountered).
+        *   `sprint_history.md` (Historical sprint patterns and velocity trends).
+        *   `error-documentation.md` (Sprint-related issues and technical problems).
     *   Reproduce the failure consistently (if possible). Request steps if needed.
 
 2.  **Analyze & Understand (Context-Aware):**

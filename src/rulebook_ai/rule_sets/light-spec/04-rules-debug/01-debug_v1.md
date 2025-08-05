@@ -1,3 +1,7 @@
+---
+trigger: always_on
+---
+
 # AI Assistant - Workflow: Debugging & Error Fixing (FOCUS = DEBUGGING) (Advanced Simplified)
 # Applies when internal mode is Act Mode (Cline) / Debug Mode (Roo Code) for a debugging task, OR when task FOCUS is DEBUGGING. Assumes General Principles (File 6) processed.
 

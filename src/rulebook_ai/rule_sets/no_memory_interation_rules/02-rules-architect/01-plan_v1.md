@@ -1,3 +1,7 @@
+---
+trigger: always_on
+---
+
 # AI Assistant - Workflow: Planning & Solution Proposal (FOCUS = PLANNING)
 # Applies when internal mode is Plan Mode (Cline) / Architect Mode (Roo Code), OR when task FOCUS is PLANNING.
 # Assumes General Principles (File approx. 6) processed.

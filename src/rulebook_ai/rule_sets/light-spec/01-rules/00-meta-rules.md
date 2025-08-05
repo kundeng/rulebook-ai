@@ -1,3 +1,7 @@
+---
+trigger: always_on
+---
+
 # Meta-Rules for AI Assistant Interaction (Advanced Simplified - Mode Logic Preserved)
 
 You will receive a sequence of rule files providing context and instructions. Process them in order.
