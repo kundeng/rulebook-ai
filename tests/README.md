@@ -1,65 +1,49 @@
-# Rulebook-AI Test Suite
+# Tests
 
-This directory contains integration tests for the rulebook-ai project. The tests focus on verifying that the package works correctly as a whole, particularly for its primary purpose of managing LLM rules and tools in third-party projects.
+This project uses pytest and tox with both unit and integration suites.
 
-## Test Organization
+- Unit tests: `tests/unit/`
+- Integration tests: `tests/integration/`
+- Pytest config: defined under `[tool.pytest]` in `pyproject.toml`
+- Tox envs: `unit`, `integration` (see `[tool.tox]` in `pyproject.toml`)
 
-### Integration Tests (`tests/integration/`)
-- Tests that verify the package works correctly as a whole
-- Tests that require external resources (filesystem, network)
-- Installation verification test (`test_installation.py`)
-- CLI tests (`test_manage_rules.py`)
-- Core functionality tests (`test_core.py`)
-- Tool integration test (`test_tools_integration.py`)
+## Quick start
 
-## Running Tests
-
-### Using the Test Runner
-
-The simplest way to run tests is using the provided test runner script:
-
+Using uv:
 ```bash
-# Set up the test environment
-python tests/run_integration_tests.py --setup
-
-# Run the integration tests
-python tests/run_integration_tests.py --run
+uv venv
+source .venv/bin/activate
+uv pip install -e '.[dev]'
+pytest -v
 ```
 
-### Manual Test Setup
-
-If you prefer to set up the test environment manually:
-
+Run only unit tests:
 ```bash
-# Create a test environment
-mkdir -p test_env
-cd test_env
-uv venv .venv
-
-# Install the package in the test environment
-uv pip install -e '..[dev]'
-
-# Create a symlink for the tools module
-cd .venv/lib/python*/site-packages
-ln -sf ../../../../tool_starters tools
-cd ../../../../..
-
-# Run integration tests
-cd test_env
-uv run python -m pytest ../tests/integration -v
+pytest tests/unit -v
 ```
 
-## Key Test Fixtures
+Run only integration tests:
+```bash
+pytest tests/integration -v
+```
 
-- `temp_project_dir`: Creates a temporary project directory with mock rule sets, memory starters, and tool starters
-- `tools_symlink`: Creates a symlink from `tools` to `tool_starters` in the site-packages directory
-- `tmp_source_repo_root`: Creates a temporary source repository for CLI tests
-- `script_runner`: Helper for running the CLI script in tests
+With tox:
+```bash
+uv pip install tox
+tox -e unit
+tox -e integration
+```
 
-## Best Practices
+## Integration test notes
 
-1. Integration tests should clean up after themselves
-2. Use fixtures to set up and tear down test environments
-3. Always install the package in development mode for testing
-4. Use `uv` for environment management as specified in the modernization roadmap
-5. Test against the installed package, not the source code directly
+- The CLI under test is `rulebook-ai` (see `src/rulebook_ai/cli.py`).
+- Fixtures in `tests/integration/conftest.py`:
+  - `tmp_source_repo_root`: creates a temporary source-like layout for tests.
+  - `script_runner`: runs the modern `rulebook-ai` CLI in tests.
+  - `tools_symlink`: temporarily symlinks `tools` to `tool_starters` in site-packages; managed by the fixture (no manual steps).
+
+## Best practices
+
+1. Prefer fixtures for setup/teardown; keep tests idempotent.
+2. Test against the installed package (`-e .`), not direct source imports.
+3. When adding CLI behavior, add corresponding integration tests.

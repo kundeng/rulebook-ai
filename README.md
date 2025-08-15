@@ -1,7 +1,73 @@
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-# Rulebook-AI: Universal Rules Template for AI Coding Assistants
+# Rulebook-AI
+
+Rulebook-AI helps you install and sync high-quality rules and a persistent "memory bank" across AI coding assistants (Cursor, Cline, RooCode, Windsurf, GitHub Copilot) via a single CLI.
+
+- Python: 3.9+
+- Package: `rulebook-ai` (PyPI)
+- CLI entrypoint: `rulebook-ai`
+- Source layout: `src/rulebook_ai/`
+
+## Quick Start (uv/uvx)
+
+```bash
+# Install uv if needed
+curl -fsSL https://astral.sh/uv/install.sh | bash
+
+# Try the CLI without creating a venv
+uvx rulebook-ai list-rules
+uvx rulebook-ai install --rule-set light-spec --project-dir /path/to/your/project
+uvx rulebook-ai doctor
+```
+
+## Quick Start (venv)
+
+```bash
+uv venv
+source .venv/bin/activate  # Windows: .venv\Scripts\activate
+uv pip install -e .
+
+# CLI usage
+rulebook-ai list-rules
+rulebook-ai install --rule-set light-spec --project-dir /path/to/your/project
+rulebook-ai sync --rule-set light-spec --project-dir /path/to/your/project
+rulebook-ai clean-rules --project-dir /path/to/your/project
+rulebook-ai doctor
+```
+
+## What gets created in your project
+
+- `project_rules/` from selected rule set (e.g., `light-spec`)
+- `memory/` initialized from memory starters (non-destructive)
+- `tools/` initialized from tool starters (non-destructive)
+- `.env.example` to guide API keys and tool config
+- Platform-specific outputs (generated; add to your project’s `.gitignore`):
+  - `.cursor/rules/`
+  - `.windsurf/rules/`
+  - `.clinerules/`
+  - `.roo/`
+  - `.github/copilot-instructions.md`
+
+Tip (Windsurf): after install, activate rules in the GUI (see linked note in this README).
+
+## CLI Commands
+
+- **list-rules**: prints available rule sets.
+- **install**: copies rules/memory/tools and generates platform files.
+  - Flags: `--rule-set`, `--project-dir`, `--clean`, `--no-copilot`, `--cursor|--windsurf|--cline|--roo|--all-assistants`
+- **sync**: regenerates platform files from your current `project_rules/`.
+  - Flags: `--rule-set`, `--project-dir`, `--no-copilot`, assistant selectors as above
+- **clean-rules**: removes `project_rules/` and generated platform files only.
+- **clean-all**: removes everything created by install (rules, memory, tools, env files, generated outputs).
+- **doctor**: checks Python version, venv, required packages, and presence of rules and `.env` hints.
+
+Requirements checked by `doctor`: `openai`, `anthropic`, `python-dotenv`, `playwright`, `html5lib`, `duckduckgo-search`.
+
+---
+
+# Legacy documentation (to be pruned)
 
 * Bugs or ideas → open an **Issue** in the repo  
 * Anonymous feedback: [Go to the Google Form](https://docs.google.com/forms/d/e/1FAIpQLSeW57QtPEWIRhHY1iOb8f5KQZTGLSeeb_PN2iZLd0Aw_pVYxw/viewform?usp=header)
